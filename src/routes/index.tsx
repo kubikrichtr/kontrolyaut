@@ -1,24 +1,350 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { toast } from "sonner";
+import { z } from "zod";
+import {
+  ShieldCheck, Search, FileCheck, Car, CheckCircle2, Wrench, Gauge, Camera,
+} from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "Kontrola ojetých vozů před koupí | KontrolyAut" },
+      { name: "description", content: "Nezávislá technická kontrola ojetých vozů před koupí. Přes 100 kontrolních bodů, protokol s fotografiemi, po celé ČR." },
+      { property: "og:title", content: "Kontrola ojetých vozů před koupí | KontrolyAut" },
+      { property: "og:description", content: "Přijedeme za prodejcem, prověříme vůz a doporučíme, zda ho koupit." },
+    ],
+  }),
+  component: HomePage,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+const orderSchema = z.object({
+  full_name: z.string().trim().min(2, "Zadejte jméno").max(100),
+  email: z.string().trim().email("Neplatný e-mail").max(255),
+  phone: z.string().trim().min(6, "Zadejte telefon").max(30),
+  car_brand: z.string().trim().min(1, "Vyberte značku"),
+  car_model: z.string().trim().max(80).optional().or(z.literal("")),
+  car_url: z.string().trim().max(500).optional().or(z.literal("")),
+  location: z.string().trim().max(120).optional().or(z.literal("")),
+  preferred_date: z.string().optional().or(z.literal("")),
+  note: z.string().trim().max(1000).optional().or(z.literal("")),
+});
+
+const BRANDS = [
+  "Audi","BMW","Citroën","Dacia","Fiat","Ford","Honda","Hyundai","Kia","Mazda",
+  "Mercedes-Benz","Nissan","Opel","Peugeot","Porsche","Renault","Seat","Škoda",
+  "Subaru","Suzuki","Tesla","Toyota","Volkswagen","Volvo","Jiná",
+];
+
+function HomePage() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <>
+      <Hero />
+      <Benefits />
+      <HowItWorks />
+      <Realized />
+      <OrderForm />
+      <FAQ />
+    </>
+  );
+}
+
+function Hero() {
+  return (
+    <section className="relative overflow-hidden bg-gradient-to-br from-primary/8 via-white to-accent/40">
+      <div className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle_at_1px_1px,_var(--primary)_1px,_transparent_0)] [background-size:24px_24px]" />
+      <div className="container-page relative py-20 md:py-28 grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <span className="inline-block text-xs font-semibold tracking-wider uppercase text-primary bg-primary/10 px-3 py-1.5 rounded-full">
+            Nezávislý technik po celé ČR
+          </span>
+          <h1 className="mt-5 text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+            Kontrola ojetého vozu <span className="text-primary">před koupí</span>
+          </h1>
+          <p className="mt-5 text-lg text-muted-foreground max-w-xl">
+            Přijedeme přímo za prodejcem, prověříme více než 100 kontrolních bodů
+            a doporučíme, zda vůz koupit — nebo se mu vyhnout. Ušetříte desítky tisíc.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a href="#kontakt" className="btn-primary">Objednat kontrolu</a>
+            <a href="#jak-probiha" className="btn-outline">Jak kontrola probíhá</a>
+          </div>
+          <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
+            <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-primary" /> Nezávislé posouzení</li>
+            <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-primary" /> Protokol s fotografiemi</li>
+            <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-primary" /> Do 24 hodin</li>
+          </ul>
+        </div>
+        <div className="relative">
+          <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl shadow-primary/20 bg-gradient-to-br from-primary/30 to-primary/70">
+            <img
+              src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=1200&q=80"
+              alt="Kontrola ojetého vozu"
+              className="w-full h-full object-cover mix-blend-multiply opacity-90"
+            />
+          </div>
+          <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl border border-border p-4 flex items-center gap-3">
+            <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
+              <ShieldCheck className="h-6 w-6 text-primary" />
+            </div>
+            <div>
+              <div className="text-2xl font-bold">100+</div>
+              <div className="text-xs text-muted-foreground">kontrolních bodů</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Benefits() {
+  const items = [
+    { icon: Search, title: "Historie vozu", text: "Ověření VIN, servisní historie, kontrola tachometru a nehodovosti." },
+    { icon: Wrench, title: "Technický stav", text: "Motor, převodovka, podvozek, brzdy — vše na profesionálním zvedáku." },
+    { icon: Camera, title: "Karoserie a lak", text: "Měření tloušťky laku, kontrola tmelů, koroze a skrytých oprav." },
+    { icon: Gauge, title: "Diagnostika", text: "Načtení chybových kódů z ECU a testovací jízda s reálnými daty." },
+  ];
+  return (
+    <section className="container-page py-20">
+      <div className="text-center max-w-2xl mx-auto">
+        <h2 className="text-3xl md:text-4xl font-bold">Co pro vás zkontrolujeme</h2>
+        <p className="mt-3 text-muted-foreground">Kompletní posouzení stavu vozu, které ochrání vaše peníze i nervy.</p>
+      </div>
+      <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {items.map((it) => (
+          <div key={it.title} className="rounded-2xl border border-border bg-white p-6 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all">
+            <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
+              <it.icon className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="font-semibold text-lg">{it.title}</h3>
+            <p className="mt-2 text-sm text-muted-foreground">{it.text}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function HowItWorks() {
+  const steps = [
+    { n: 1, title: "OBJEDNÁVKA", text: "Vyplňte formulář nebo zavolejte. Domluvíme se na termínu a místě." },
+    { n: 2, title: "PŘÍJEZD TECHNIKA", text: "Přijedeme přímo za prodejcem — kamkoli po celé ČR." },
+    { n: 3, title: "KONTROLA VOZU", text: "Kompletní kontrola trvá 60–90 minut, včetně testovací jízdy." },
+    { n: 4, title: "PROTOKOL A DOPORUČENÍ", text: "Ihned na místě řekneme, zda vůz koupit. Písemný protokol do 24 h." },
+  ];
+  return (
+    <section id="jak-probiha" className="bg-muted/40 py-20">
+      <div className="container-page">
+        <div className="text-center max-w-2xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold">Jak kontrola probíhá?</h2>
+          <p className="mt-3 text-muted-foreground">Jednoduchý proces ve čtyřech krocích.</p>
+        </div>
+        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {steps.map((s) => (
+            <div key={s.n} className="relative rounded-2xl bg-white border border-border p-6">
+              <div className="absolute -top-4 left-6 h-10 w-10 rounded-xl bg-primary text-primary-foreground font-bold flex items-center justify-center shadow-lg shadow-primary/30">
+                {s.n}
+              </div>
+              <h3 className="mt-4 font-bold text-sm tracking-wider text-primary">{s.title}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{s.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Realized() {
+  const { data } = useQuery({
+    queryKey: ["realized"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("realized_inspections")
+        .select("*")
+        .eq("published", true)
+        .order("created_at", { ascending: false })
+        .limit(8);
+      if (error) throw error;
+      return data;
+    },
+  });
+  return (
+    <section id="reference" className="container-page py-20">
+      <div className="flex items-end justify-between gap-6 flex-wrap">
+        <div>
+          <span className="text-xs font-semibold tracking-wider uppercase text-primary">Reference</span>
+          <h2 className="mt-2 text-3xl md:text-4xl font-bold">Realizované kontroly</h2>
+        </div>
+        <p className="text-muted-foreground max-w-md">Vybíráme z posledních prověřených vozů. Každý zákazník obdržel detailní protokol.</p>
+      </div>
+      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {(data ?? []).map((r) => (
+          <article key={r.id} className="group rounded-2xl overflow-hidden border border-border bg-white hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all">
+            <div className="aspect-[4/3] overflow-hidden bg-muted">
+              {r.image_url && (
+                <img src={r.image_url} alt={r.title} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              )}
+            </div>
+            <div className="p-5">
+              <h3 className="font-semibold line-clamp-2">{r.title}</h3>
+              <div className="mt-3 flex items-center justify-between">
+                <span className="text-xs text-muted-foreground">{r.car_brand} · {r.year ?? ""}</span>
+                <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 text-primary text-xs font-bold px-2.5 py-1">
+                  {r.score}<span className="opacity-70 font-medium">{r.score_label}</span>
+                </span>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function OrderForm() {
+  const [loading, setLoading] = useState(false);
+  const [values, setValues] = useState({
+    full_name: "", email: "", phone: "", car_brand: "", car_model: "",
+    car_url: "", location: "", preferred_date: "", note: "",
+  });
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    const parsed = orderSchema.safeParse(values);
+    if (!parsed.success) {
+      toast.error(parsed.error.issues[0]?.message ?? "Zkontrolujte formulář");
+      return;
+    }
+    setLoading(true);
+    const { data: userData } = await supabase.auth.getUser();
+    const { error } = await supabase.from("inspection_orders").insert({
+      ...parsed.data,
+      user_id: userData.user?.id ?? null,
+      preferred_date: parsed.data.preferred_date || null,
+    });
+    setLoading(false);
+    if (error) {
+      toast.error("Nepodařilo se odeslat objednávku.");
+      return;
+    }
+    toast.success("Objednávka odeslána. Ozveme se vám.");
+    setValues({ full_name: "", email: "", phone: "", car_brand: "", car_model: "", car_url: "", location: "", preferred_date: "", note: "" });
+  }
+
+  const inputCls = "w-full rounded-xl border border-border bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition";
+
+  return (
+    <section id="kontakt" className="bg-gradient-to-br from-primary/10 via-white to-accent/40 py-20">
+      <div className="container-page grid gap-10 lg:grid-cols-[1fr_1.2fr] items-start">
+        <div className="lg:sticky lg:top-28">
+          <span className="text-xs font-semibold tracking-wider uppercase text-primary">Objednávka</span>
+          <h2 className="mt-2 text-3xl md:text-4xl font-bold">Objednejte kontrolu vozu</h2>
+          <div className="mt-6 rounded-2xl bg-white border border-border p-6 shadow-sm">
+            <div className="flex items-baseline gap-2">
+              <span className="text-4xl font-bold text-primary">2 490 Kč</span>
+              <span className="text-sm text-muted-foreground">včetně DPH</span>
+            </div>
+            <ul className="mt-4 space-y-2 text-sm">
+              <li className="flex gap-2"><CheckCircle2 className="h-5 w-5 text-primary shrink-0" /> Nezávislá kontrola přes 100 bodů</li>
+              <li className="flex gap-2"><CheckCircle2 className="h-5 w-5 text-primary shrink-0" /> Písemný protokol s fotografiemi</li>
+              <li className="flex gap-2"><CheckCircle2 className="h-5 w-5 text-primary shrink-0" /> Přijedeme kamkoli po ČR</li>
+              <li className="flex gap-2"><CheckCircle2 className="h-5 w-5 text-primary shrink-0" /> Doporučení do 24 hodin</li>
+            </ul>
+          </div>
+        </div>
+        <form onSubmit={submit} className="rounded-3xl bg-white border border-border p-6 md:p-8 shadow-xl shadow-primary/5">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <label className="block sm:col-span-2">
+              <span className="text-sm font-medium">Jméno a příjmení *</span>
+              <input required className={`${inputCls} mt-1.5`} value={values.full_name} onChange={(e) => setValues({ ...values, full_name: e.target.value })} />
+            </label>
+            <label className="block">
+              <span className="text-sm font-medium">E-mail *</span>
+              <input required type="email" className={`${inputCls} mt-1.5`} value={values.email} onChange={(e) => setValues({ ...values, email: e.target.value })} />
+            </label>
+            <label className="block">
+              <span className="text-sm font-medium">Telefon *</span>
+              <input required className={`${inputCls} mt-1.5`} value={values.phone} onChange={(e) => setValues({ ...values, phone: e.target.value })} />
+            </label>
+            <label className="block">
+              <span className="text-sm font-medium">Značka vozu *</span>
+              <select required className={`${inputCls} mt-1.5`} value={values.car_brand} onChange={(e) => setValues({ ...values, car_brand: e.target.value })}>
+                <option value="">Vyberte značku</option>
+                {BRANDS.map((b) => <option key={b} value={b}>{b}</option>)}
+              </select>
+            </label>
+            <label className="block">
+              <span className="text-sm font-medium">Model vozu</span>
+              <input className={`${inputCls} mt-1.5`} value={values.car_model} onChange={(e) => setValues({ ...values, car_model: e.target.value })} />
+            </label>
+            <label className="block sm:col-span-2">
+              <span className="text-sm font-medium">Odkaz na inzerát</span>
+              <input placeholder="https://..." className={`${inputCls} mt-1.5`} value={values.car_url} onChange={(e) => setValues({ ...values, car_url: e.target.value })} />
+            </label>
+            <label className="block">
+              <span className="text-sm font-medium">Místo kontroly (město)</span>
+              <input className={`${inputCls} mt-1.5`} value={values.location} onChange={(e) => setValues({ ...values, location: e.target.value })} />
+            </label>
+            <label className="block">
+              <span className="text-sm font-medium">Preferovaný termín</span>
+              <input type="date" className={`${inputCls} mt-1.5`} value={values.preferred_date} onChange={(e) => setValues({ ...values, preferred_date: e.target.value })} />
+            </label>
+            <label className="block sm:col-span-2">
+              <span className="text-sm font-medium">Poznámka</span>
+              <textarea rows={3} className={`${inputCls} mt-1.5 resize-none`} value={values.note} onChange={(e) => setValues({ ...values, note: e.target.value })} />
+            </label>
+          </div>
+          <button type="submit" disabled={loading} className="btn-primary w-full mt-6 !py-3.5">
+            {loading ? "Odesílám..." : "Odeslat objednávku"}
+          </button>
+          <p className="text-xs text-muted-foreground text-center mt-3">Ozveme se do 24 hodin a potvrdíme termín.</p>
+        </form>
+      </div>
+    </section>
+  );
+}
+
+function FAQ() {
+  const { data } = useQuery({
+    queryKey: ["faq"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("faq_items")
+        .select("*")
+        .eq("published", true)
+        .order("sort_order");
+      if (error) throw error;
+      return data;
+    },
+  });
+  const [open, setOpen] = useState<string | null>(null);
+  return (
+    <section id="faq" className="container-page py-20">
+      <div className="text-center max-w-2xl mx-auto">
+        <h2 className="text-3xl md:text-4xl font-bold">Časté dotazy</h2>
+        <p className="mt-3 text-muted-foreground">Vše, co potřebujete vědět o kontrole ojetého vozu.</p>
+      </div>
+      <div className="mt-10 max-w-3xl mx-auto space-y-3">
+        {(data ?? []).map((f) => {
+          const isOpen = open === f.id;
+          return (
+            <div key={f.id} className="rounded-2xl border border-border bg-white overflow-hidden">
+              <button
+                onClick={() => setOpen(isOpen ? null : f.id)}
+                className="w-full text-left p-5 flex items-center justify-between gap-4 hover:bg-muted/40 transition"
+              >
+                <span className="font-semibold">{f.question}</span>
+                <span className={`h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center transition-transform ${isOpen ? "rotate-45" : ""}`}>+</span>
+              </button>
+              {isOpen && <div className="px-5 pb-5 text-sm text-muted-foreground whitespace-pre-line">{f.answer}</div>}
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }
