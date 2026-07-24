@@ -16,7 +16,6 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthenticatedKlientRouteImport } from './routes/_authenticated/klient'
-import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -52,18 +51,12 @@ const AuthenticatedKlientRoute = AuthenticatedKlientRouteImport.update({
   path: '/klient',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/admin': typeof AuthenticatedAdminRoute
   '/klient': typeof AuthenticatedKlientRoute
   '/blog/$slug': typeof BlogSlugRoute
 }
@@ -72,7 +65,6 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/admin': typeof AuthenticatedAdminRoute
   '/klient': typeof AuthenticatedKlientRoute
   '/blog/$slug': typeof BlogSlugRoute
 }
@@ -83,7 +75,6 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/klient': typeof AuthenticatedKlientRoute
   '/blog/$slug': typeof BlogSlugRoute
 }
@@ -94,18 +85,10 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/sitemap.xml'
-    | '/admin'
     | '/klient'
     | '/blog/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/auth'
-    | '/blog'
-    | '/sitemap.xml'
-    | '/admin'
-    | '/klient'
-    | '/blog/$slug'
+  to: '/' | '/auth' | '/blog' | '/sitemap.xml' | '/klient' | '/blog/$slug'
   id:
     | '__root__'
     | '/'
@@ -113,7 +96,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/sitemap.xml'
-    | '/_authenticated/admin'
     | '/_authenticated/klient'
     | '/blog/$slug'
   fileRoutesById: FileRoutesById
@@ -177,23 +159,14 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedKlientRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/admin': {
-      id: '/_authenticated/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthenticatedAdminRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedKlientRoute: typeof AuthenticatedKlientRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedKlientRoute: AuthenticatedKlientRoute,
 }
 
