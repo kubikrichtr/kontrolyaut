@@ -3,16 +3,18 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import {
-  ShieldCheck, Search, FileCheck, Car, CheckCircle2, Wrench, Gauge, Camera,
-} from "lucide-react";
+import { ShieldCheck, Search, FileCheck, Car, CheckCircle2, Wrench, Gauge, Camera } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Kontrola ojetých vozů před koupí | KontrolyAut" },
-      { name: "description", content: "Nezávislá technická kontrola ojetých vozů před koupí. Přes 100 kontrolních bodů, protokol s fotografiemi, po celé ČR." },
+      {
+        name: "description",
+        content:
+          "Nezávislá technická kontrola ojetých vozů před koupí. Přes 100 kontrolních bodů, protokol s fotografiemi, po celé ČR.",
+      },
       { property: "og:title", content: "Kontrola ojetých vozů před koupí | KontrolyAut" },
       { property: "og:description", content: "Přijedeme za prodejcem, prověříme vůz a doporučíme, zda ho koupit." },
     ],
@@ -33,9 +35,31 @@ const orderSchema = z.object({
 });
 
 const BRANDS = [
-  "Audi","BMW","Citroën","Dacia","Fiat","Ford","Honda","Hyundai","Kia","Mazda",
-  "Mercedes-Benz","Nissan","Opel","Peugeot","Porsche","Renault","Seat","Škoda",
-  "Subaru","Suzuki","Tesla","Toyota","Volkswagen","Volvo","Jiná",
+  "Audi",
+  "BMW",
+  "Citroën",
+  "Dacia",
+  "Fiat",
+  "Ford",
+  "Honda",
+  "Hyundai",
+  "Kia",
+  "Mazda",
+  "Mercedes-Benz",
+  "Nissan",
+  "Opel",
+  "Peugeot",
+  "Porsche",
+  "Renault",
+  "Seat",
+  "Škoda",
+  "Subaru",
+  "Suzuki",
+  "Tesla",
+  "Toyota",
+  "Volkswagen",
+  "Volvo",
+  "Jiná",
 ];
 
 function HomePage() {
@@ -64,17 +88,27 @@ function Hero() {
             Kontrola ojetého vozu <span className="text-primary">před koupí</span>
           </h1>
           <p className="mt-5 text-lg text-muted-foreground max-w-xl">
-            Přijedeme přímo za prodejcem, prověříme více než 100 kontrolních bodů
-            a doporučíme, zda vůz koupit — nebo se mu vyhnout. Ušetříte desítky tisíc.
+            Přijedeme přímo za prodejcem, prověříme více než 100 kontrolních bodů a doporučíme, zda vůz koupit — nebo se
+            mu vyhnout. Ušetříte desítky tisíc.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href="#kontakt" className="btn-primary">Objednat kontrolu</a>
-            <a href="#jak-probiha" className="btn-outline">Jak kontrola probíhá</a>
+            <a href="#kontakt" className="btn-primary">
+              Objednat kontrolu
+            </a>
+            <a href="#jak-probiha" className="btn-outline">
+              Jak kontrola probíhá
+            </a>
           </div>
           <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
-            <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-primary" /> Nezávislé posouzení</li>
-            <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-primary" /> Protokol s fotografiemi</li>
-            <li className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-primary" /> Do 24 hodin</li>
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className="h-4 w-4 text-primary" /> Nezávislé posouzení
+            </li>
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className="h-4 w-4 text-primary" /> Protokol s fotografiemi
+            </li>
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className="h-4 w-4 text-primary" /> Do 24 hodin
+            </li>
           </ul>
         </div>
         <div className="relative">
@@ -102,8 +136,16 @@ function Hero() {
 
 function Benefits() {
   const items = [
-    { icon: Search, title: "Historie vozu", text: "Ověření VIN, servisní historie, kontrola tachometru a nehodovosti." },
-    { icon: Wrench, title: "Technický stav", text: "Motor, převodovka, podvozek, brzdy — vše na profesionálním zvedáku." },
+    {
+      icon: Search,
+      title: "Historie vozu",
+      text: "Ověření VIN, servisní historie, kontrola tachometru a nehodovosti.",
+    },
+    {
+      icon: Wrench,
+      title: "Technický stav",
+      text: "Motor, převodovka, podvozek, brzdy — vše na profesionálním zvedáku.",
+    },
     { icon: Camera, title: "Karoserie a lak", text: "Měření tloušťky laku, kontrola tmelů, koroze a skrytých oprav." },
     { icon: Gauge, title: "Diagnostika", text: "Načtení chybových kódů z ECU a testovací jízda s reálnými daty." },
   ];
@@ -115,7 +157,10 @@ function Benefits() {
       </div>
       <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {items.map((it) => (
-          <div key={it.title} className="rounded-2xl border border-border bg-white p-6 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all">
+          <div
+            key={it.title}
+            className="rounded-2xl border border-border bg-white p-6 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all"
+          >
             <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
               <it.icon className="h-6 w-6 text-primary" />
             </div>
@@ -179,22 +224,34 @@ function Realized() {
           <span className="text-xs font-semibold tracking-wider uppercase text-primary">Reference</span>
           <h2 className="mt-2 text-3xl md:text-4xl font-bold">Realizované kontroly</h2>
         </div>
-        <p className="text-muted-foreground max-w-md">Vybíráme z posledních prověřených vozů. Každý zákazník obdržel detailní protokol.</p>
+        <p className="text-muted-foreground max-w-md">
+          Vybíráme z posledních prověřených vozů. Každý zákazník obdržel detailní protokol.
+        </p>
       </div>
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {(data ?? []).map((r) => (
-          <article key={r.id} className="group rounded-2xl overflow-hidden border border-border bg-white hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all">
+          <article
+            key={r.id}
+            className="group rounded-2xl overflow-hidden border border-border bg-white hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all"
+          >
             <div className="aspect-[4/3] overflow-hidden bg-muted">
               {r.image_url && (
-                <img src={r.image_url} alt={r.title} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img
+                  src={r.image_url}
+                  alt={r.title}
+                  className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
               )}
             </div>
             <div className="p-5">
               <h3 className="font-semibold line-clamp-2">{r.title}</h3>
               <div className="mt-3 flex items-center justify-between">
-                <span className="text-xs text-muted-foreground">{r.car_brand} · {r.year ?? ""}</span>
+                <span className="text-xs text-muted-foreground">
+                  {r.car_brand} · {r.year ?? ""}
+                </span>
                 <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 text-primary text-xs font-bold px-2.5 py-1">
-                  {r.score}<span className="opacity-70 font-medium">{r.score_label}</span>
+                  {r.score}
+                  <span className="opacity-70 font-medium">{r.score_label}</span>
                 </span>
               </div>
             </div>
@@ -208,8 +265,15 @@ function Realized() {
 function OrderForm() {
   const [loading, setLoading] = useState(false);
   const [values, setValues] = useState({
-    full_name: "", email: "", phone: "", car_brand: "", car_model: "",
-    car_url: "", location: "", preferred_date: "", note: "",
+    full_name: "",
+    email: "",
+    phone: "",
+    car_brand: "",
+    car_model: "",
+    car_url: "",
+    location: "",
+    preferred_date: "",
+    note: "",
   });
 
   async function submit(e: React.FormEvent) {
@@ -220,22 +284,57 @@ function OrderForm() {
       return;
     }
     setLoading(true);
-    const { data: userData } = await supabase.auth.getUser();
-    const { error } = await supabase.from("inspection_orders").insert({
-      ...parsed.data,
-      user_id: userData.user?.id ?? null,
-      preferred_date: parsed.data.preferred_date || null,
+
+    const CARS_EU_URL = "https://ajafqafoonxoubbhcxnk.supabase.co/functions/v1/public-submit-inquiry";
+    const CARS_EU_ANON =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqYWZxYWZvb254b3ViYmhjeG5rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNzM1NTQsImV4cCI6MjA4MzY0OTU1NH0.j5SJwClkiZD_fIVTI4UBKRK2Z76ykMuk1HLF169c-6A";
+
+    const carName = [parsed.data.car_brand, parsed.data.car_model].filter(Boolean).join(" ").trim();
+    const noteParts = [parsed.data.location ? `Místo: ${parsed.data.location}` : "", parsed.data.note || ""].filter(
+      Boolean,
+    );
+
+    const res = await fetch(CARS_EU_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: CARS_EU_ANON,
+        Authorization: `Bearer ${CARS_EU_ANON}`,
+      },
+      body: JSON.stringify({
+        source_site: "kontrolyaut",
+        name: parsed.data.full_name,
+        email: parsed.data.email,
+        phone: parsed.data.phone,
+        service: "Kontrola vozu před koupí",
+        car_name: carName || null,
+        vehicle_url: parsed.data.car_url || null,
+        preferred_date: parsed.data.preferred_date || null,
+        message: noteParts.join("\n") || null,
+      }),
     });
+
     setLoading(false);
-    if (error) {
+    if (!res.ok) {
       toast.error("Nepodařilo se odeslat objednávku.");
       return;
     }
     toast.success("Objednávka odeslána. Ozveme se vám.");
-    setValues({ full_name: "", email: "", phone: "", car_brand: "", car_model: "", car_url: "", location: "", preferred_date: "", note: "" });
+    setValues({
+      full_name: "",
+      email: "",
+      phone: "",
+      car_brand: "",
+      car_model: "",
+      car_url: "",
+      location: "",
+      preferred_date: "",
+      note: "",
+    });
   }
 
-  const inputCls = "w-full rounded-xl border border-border bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition";
+  const inputCls =
+    "w-full rounded-xl border border-border bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition";
 
   return (
     <section id="kontakt" className="bg-gradient-to-br from-primary/10 via-white to-accent/40 py-20">
@@ -249,53 +348,112 @@ function OrderForm() {
               <span className="text-sm text-muted-foreground">včetně DPH</span>
             </div>
             <ul className="mt-4 space-y-2 text-sm">
-              <li className="flex gap-2"><CheckCircle2 className="h-5 w-5 text-primary shrink-0" /> Nezávislá kontrola přes 100 bodů</li>
-              <li className="flex gap-2"><CheckCircle2 className="h-5 w-5 text-primary shrink-0" /> Písemný protokol s fotografiemi</li>
-              <li className="flex gap-2"><CheckCircle2 className="h-5 w-5 text-primary shrink-0" /> Přijedeme kamkoli po ČR</li>
-              <li className="flex gap-2"><CheckCircle2 className="h-5 w-5 text-primary shrink-0" /> Doporučení do 24 hodin</li>
+              <li className="flex gap-2">
+                <CheckCircle2 className="h-5 w-5 text-primary shrink-0" /> Nezávislá kontrola přes 100 bodů
+              </li>
+              <li className="flex gap-2">
+                <CheckCircle2 className="h-5 w-5 text-primary shrink-0" /> Písemný protokol s fotografiemi
+              </li>
+              <li className="flex gap-2">
+                <CheckCircle2 className="h-5 w-5 text-primary shrink-0" /> Přijedeme kamkoli po ČR
+              </li>
+              <li className="flex gap-2">
+                <CheckCircle2 className="h-5 w-5 text-primary shrink-0" /> Doporučení do 24 hodin
+              </li>
             </ul>
           </div>
         </div>
-        <form onSubmit={submit} className="rounded-3xl bg-white border border-border p-6 md:p-8 shadow-xl shadow-primary/5">
+        <form
+          onSubmit={submit}
+          className="rounded-3xl bg-white border border-border p-6 md:p-8 shadow-xl shadow-primary/5"
+        >
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="block sm:col-span-2">
               <span className="text-sm font-medium">Jméno a příjmení *</span>
-              <input required className={`${inputCls} mt-1.5`} value={values.full_name} onChange={(e) => setValues({ ...values, full_name: e.target.value })} />
+              <input
+                required
+                className={`${inputCls} mt-1.5`}
+                value={values.full_name}
+                onChange={(e) => setValues({ ...values, full_name: e.target.value })}
+              />
             </label>
             <label className="block">
               <span className="text-sm font-medium">E-mail *</span>
-              <input required type="email" className={`${inputCls} mt-1.5`} value={values.email} onChange={(e) => setValues({ ...values, email: e.target.value })} />
+              <input
+                required
+                type="email"
+                className={`${inputCls} mt-1.5`}
+                value={values.email}
+                onChange={(e) => setValues({ ...values, email: e.target.value })}
+              />
             </label>
             <label className="block">
               <span className="text-sm font-medium">Telefon *</span>
-              <input required className={`${inputCls} mt-1.5`} value={values.phone} onChange={(e) => setValues({ ...values, phone: e.target.value })} />
+              <input
+                required
+                className={`${inputCls} mt-1.5`}
+                value={values.phone}
+                onChange={(e) => setValues({ ...values, phone: e.target.value })}
+              />
             </label>
             <label className="block">
               <span className="text-sm font-medium">Značka vozu *</span>
-              <select required className={`${inputCls} mt-1.5`} value={values.car_brand} onChange={(e) => setValues({ ...values, car_brand: e.target.value })}>
+              <select
+                required
+                className={`${inputCls} mt-1.5`}
+                value={values.car_brand}
+                onChange={(e) => setValues({ ...values, car_brand: e.target.value })}
+              >
                 <option value="">Vyberte značku</option>
-                {BRANDS.map((b) => <option key={b} value={b}>{b}</option>)}
+                {BRANDS.map((b) => (
+                  <option key={b} value={b}>
+                    {b}
+                  </option>
+                ))}
               </select>
             </label>
             <label className="block">
               <span className="text-sm font-medium">Model vozu</span>
-              <input className={`${inputCls} mt-1.5`} value={values.car_model} onChange={(e) => setValues({ ...values, car_model: e.target.value })} />
+              <input
+                className={`${inputCls} mt-1.5`}
+                value={values.car_model}
+                onChange={(e) => setValues({ ...values, car_model: e.target.value })}
+              />
             </label>
             <label className="block sm:col-span-2">
               <span className="text-sm font-medium">Odkaz na inzerát</span>
-              <input placeholder="https://..." className={`${inputCls} mt-1.5`} value={values.car_url} onChange={(e) => setValues({ ...values, car_url: e.target.value })} />
+              <input
+                placeholder="https://..."
+                className={`${inputCls} mt-1.5`}
+                value={values.car_url}
+                onChange={(e) => setValues({ ...values, car_url: e.target.value })}
+              />
             </label>
             <label className="block">
               <span className="text-sm font-medium">Místo kontroly (město)</span>
-              <input className={`${inputCls} mt-1.5`} value={values.location} onChange={(e) => setValues({ ...values, location: e.target.value })} />
+              <input
+                className={`${inputCls} mt-1.5`}
+                value={values.location}
+                onChange={(e) => setValues({ ...values, location: e.target.value })}
+              />
             </label>
             <label className="block">
               <span className="text-sm font-medium">Preferovaný termín</span>
-              <input type="date" className={`${inputCls} mt-1.5`} value={values.preferred_date} onChange={(e) => setValues({ ...values, preferred_date: e.target.value })} />
+              <input
+                type="date"
+                className={`${inputCls} mt-1.5`}
+                value={values.preferred_date}
+                onChange={(e) => setValues({ ...values, preferred_date: e.target.value })}
+              />
             </label>
             <label className="block sm:col-span-2">
               <span className="text-sm font-medium">Poznámka</span>
-              <textarea rows={3} className={`${inputCls} mt-1.5 resize-none`} value={values.note} onChange={(e) => setValues({ ...values, note: e.target.value })} />
+              <textarea
+                rows={3}
+                className={`${inputCls} mt-1.5 resize-none`}
+                value={values.note}
+                onChange={(e) => setValues({ ...values, note: e.target.value })}
+              />
             </label>
           </div>
           <button type="submit" disabled={loading} className="btn-primary w-full mt-6 !py-3.5">
@@ -312,11 +470,7 @@ function FAQ() {
   const { data } = useQuery({
     queryKey: ["faq"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("faq_items")
-        .select("*")
-        .eq("published", true)
-        .order("sort_order");
+      const { data, error } = await supabase.from("faq_items").select("*").eq("published", true).order("sort_order");
       if (error) throw error;
       return data;
     },
@@ -338,7 +492,11 @@ function FAQ() {
                 className="w-full text-left p-5 flex items-center justify-between gap-4 hover:bg-muted/40 transition"
               >
                 <span className="font-semibold">{f.question}</span>
-                <span className={`h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center transition-transform ${isOpen ? "rotate-45" : ""}`}>+</span>
+                <span
+                  className={`h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center transition-transform ${isOpen ? "rotate-45" : ""}`}
+                >
+                  +
+                </span>
               </button>
               {isOpen && <div className="px-5 pb-5 text-sm text-muted-foreground whitespace-pre-line">{f.answer}</div>}
             </div>
