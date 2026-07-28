@@ -26,41 +26,13 @@ const orderSchema = z.object({
   full_name: z.string().trim().min(2, "Zadejte jméno").max(100),
   email: z.string().trim().email("Neplatný e-mail").max(255),
   phone: z.string().trim().min(6, "Zadejte telefon").max(30),
-  car_brand: z.string().trim().min(1, "Vyberte značku"),
-  car_model: z.string().trim().max(80).optional().or(z.literal("")),
   car_url: z.string().trim().max(500).optional().or(z.literal("")),
   location: z.string().trim().max(120).optional().or(z.literal("")),
   preferred_date: z.string().optional().or(z.literal("")),
+  attendance: z.enum(["yes", "no", ""]).optional(),
   note: z.string().trim().max(1000).optional().or(z.literal("")),
 });
 
-const BRANDS = [
-  "Audi",
-  "BMW",
-  "Citroën",
-  "Dacia",
-  "Fiat",
-  "Ford",
-  "Honda",
-  "Hyundai",
-  "Kia",
-  "Mazda",
-  "Mercedes-Benz",
-  "Nissan",
-  "Opel",
-  "Peugeot",
-  "Porsche",
-  "Renault",
-  "Seat",
-  "Škoda",
-  "Subaru",
-  "Suzuki",
-  "Tesla",
-  "Toyota",
-  "Volkswagen",
-  "Volvo",
-  "Jiná",
-];
 
 function HomePage() {
   return (
@@ -268,11 +240,10 @@ function OrderForm() {
     full_name: "",
     email: "",
     phone: "",
-    car_brand: "",
-    car_model: "",
     car_url: "",
     location: "",
     preferred_date: "",
+    attendance: "" as "" | "yes" | "no",
     note: "",
   });
 
@@ -289,10 +260,17 @@ function OrderForm() {
     const CARS_EU_ANON =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqYWZxYWZvb254b3ViYmhjeG5rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNzM1NTQsImV4cCI6MjA4MzY0OTU1NH0.j5SJwClkiZD_fIVTI4UBKRK2Z76ykMuk1HLF169c-6A";
 
-    const carName = [parsed.data.car_brand, parsed.data.car_model].filter(Boolean).join(" ").trim();
-    const noteParts = [parsed.data.location ? `Místo: ${parsed.data.location}` : "", parsed.data.note || ""].filter(
-      Boolean,
-    );
+    const attendanceText =
+      parsed.data.attendance === "yes"
+        ? "Klient se chce kontroly účastnit"
+        : parsed.data.attendance === "no"
+          ? "Klient se kontroly účastnit nechce"
+          : "";
+    const noteParts = [
+      parsed.data.location ? `Místo: ${parsed.data.location}` : "",
+      attendanceText,
+      parsed.data.note || "",
+    ].filter(Boolean);
 
     const res = await fetch(CARS_EU_URL, {
       method: "POST",
@@ -307,7 +285,7 @@ function OrderForm() {
         email: parsed.data.email,
         phone: parsed.data.phone,
         service: "Kontrola vozu před koupí",
-        car_name: carName || null,
+        car_name: null,
         vehicle_url: parsed.data.car_url || null,
         preferred_date: parsed.data.preferred_date || null,
         message: noteParts.join("\n") || null,
@@ -324,14 +302,14 @@ function OrderForm() {
       full_name: "",
       email: "",
       phone: "",
-      car_brand: "",
-      car_model: "",
       car_url: "",
       location: "",
       preferred_date: "",
+      attendance: "",
       note: "",
     });
   }
+
 
   const inputCls =
     "w-full rounded-xl border border-border bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition";
@@ -396,30 +374,19 @@ function OrderForm() {
                 onChange={(e) => setValues({ ...values, phone: e.target.value })}
               />
             </label>
-            <label className="block">
-              <span className="text-sm font-medium">Značka vozu *</span>
+            <label className="block sm:col-span-2">
+              <span className="text-sm font-medium">Chcete se kontroly osobně účastnit?</span>
               <select
-                required
                 className={`${inputCls} mt-1.5`}
-                value={values.car_brand}
-                onChange={(e) => setValues({ ...values, car_brand: e.target.value })}
+                value={values.attendance}
+                onChange={(e) => setValues({ ...values, attendance: e.target.value as "" | "yes" | "no" })}
               >
-                <option value="">Vyberte značku</option>
-                {BRANDS.map((b) => (
-                  <option key={b} value={b}>
-                    {b}
-                  </option>
-                ))}
+                <option value="">Nezáleží / neuvedeno</option>
+                <option value="yes">Ano, chci být u kontroly</option>
+                <option value="no">Ne, kontrolu proveďte bez mé účasti</option>
               </select>
             </label>
-            <label className="block">
-              <span className="text-sm font-medium">Model vozu</span>
-              <input
-                className={`${inputCls} mt-1.5`}
-                value={values.car_model}
-                onChange={(e) => setValues({ ...values, car_model: e.target.value })}
-              />
-            </label>
+
             <label className="block sm:col-span-2">
               <span className="text-sm font-medium">Odkaz na inzerát</span>
               <input
