@@ -26,41 +26,13 @@ const orderSchema = z.object({
   full_name: z.string().trim().min(2, "Zadejte jméno").max(100),
   email: z.string().trim().email("Neplatný e-mail").max(255),
   phone: z.string().trim().min(6, "Zadejte telefon").max(30),
-  car_brand: z.string().trim().min(1, "Vyberte značku"),
-  car_model: z.string().trim().max(80).optional().or(z.literal("")),
   car_url: z.string().trim().max(500).optional().or(z.literal("")),
   location: z.string().trim().max(120).optional().or(z.literal("")),
   preferred_date: z.string().optional().or(z.literal("")),
+  attendance: z.enum(["yes", "no", ""]).optional(),
   note: z.string().trim().max(1000).optional().or(z.literal("")),
 });
 
-const BRANDS = [
-  "Audi",
-  "BMW",
-  "Citroën",
-  "Dacia",
-  "Fiat",
-  "Ford",
-  "Honda",
-  "Hyundai",
-  "Kia",
-  "Mazda",
-  "Mercedes-Benz",
-  "Nissan",
-  "Opel",
-  "Peugeot",
-  "Porsche",
-  "Renault",
-  "Seat",
-  "Škoda",
-  "Subaru",
-  "Suzuki",
-  "Tesla",
-  "Toyota",
-  "Volkswagen",
-  "Volvo",
-  "Jiná",
-];
 
 function HomePage() {
   return (
