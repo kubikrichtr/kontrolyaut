@@ -240,11 +240,10 @@ function OrderForm() {
     full_name: "",
     email: "",
     phone: "",
-    car_brand: "",
-    car_model: "",
     car_url: "",
     location: "",
     preferred_date: "",
+    attendance: "" as "" | "yes" | "no",
     note: "",
   });
 
@@ -261,10 +260,17 @@ function OrderForm() {
     const CARS_EU_ANON =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqYWZxYWZvb254b3ViYmhjeG5rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNzM1NTQsImV4cCI6MjA4MzY0OTU1NH0.j5SJwClkiZD_fIVTI4UBKRK2Z76ykMuk1HLF169c-6A";
 
-    const carName = [parsed.data.car_brand, parsed.data.car_model].filter(Boolean).join(" ").trim();
-    const noteParts = [parsed.data.location ? `Místo: ${parsed.data.location}` : "", parsed.data.note || ""].filter(
-      Boolean,
-    );
+    const attendanceText =
+      parsed.data.attendance === "yes"
+        ? "Klient se chce kontroly účastnit"
+        : parsed.data.attendance === "no"
+          ? "Klient se kontroly účastnit nechce"
+          : "";
+    const noteParts = [
+      parsed.data.location ? `Místo: ${parsed.data.location}` : "",
+      attendanceText,
+      parsed.data.note || "",
+    ].filter(Boolean);
 
     const res = await fetch(CARS_EU_URL, {
       method: "POST",
@@ -279,7 +285,7 @@ function OrderForm() {
         email: parsed.data.email,
         phone: parsed.data.phone,
         service: "Kontrola vozu před koupí",
-        car_name: carName || null,
+        car_name: null,
         vehicle_url: parsed.data.car_url || null,
         preferred_date: parsed.data.preferred_date || null,
         message: noteParts.join("\n") || null,
@@ -296,14 +302,14 @@ function OrderForm() {
       full_name: "",
       email: "",
       phone: "",
-      car_brand: "",
-      car_model: "",
       car_url: "",
       location: "",
       preferred_date: "",
+      attendance: "",
       note: "",
     });
   }
+
 
   const inputCls =
     "w-full rounded-xl border border-border bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition";
