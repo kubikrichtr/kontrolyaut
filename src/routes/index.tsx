@@ -374,30 +374,19 @@ function OrderForm() {
                 onChange={(e) => setValues({ ...values, phone: e.target.value })}
               />
             </label>
-            <label className="block">
-              <span className="text-sm font-medium">Značka vozu *</span>
+            <label className="block sm:col-span-2">
+              <span className="text-sm font-medium">Chcete se kontroly osobně účastnit?</span>
               <select
-                required
                 className={`${inputCls} mt-1.5`}
-                value={values.car_brand}
-                onChange={(e) => setValues({ ...values, car_brand: e.target.value })}
+                value={values.attendance}
+                onChange={(e) => setValues({ ...values, attendance: e.target.value as "" | "yes" | "no" })}
               >
-                <option value="">Vyberte značku</option>
-                {BRANDS.map((b) => (
-                  <option key={b} value={b}>
-                    {b}
-                  </option>
-                ))}
+                <option value="">Nezáleží / neuvedeno</option>
+                <option value="yes">Ano, chci být u kontroly</option>
+                <option value="no">Ne, kontrolu proveďte bez mé účasti</option>
               </select>
             </label>
-            <label className="block">
-              <span className="text-sm font-medium">Model vozu</span>
-              <input
-                className={`${inputCls} mt-1.5`}
-                value={values.car_model}
-                onChange={(e) => setValues({ ...values, car_model: e.target.value })}
-              />
-            </label>
+
             <label className="block sm:col-span-2">
               <span className="text-sm font-medium">Odkaz na inzerát</span>
               <input
