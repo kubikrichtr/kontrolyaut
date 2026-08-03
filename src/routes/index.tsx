@@ -166,13 +166,16 @@ function HowItWorks() {
           <h2 className="text-3xl md:text-4xl font-bold">Jak kontrola probíhá?</h2>
           <p className="mt-3 text-muted-foreground">Jednoduchý proces ve čtyřech krocích.</p>
         </div>
-        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((s) => (
-            <div key={s.title} className="relative rounded-2xl bg-white border border-border p-6">
-              <div className="absolute -top-4 left-6 h-10 w-10 rounded-xl bg-primary text-primary-foreground font-bold flex items-center justify-center shadow-lg shadow-primary/30">
-                <s.icon className="h-5 w-5" />
+            <div
+              key={s.title}
+              className="rounded-2xl border border-border bg-white p-6 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all"
+            >
+              <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
+                <s.icon className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="mt-4 font-bold text-sm tracking-wider text-primary">{s.title}</h3>
+              <h3 className="font-semibold text-lg">{s.title}</h3>
               <p className="mt-2 text-sm text-muted-foreground">{s.text}</p>
             </div>
           ))}
