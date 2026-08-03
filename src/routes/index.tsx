@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { ShieldCheck, Search, FileCheck, Car, CheckCircle2, Wrench, Gauge, Camera } from "lucide-react";
+import { ShieldCheck, Search, FileCheck, Car, CheckCircle2, Wrench, Gauge } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
@@ -117,8 +117,16 @@ function Benefits() {
       title: "Technický stav",
       text: "Motor, převodovka, podvozek, brzdy — vše na profesionálním zvedáku.",
     },
-    { icon: Camera, title: "Karoserie a lak", text: "Měření tloušťky laku, kontrola tmelů, koroze a skrytých oprav." },
-    { icon: Gauge, title: "Diagnostika", text: "Načtení chybových kódů z ECU a testovací jízda s reálnými daty." },
+    {
+      icon: Gauge,
+      title: "Diagnostika",
+      text: "Diagnostika řídících jednotek, kontrola chybových kódů a live dat.",
+    },
+    {
+      icon: FileCheck,
+      title: "Report z kontroly",
+      text: "Elektronický report včetně fotodokumentace, hodnocení stavu vozu, konzultace výsledků.",
+    },
   ];
   return (
     <section className="container-page py-20">
