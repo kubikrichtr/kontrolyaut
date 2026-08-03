@@ -33,7 +33,7 @@ function coord(raw: string | undefined | null, fallback: number): number {
   return Number.isFinite(n) ? n : fallback;
 }
 
-export async function loadGeoSettings(): Promise<GeoSettings> {
+async function loadSettingsMap(): Promise<Map<string, string>> {
   const url =
     import.meta.env.VITE_SUPABASE_URL ??
     process.env["SUPABASE_URL"] ??
@@ -42,34 +42,38 @@ export async function loadGeoSettings(): Promise<GeoSettings> {
     import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ??
     process.env["SUPABASE_PUBLISHABLE_KEY"] ??
     process.env["VITE_SUPABASE_PUBLISHABLE_KEY"];
-  if (!url || !key) return GEO_DEFAULTS;
+  if (!url || !key) return new Map();
 
   try {
     const client = createClient(url, key, {
       auth: { persistSession: false, autoRefreshToken: false },
     });
     const { data, error } = await client.from("sb_settings").select("key, value");
-    if (error || !data) return GEO_DEFAULTS;
-
-    const map = new Map<string, string>(
+    if (error || !data) return new Map();
+    return new Map<string, string>(
       (data as Array<{ key: string; value: string | null }>).map((r) => [r.key, r.value ?? ""]),
     );
-    const get = (k: string) => map.get(`ka_${k}`) || undefined;
-
-    return {
-      basePrice: Math.round(num(get("base_price_czk"), GEO_DEFAULTS.basePrice)),
-      pricePerKm: num(get("price_per_km_czk"), GEO_DEFAULTS.pricePerKm),
-      coefficient: num(get("distance_coefficient"), GEO_DEFAULTS.coefficient),
-      originPostalCode: get("origin_postal_code") || GEO_DEFAULTS.originPostalCode,
-      origin: {
-        lat: coord(get("origin_lat"), GEO_DEFAULTS.origin.lat),
-        lng: coord(get("origin_lng"), GEO_DEFAULTS.origin.lng),
-      },
-    };
   } catch (err) {
-    console.error("loadGeoSettings failed", err);
-    return GEO_DEFAULTS;
+    console.error("loadSettingsMap failed", err);
+    return new Map();
   }
+}
+
+export async function loadGeoSettings(): Promise<GeoSettings> {
+  const map = await loadSettingsMap();
+  if (map.size === 0) return GEO_DEFAULTS;
+  const get = (k: string) => map.get(`ka_${k}`) || map.get(k) || undefined;
+
+  return {
+    basePrice: Math.round(num(get("base_price_czk"), GEO_DEFAULTS.basePrice)),
+    pricePerKm: num(get("price_per_km_czk"), GEO_DEFAULTS.pricePerKm),
+    coefficient: num(get("distance_coefficient"), GEO_DEFAULTS.coefficient),
+    originPostalCode: get("origin_postal_code") || GEO_DEFAULTS.originPostalCode,
+    origin: {
+      lat: coord(get("origin_lat"), GEO_DEFAULTS.origin.lat),
+      lng: coord(get("origin_lng"), GEO_DEFAULTS.origin.lng),
+    },
+  };
 }
 
 export interface MapsAuth {
@@ -78,10 +82,27 @@ export interface MapsAuth {
   lovableKey?: string;
 }
 
-export function getMapsAuth(): MapsAuth | null {
+/**
+ * Pořadí zdrojů klíče:
+ * 1) Lovable connector gateway (LOVABLE_API_KEY + GOOGLE_MAPS_API_KEY)
+ * 2) klíč nastavený v adminu CARS-EU (sb_settings: ka_google_maps_byok_key
+ *    nebo sdílený google_maps_byok_key)
+ * 3) secret GOOGLE_MAPS_BYOK_KEY
+ */
+export async function getMapsAuth(): Promise<MapsAuth | null> {
   const lovableKey = process.env["LOVABLE_API_KEY"];
   const mapsKey = process.env["GOOGLE_MAPS_API_KEY"];
   if (lovableKey && mapsKey) return { byok: false, key: mapsKey, lovableKey };
+
+  const map = await loadSettingsMap();
+  const fromSettings = (
+    map.get("ka_google_maps_byok_key") ||
+    map.get("google_maps_byok_key") ||
+    map.get("ka_google_maps_api_key") ||
+    map.get("google_maps_api_key") ||
+    ""
+  ).trim();
+  if (fromSettings) return { byok: true, key: fromSettings };
 
   const byok = process.env["GOOGLE_MAPS_BYOK_KEY"];
   if (byok) return { byok: true, key: byok };
