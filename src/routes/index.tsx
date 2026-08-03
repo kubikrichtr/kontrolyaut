@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { ShieldCheck, Search, FileCheck, CheckCircle2, Wrench, Gauge } from "lucide-react";
+import { ShieldCheck, Search, FileCheck, CheckCircle2, Wrench, Gauge, Phone, Car, Handshake } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
@@ -154,10 +154,10 @@ function Benefits() {
 
 function HowItWorks() {
   const steps = [
-    { n: 1, title: "OBJEDNÁVKA", text: "Vyplňte formulář nebo zavolejte. Domluvíme se na termínu a místě." },
-    { n: 2, title: "PŘÍJEZD TECHNIKA", text: "Přijedeme přímo za prodejcem — kamkoli po celé ČR." },
-    { n: 3, title: "KONTROLA VOZU", text: "Kompletní kontrola trvá 60–90 minut, včetně testovací jízdy." },
-    { n: 4, title: "PROTOKOL A DOPORUČENÍ", text: "Ihned na místě řekneme, zda vůz koupit. Písemný protokol do 24 h." },
+    { icon: Phone, title: "Konzultace a domluva", text: "Společně vybereme vhodný vůz a domluvíme termín prohlídky s prodejcem." },
+    { icon: Car, title: "Fyzická kontrola vozu", text: "Kompletní kontrola vozu u prodejce." },
+    { icon: CheckCircle2, title: "Vyhodnocení", text: "Jasně doporučíme, zda vůz koupit, nebo raději hledat jiný." },
+    { icon: Handshake, title: "Další postup", text: "Pomůžeme s administrativou nákupu nebo společně najdeme vhodnější vůz." },
   ];
   return (
     <section id="jak-probiha" className="bg-muted/40 py-20">
@@ -168,9 +168,9 @@ function HowItWorks() {
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {steps.map((s) => (
-            <div key={s.n} className="relative rounded-2xl bg-white border border-border p-6">
+            <div key={s.title} className="relative rounded-2xl bg-white border border-border p-6">
               <div className="absolute -top-4 left-6 h-10 w-10 rounded-xl bg-primary text-primary-foreground font-bold flex items-center justify-center shadow-lg shadow-primary/30">
-                {s.n}
+                <s.icon className="h-5 w-5" />
               </div>
               <h3 className="mt-4 font-bold text-sm tracking-wider text-primary">{s.title}</h3>
               <p className="mt-2 text-sm text-muted-foreground">{s.text}</p>
