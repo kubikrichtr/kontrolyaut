@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ShieldCheck, CheckCircle2, Phone } from "lucide-react";
+import lukasAsset from "@/assets/lukas-doubek.webp.asset.json";
+import lukasLqip from "@/assets/lukas-doubek-lqip.webp.asset.json";
 
 export const Route = createFileRoute("/o-mne")({
   head: () => ({
@@ -18,6 +20,9 @@ export const Route = createFileRoute("/o-mne")({
       },
       { property: "og:type", content: "profile" },
       { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [
+      { rel: "preload", as: "image", href: lukasAsset.url, type: "image/webp", fetchpriority: "high" },
     ],
   }),
   component: AboutMePage,
@@ -39,14 +44,29 @@ function AboutMePage() {
       <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">
         {/* Photo */}
         <div className="relative mx-auto lg:mx-0 max-w-sm lg:max-w-md">
-          <div className="rounded-3xl overflow-hidden border border-border shadow-2xl shadow-primary/10 bg-card">
+          <div className="relative rounded-3xl overflow-hidden border border-border shadow-2xl shadow-primary/10 bg-card">
+            {/* LQIP placeholder — zamezuje CLS a urychluje vykreslení */}
             <img
-              src="/lukas-doubek.jpg"
-              alt="Lukáš Doubek"
-              className="w-full h-auto object-cover"
-              width={300}
-              height={300}
+              src={lukasLqip.url}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 w-full h-full object-cover blur-md scale-105"
+              width={20}
+              height={20}
             />
+            <picture>
+              <source srcSet={lukasAsset.url} type="image/webp" />
+              <img
+                src="/lukas-doubek.jpg"
+                alt="Lukáš Doubek"
+                className="relative w-full h-auto object-cover"
+                width={300}
+                height={300}
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
+              />
+            </picture>
           </div>
           <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 lg:left-8 lg:translate-x-0 inline-flex items-center gap-2 bg-primary text-primary-foreground text-sm font-semibold px-4 py-2 rounded-full shadow-lg">
             <ShieldCheck className="h-4 w-4" />
