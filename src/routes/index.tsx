@@ -42,6 +42,7 @@ function HomePage() {
   return (
     <>
       <Hero />
+      <AboutMe />
       <Benefits />
       <HowItWorks />
       <Realized />
