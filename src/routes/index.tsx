@@ -124,7 +124,7 @@ function Benefits() {
     <section className="container-page py-20">
       <div className="text-center max-w-2xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold">Co pro Vás zkontrolujeme</h2>
-        <p className="mt-3 text-muted-foreground">Kompletní posouzení stavu vozu, které ochrání vaše peníze i nervy.</p>
+        <p className="mt-3 text-muted-foreground">Přehled kontrolních bodů naší prohlídky</p>
       </div>
       <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {items.map((it) => (
