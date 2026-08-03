@@ -141,13 +141,9 @@ function Benefits() {
             key={it.title}
             className="rounded-2xl border border-border bg-white p-6 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all"
           >
-            <div
-              className={`h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 ${
-                it.title === "Diagnostika" ? "p-2.5" : ""
-              }`}
-            >
+            <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
               {it.title === "Diagnostika" ? (
-                <img src={diagnostikaIconAsset.url} alt={it.title} className="h-full w-full object-contain" />
+                <img src={diagnostikaIconAsset.url} alt={it.title} className="h-6 w-6 object-contain" />
               ) : (
                 <it.icon className="h-6 w-6 text-primary" />
               )}
