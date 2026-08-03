@@ -17,7 +17,11 @@ export const Route = createFileRoute("/")({
           "Nezávislá technická kontrola ojetých vozů před koupí. Přes 100 kontrolních bodů, protokol s fotografiemi, po celé ČR.",
       },
       { property: "og:title", content: "Kontrola ojetých vozů před koupí | KontrolyAut" },
-      { property: "og:description", content: "Přijedeme za prodejcem, prověříme vůz a doporučíme, zda ho koupit." },
+      {
+        property: "og:description",
+        content:
+          "Zajišťujeme nezávislou kontrolu osobních i užitkových vozů před koupí. Díky tomu předejdete zbytečným výdajům a nepříjemným překvapením po nákupu vozu.",
+      },
     ],
   }),
   component: HomePage,
@@ -70,8 +74,8 @@ function Hero() {
             Kontrola ojetého vozu <span className="text-primary">před koupí</span>
           </h1>
           <p className="mt-5 text-lg text-muted-foreground max-w-xl">
-            Přijedeme přímo za prodejcem, prověříme více než 100 kontrolních bodů a doporučíme, zda vůz koupit — nebo se
-            mu vyhnout. Ušetříte desítky tisíc.
+            Zajišťujeme nezávislou kontrolu osobních i užitkových vozů před koupí. Díky tomu předejdete zbytečným
+            výdajům a nepříjemným překvapením po nákupu vozu.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a href="#kontakt" className="btn-primary">
@@ -105,7 +109,6 @@ function Hero() {
       </div>
     </section>
   );
-
 }
 
 function Benefits() {
@@ -157,10 +160,18 @@ function Benefits() {
 
 function HowItWorks() {
   const steps = [
-    { icon: Phone, title: "Konzultace a domluva", text: "Společně vybereme vhodný vůz a domluvíme termín prohlídky s prodejcem." },
+    {
+      icon: Phone,
+      title: "Konzultace a domluva",
+      text: "Společně vybereme vhodný vůz a domluvíme termín prohlídky s prodejcem.",
+    },
     { icon: Car, title: "Fyzická kontrola vozu", text: "Kompletní kontrola vozu u prodejce." },
     { icon: CheckCircle2, title: "Vyhodnocení", text: "Jasně doporučíme, zda vůz koupit, nebo raději hledat jiný." },
-    { icon: Handshake, title: "Další postup", text: "Pomůžeme s administrativou nákupu nebo společně najdeme vhodnější vůz." },
+    {
+      icon: Handshake,
+      title: "Další postup",
+      text: "Pomůžeme s administrativou nákupu nebo společně najdeme vhodnější vůz.",
+    },
   ];
   return (
     <section id="jak-probiha" className="bg-muted/40 py-20">

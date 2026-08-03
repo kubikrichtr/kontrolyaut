@@ -1,12 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {
-  Outlet,
-  createRootRouteWithContext,
-  useRouter,
-  HeadContent,
-  Scripts,
-  Link,
-} from "@tanstack/react-router";
+import { Outlet, createRootRouteWithContext, useRouter, HeadContent, Scripts, Link } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
@@ -23,7 +16,9 @@ function NotFoundComponent() {
         <h1 className="text-7xl font-bold text-foreground">404</h1>
         <p className="mt-2 text-sm text-muted-foreground">Stránka nenalezena.</p>
         <div className="mt-6">
-          <Link to="/" className="btn-primary">Zpět na úvod</Link>
+          <Link to="/" className="btn-primary">
+            Zpět na úvod
+          </Link>
         </div>
       </div>
     </div>
@@ -43,9 +38,14 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         <h1 className="text-xl font-semibold">Něco se pokazilo</h1>
         <p className="mt-2 text-sm text-muted-foreground">Zkuste to prosím znovu.</p>
         <button
-          onClick={() => { router.invalidate(); reset(); }}
+          onClick={() => {
+            router.invalidate();
+            reset();
+          }}
           className="btn-primary mt-6"
-        >Zkusit znovu</button>
+        >
+          Zkusit znovu
+        </button>
       </div>
     </div>
   );
@@ -57,7 +57,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Kontroly ojetých vozů před koupí | KontrolyAut" },
-      { name: "description", content: "Nezávislá kontrola ojetých vozů před koupí. Přijedeme za prodejcem, prověříme přes 100 bodů a doporučíme, zda vůz koupit." },
+      {
+        name: "description",
+        content:
+          "Zajišťujeme nezávislou kontrolu osobních i užitkových vozů před koupí. Díky tomu předejdete zbytečným výdajům a nepříjemným překvapením po nákupu vozu.",
+      },
       { property: "og:title", content: "Kontroly ojetých vozů před koupí | KontrolyAut" },
       { property: "og:description", content: "Nezávislá technická kontrola ojetých vozů před koupí po celé ČR." },
       { property: "og:type", content: "website" },
@@ -67,7 +71,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap",
+      },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
@@ -80,8 +87,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="cs">
-      <head><HeadContent /></head>
-      <body>{children}<Scripts /></body>
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        {children}
+        <Scripts />
+      </body>
     </html>
   );
 }
@@ -102,7 +114,9 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <div className="flex min-h-screen flex-col bg-background">
         <SiteHeader />
-        <main className="flex-1"><Outlet /></main>
+        <main className="flex-1">
+          <Outlet />
+        </main>
         <SiteFooter />
       </div>
       <Toaster richColors position="top-center" />
