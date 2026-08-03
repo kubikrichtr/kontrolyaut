@@ -67,7 +67,7 @@ function Hero() {
       <div className="absolute inset-0 opacity-[0.05] bg-[radial-gradient(circle_at_1px_1px,_var(--primary)_1px,_transparent_0)] [background-size:24px_24px]" />
       <div className="container-page relative py-24 md:py-32">
         <div className="max-w-2xl">
-          <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-primary bg-primary/10 border border-primary/20 px-3 py-1.5 rounded-full">
+          <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-wider text-primary bg-primary/10 border border-primary/20 px-3 py-1.5 rounded-full">
             <CheckCircle2 className="h-4 w-4 text-primary" />
             Jistota při koupi vozu
           </span>
