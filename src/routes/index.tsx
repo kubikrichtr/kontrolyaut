@@ -5,7 +5,6 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { ShieldCheck, Search, FileCheck, CheckCircle2, Wrench, Gauge } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import diagnostikaIconAsset from "@/assets/diagnostika-icon.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -142,11 +141,7 @@ function Benefits() {
             className="rounded-2xl border border-border bg-white p-6 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all"
           >
             <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-              {it.title === "Diagnostika" ? (
-                <img src={diagnostikaIconAsset.url} alt={it.title} className="h-6 w-6 object-contain" />
-              ) : (
-                <it.icon className="h-6 w-6 text-primary" />
-              )}
+              <it.icon className="h-6 w-6 text-primary" />
             </div>
             <h3 className="font-semibold text-lg">{it.title}</h3>
             <p className="mt-2 text-sm text-muted-foreground">{it.text}</p>
