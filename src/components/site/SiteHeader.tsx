@@ -15,7 +15,7 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-white/85 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
       <div className="container-page flex h-20 items-center justify-between gap-6">
         <Link to="/" className="flex items-center gap-3 shrink-0">
           <img src={logoAsset.url} alt="KontrolyAut" className="h-16 w-auto" />
@@ -38,7 +38,7 @@ export function SiteHeader() {
         </button>
       </div>
       {open && (
-        <div className="lg:hidden border-t border-border bg-white">
+        <div className="lg:hidden border-t border-border bg-background">
           <div className="container-page py-4 flex flex-col gap-3">
             {NAV.map((n) => (
               <a key={n.to} href={n.to} onClick={() => setOpen(false)} className="py-2 text-sm">

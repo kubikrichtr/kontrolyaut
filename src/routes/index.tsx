@@ -92,7 +92,7 @@ function Hero() {
               <CheckCircle2 className="h-4 w-4 text-primary" /> Do 24 hodin
             </li>
           </ul>
-          <div className="mt-10 inline-flex bg-white/90 backdrop-blur rounded-2xl shadow-xl border border-border p-4 items-center gap-3">
+          <div className="mt-10 inline-flex bg-card/90 backdrop-blur rounded-2xl shadow-xl border border-border p-4 items-center gap-3">
             <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
               <ShieldCheck className="h-6 w-6 text-primary" />
             </div>
@@ -141,7 +141,7 @@ function Benefits() {
         {items.map((it) => (
           <div
             key={it.title}
-            className="rounded-2xl border border-border bg-white p-6 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all"
+            className="rounded-2xl border border-border bg-card p-6 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all"
           >
             <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
               <it.icon className="h-6 w-6 text-primary" />
@@ -173,7 +173,7 @@ function HowItWorks() {
           {steps.map((s) => (
             <div
               key={s.title}
-              className="rounded-2xl border border-border bg-white p-6 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all"
+              className="rounded-2xl border border-border bg-card p-6 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all"
             >
               <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
                 <s.icon className="h-6 w-6 text-primary" />
@@ -217,7 +217,7 @@ function Realized() {
         {(data ?? []).map((r) => (
           <article
             key={r.id}
-            className="group rounded-2xl overflow-hidden border border-border bg-white hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all"
+            className="group rounded-2xl overflow-hidden border border-border bg-card hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all"
           >
             <div className="aspect-[4/3] overflow-hidden bg-muted">
               {r.image_url && (
@@ -324,15 +324,15 @@ function OrderForm() {
   }
 
   const inputCls =
-    "w-full rounded-xl border border-border bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition";
+    "w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition";
 
   return (
-    <section id="kontakt" className="bg-gradient-to-br from-primary/10 via-white to-accent/40 py-20">
+    <section id="kontakt" className="bg-gradient-to-br from-primary/10 via-background to-accent/40 py-20">
       <div className="container-page grid gap-10 lg:grid-cols-[1fr_1.2fr] items-start">
         <div className="lg:sticky lg:top-28">
           <span className="text-xs font-semibold tracking-wider uppercase text-primary">Objednávka</span>
           <h2 className="mt-2 text-3xl md:text-4xl font-bold">Objednejte kontrolu vozu</h2>
-          <div className="mt-6 rounded-2xl bg-white border border-border p-6 shadow-sm">
+          <div className="mt-6 rounded-2xl bg-card border border-border p-6 shadow-sm">
             <div className="flex items-baseline gap-2">
               <span className="text-4xl font-bold text-primary">2 490 Kč</span>
               <span className="text-sm text-muted-foreground">včetně DPH</span>
@@ -355,7 +355,7 @@ function OrderForm() {
         </div>
         <form
           onSubmit={submit}
-          className="rounded-3xl bg-white border border-border p-6 md:p-8 shadow-xl shadow-primary/5"
+          className="rounded-3xl bg-card border border-border p-6 md:p-8 shadow-xl shadow-primary/5"
         >
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="block sm:col-span-2">
@@ -465,7 +465,7 @@ function FAQ() {
         {(data ?? []).map((f) => {
           const isOpen = open === f.id;
           return (
-            <div key={f.id} className="rounded-2xl border border-border bg-white overflow-hidden">
+            <div key={f.id} className="rounded-2xl border border-border bg-card overflow-hidden">
               <button
                 onClick={() => setOpen(isOpen ? null : f.id)}
                 className="w-full text-left p-5 flex items-center justify-between gap-4 hover:bg-muted/40 transition"
