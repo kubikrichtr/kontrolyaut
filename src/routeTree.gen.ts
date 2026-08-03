@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as OMneRouteImport } from './routes/o-mne'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
@@ -20,6 +21,11 @@ import { Route as AuthenticatedKlientRouteImport } from './routes/_authenticated
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OMneRoute = OMneRouteImport.update({
+  id: '/o-mne',
+  path: '/o-mne',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogRoute = BlogRouteImport.update({
@@ -56,6 +62,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
+  '/o-mne': typeof OMneRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/klient': typeof AuthenticatedKlientRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -64,6 +71,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
+  '/o-mne': typeof OMneRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/klient': typeof AuthenticatedKlientRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -74,6 +82,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
+  '/o-mne': typeof OMneRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/klient': typeof AuthenticatedKlientRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -84,17 +93,26 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/blog'
+    | '/o-mne'
     | '/sitemap.xml'
     | '/klient'
     | '/blog/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/blog' | '/sitemap.xml' | '/klient' | '/blog/$slug'
+  to:
+    | '/'
+    | '/auth'
+    | '/blog'
+    | '/o-mne'
+    | '/sitemap.xml'
+    | '/klient'
+    | '/blog/$slug'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/blog'
+    | '/o-mne'
     | '/sitemap.xml'
     | '/_authenticated/klient'
     | '/blog/$slug'
@@ -105,6 +123,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRouteWithChildren
+  OMneRoute: typeof OMneRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
@@ -115,6 +134,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/o-mne': {
+      id: '/o-mne'
+      path: '/o-mne'
+      fullPath: '/o-mne'
+      preLoaderRoute: typeof OMneRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog': {
@@ -188,8 +214,19 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   BlogRoute: BlogRouteWithChildren,
+  OMneRoute: OMneRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
