@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { ShieldCheck, Search, FileCheck, CheckCircle2, Wrench, Gauge, Phone, Car, Handshake } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import heroWorkshop from "@/assets/hero-workshop.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
