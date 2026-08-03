@@ -48,10 +48,17 @@ function HomePage() {
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-primary/8 via-white to-accent/40">
-      <div className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle_at_1px_1px,_var(--primary)_1px,_transparent_0)] [background-size:24px_24px]" />
-      <div className="container-page relative py-20 md:py-28 grid lg:grid-cols-2 gap-12 items-center">
-        <div>
+    <section className="relative overflow-hidden bg-white">
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${heroWorkshop.url})` }}
+        aria-hidden
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-white/30" />
+      <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-white/40" />
+      <div className="absolute inset-0 opacity-[0.05] bg-[radial-gradient(circle_at_1px_1px,_var(--primary)_1px,_transparent_0)] [background-size:24px_24px]" />
+      <div className="container-page relative py-24 md:py-32">
+        <div className="max-w-2xl">
           <span className="inline-block text-xs font-semibold tracking-wider uppercase text-primary bg-primary/10 px-3 py-1.5 rounded-full">
             Nezávislý technik po celé ČR
           </span>
@@ -81,16 +88,7 @@ function Hero() {
               <CheckCircle2 className="h-4 w-4 text-primary" /> Do 24 hodin
             </li>
           </ul>
-        </div>
-        <div className="relative">
-          <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl shadow-primary/20 bg-gradient-to-br from-primary/30 to-primary/70">
-            <img
-              src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=1200&q=80"
-              alt="Kontrola ojetého vozu"
-              className="w-full h-full object-cover mix-blend-multiply opacity-90"
-            />
-          </div>
-          <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl border border-border p-4 flex items-center gap-3">
+          <div className="mt-10 inline-flex bg-white/90 backdrop-blur rounded-2xl shadow-xl border border-border p-4 items-center gap-3">
             <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
               <ShieldCheck className="h-6 w-6 text-primary" />
             </div>
@@ -103,6 +101,7 @@ function Hero() {
       </div>
     </section>
   );
+
 }
 
 function Benefits() {
