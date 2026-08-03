@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ShieldCheck, CheckCircle2, Phone } from "lucide-react";
+import lukasAsset from "@/assets/lukas-doubek.webp.asset.json";
+import lukasLqip from "@/assets/lukas-doubek-lqip.webp.asset.json";
 
 export const Route = createFileRoute("/o-mne")({
   head: () => ({
@@ -18,6 +20,9 @@ export const Route = createFileRoute("/o-mne")({
       },
       { property: "og:type", content: "profile" },
       { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [
+      { rel: "preload", as: "image", href: lukasAsset.url, type: "image/webp", fetchpriority: "high" },
     ],
   }),
   component: AboutMePage,
