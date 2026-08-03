@@ -113,6 +113,84 @@ function Hero() {
   );
 }
 
+function AboutMe() {
+  const skills = [
+    "Konzultace a výběr vozu",
+    "Důkladná kontrola historie a stavu",
+    "Testovací jízda a odborné zhodnocení",
+    "Vyřízení dokumentů a přihlášení",
+    "Pomoc s financováním a pojištěním",
+    "Dovoz vozu ze zahraničí",
+    "Prodej vašeho vozu na komisi",
+    "Komunikace v angličtině",
+  ];
+  return (
+    <section id="o-me" className="container-page py-20 md:py-28">
+      <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">
+        {/* Photo */}
+        <div className="relative mx-auto lg:mx-0 max-w-sm lg:max-w-md">
+          <div className="rounded-3xl overflow-hidden border border-border shadow-2xl shadow-primary/10 bg-card">
+            <img
+              src="/lukas-doubek.jpg"
+              alt="Lukáš Doubek"
+              className="w-full h-auto object-cover"
+              width={300}
+              height={300}
+            />
+          </div>
+          <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 lg:left-8 lg:translate-x-0 inline-flex items-center gap-2 bg-primary text-primary-foreground text-sm font-semibold px-4 py-2 rounded-full shadow-lg">
+            <ShieldCheck className="h-4 w-4" />
+            15+ let zkušeností
+          </div>
+        </div>
+
+        {/* Content */}
+        <div>
+          <span className="text-xs font-semibold tracking-wider uppercase text-primary">
+            Váš průvodce světem aut
+          </span>
+          <h2 className="mt-3 text-3xl md:text-4xl lg:text-5xl font-bold">Lukáš Doubek</h2>
+          <p className="mt-2 text-lg text-muted-foreground">Autorizovaný prodejce a technický poradce</p>
+          <p className="mt-5 text-muted-foreground leading-relaxed">
+            Jmenuji se Lukáš a více než 15 let se pohybuji ve světě automobilů — od prodeje nových i ojetých vozů
+            až po jejich důkladnou technickou kontrolu. Díky bohatým zkušenostem vám pomohu celým procesem koupě,
+            od prvotní konzultace a výběru vozu, přes prověření historie a fyzického stavu včetně testovací jízdy,
+            až po vyřízení všech formalit, financování a pojištění. Před samotnou koupí dostanete jasné
+            doporučení nebo varování, abyste ušetřili čas i peníze a vyhnuli se nepříjemným překvapením jako
+            nečekané opravy nebo nevýhodné financování. Hovořím anglicky a těším se na vaši zprávu nebo hovor —
+            společně najdeme vůz, který perfektně sedne vašim potřebám i rozpočtu.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <a href="#kontakt" className="btn-primary">
+              Objednat kontrolu
+            </a>
+            <a
+              href="tel:+420737008532"
+              className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-primary px-6 py-3 text-sm font-semibold text-primary hover:bg-primary hover:text-primary-foreground transition"
+            >
+              <Phone className="h-4 w-4" />
+              +420 737 008 532
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* What I can do for you */}
+      <div className="mt-16 md:mt-24 rounded-3xl border border-border bg-card p-8 md:p-12 shadow-xl shadow-primary/5">
+        <h3 className="text-2xl md:text-3xl font-bold text-center">Co pro vás mohu udělat</h3>
+        <div className="mt-8 grid gap-x-8 gap-y-4 sm:grid-cols-2">
+          {skills.map((skill) => (
+            <div key={skill} className="flex items-start gap-3">
+              <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <span className="text-muted-foreground">{skill}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Benefits() {
   const items = [
     {
