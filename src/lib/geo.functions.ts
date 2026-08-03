@@ -51,7 +51,7 @@ export const suggestCities = createServerFn({ method: "POST" })
     if (data.query.length < 2) return [];
     const { getMapsAuth } = await import("./settings.server");
     const { mapsFetch } = await import("./maps.server");
-    const auth = getMapsAuth();
+    const auth = await getMapsAuth();
     if (!auth) return [];
 
     const res = await mapsFetch(auth, "/places/v1/places:autocomplete", {
@@ -99,7 +99,7 @@ export const lookupCityPrice = createServerFn({ method: "POST" })
   .handler(async ({ data }): Promise<PostalLookupResult> => {
     const { getMapsAuth, loadGeoSettings } = await import("./settings.server");
     const { mapsFetch, haversineKm } = await import("./maps.server");
-    const auth = getMapsAuth();
+    const auth = await getMapsAuth();
     if (!auth) return { ok: false, error: "Služba pro výpočet dopravy není dostupná." };
     const settings = await loadGeoSettings();
 
@@ -159,7 +159,7 @@ export const lookupPostalPrice = createServerFn({ method: "POST" })
   .handler(async ({ data }): Promise<PostalLookupResult> => {
     const { getMapsAuth, loadGeoSettings } = await import("./settings.server");
     const { mapsFetch, haversineKm } = await import("./maps.server");
-    const auth = getMapsAuth();
+    const auth = await getMapsAuth();
     if (!auth) return { ok: false, error: "Služba pro výpočet dopravy není dostupná." };
     const settings = await loadGeoSettings();
 
