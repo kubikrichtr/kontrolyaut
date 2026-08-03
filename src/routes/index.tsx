@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { ShieldCheck, Search, FileCheck, CheckCircle2, Wrench, Gauge, Phone, Car, Handshake } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { BookingSection } from "@/components/site/BookingSection";
 import heroWorkshop from "@/assets/hero-workshop.png.asset.json";
 
 export const Route = createFileRoute("/")({
@@ -45,7 +46,7 @@ function HomePage() {
       <Benefits />
       <HowItWorks />
       <Realized />
-      <OrderForm />
+      <BookingSection />
       <FAQ />
     </>
   );
@@ -260,203 +261,8 @@ function Realized() {
   );
 }
 
-function OrderForm() {
-  const [loading, setLoading] = useState(false);
-  const [values, setValues] = useState({
-    full_name: "",
-    email: "",
-    phone: "",
-    car_url: "",
-    location: "",
-    preferred_date: "",
-    attendance: "" as "" | "yes" | "no",
-    note: "",
-  });
 
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
-    const parsed = orderSchema.safeParse(values);
-    if (!parsed.success) {
-      toast.error(parsed.error.issues[0]?.message ?? "Zkontrolujte formulář");
-      return;
-    }
-    setLoading(true);
 
-    const CARS_EU_URL = "https://ajafqafoonxoubbhcxnk.supabase.co/functions/v1/public-submit-inquiry";
-    const CARS_EU_ANON =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqYWZxYWZvb254b3ViYmhjeG5rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNzM1NTQsImV4cCI6MjA4MzY0OTU1NH0.j5SJwClkiZD_fIVTI4UBKRK2Z76ykMuk1HLF169c-6A";
-
-    const attendanceText =
-      parsed.data.attendance === "yes"
-        ? "Klient se chce kontroly účastnit"
-        : parsed.data.attendance === "no"
-          ? "Klient se kontroly účastnit nechce"
-          : "";
-    const noteParts = [
-      parsed.data.location ? `Místo: ${parsed.data.location}` : "",
-      attendanceText,
-      parsed.data.note || "",
-    ].filter(Boolean);
-
-    const res = await fetch(CARS_EU_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        apikey: CARS_EU_ANON,
-        Authorization: `Bearer ${CARS_EU_ANON}`,
-      },
-      body: JSON.stringify({
-        source_site: "kontrolyaut",
-        name: parsed.data.full_name,
-        email: parsed.data.email,
-        phone: parsed.data.phone,
-        service: "Kontrola vozu před koupí",
-        car_name: null,
-        vehicle_url: parsed.data.car_url || null,
-        preferred_date: parsed.data.preferred_date || null,
-        message: noteParts.join("\n") || null,
-      }),
-    });
-
-    setLoading(false);
-    if (!res.ok) {
-      toast.error("Nepodařilo se odeslat objednávku.");
-      return;
-    }
-    toast.success("Objednávka odeslána. Ozveme se vám.");
-    setValues({
-      full_name: "",
-      email: "",
-      phone: "",
-      car_url: "",
-      location: "",
-      preferred_date: "",
-      attendance: "",
-      note: "",
-    });
-  }
-
-  const inputCls =
-    "w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition";
-
-  return (
-    <section id="kontakt" className="bg-gradient-to-br from-primary/10 via-background to-accent/40 py-20">
-      <div className="container-page grid gap-10 lg:grid-cols-[1fr_1.2fr] items-start">
-        <div className="lg:sticky lg:top-28">
-          <span className="text-xs font-semibold tracking-wider uppercase text-primary">Objednávka</span>
-          <h2 className="mt-2 text-3xl md:text-4xl font-bold">Objednejte kontrolu vozu</h2>
-          <div className="mt-6 rounded-2xl bg-card border border-border p-6 shadow-sm">
-            <div className="flex items-baseline gap-2">
-              <span className="text-4xl font-bold text-primary">2 490 Kč</span>
-              <span className="text-sm text-muted-foreground">včetně DPH</span>
-            </div>
-            <ul className="mt-4 space-y-2 text-sm">
-              <li className="flex gap-2">
-                <CheckCircle2 className="h-5 w-5 text-primary shrink-0" /> Nezávislá kontrola přes 100 bodů
-              </li>
-              <li className="flex gap-2">
-                <CheckCircle2 className="h-5 w-5 text-primary shrink-0" /> Písemný protokol s fotografiemi
-              </li>
-              <li className="flex gap-2">
-                <CheckCircle2 className="h-5 w-5 text-primary shrink-0" /> Přijedeme kamkoli po ČR
-              </li>
-              <li className="flex gap-2">
-                <CheckCircle2 className="h-5 w-5 text-primary shrink-0" /> Doporučení do 24 hodin
-              </li>
-            </ul>
-          </div>
-        </div>
-        <form
-          onSubmit={submit}
-          className="rounded-3xl bg-card border border-border p-6 md:p-8 shadow-xl shadow-primary/5"
-        >
-          <div className="grid gap-4 sm:grid-cols-2">
-            <label className="block sm:col-span-2">
-              <span className="text-sm font-medium">Jméno a příjmení *</span>
-              <input
-                required
-                className={`${inputCls} mt-1.5`}
-                value={values.full_name}
-                onChange={(e) => setValues({ ...values, full_name: e.target.value })}
-              />
-            </label>
-            <label className="block">
-              <span className="text-sm font-medium">E-mail *</span>
-              <input
-                required
-                type="email"
-                className={`${inputCls} mt-1.5`}
-                value={values.email}
-                onChange={(e) => setValues({ ...values, email: e.target.value })}
-              />
-            </label>
-            <label className="block">
-              <span className="text-sm font-medium">Telefon *</span>
-              <input
-                required
-                className={`${inputCls} mt-1.5`}
-                value={values.phone}
-                onChange={(e) => setValues({ ...values, phone: e.target.value })}
-              />
-            </label>
-            <label className="block sm:col-span-2">
-              <span className="text-sm font-medium">Chcete se kontroly osobně účastnit?</span>
-              <select
-                className={`${inputCls} mt-1.5`}
-                value={values.attendance}
-                onChange={(e) => setValues({ ...values, attendance: e.target.value as "" | "yes" | "no" })}
-              >
-                <option value="">Nezáleží / neuvedeno</option>
-                <option value="yes">Ano, chci být u kontroly</option>
-                <option value="no">Ne, kontrolu proveďte bez mé účasti</option>
-              </select>
-            </label>
-
-            <label className="block sm:col-span-2">
-              <span className="text-sm font-medium">Odkaz na inzerát</span>
-              <input
-                placeholder="https://..."
-                className={`${inputCls} mt-1.5`}
-                value={values.car_url}
-                onChange={(e) => setValues({ ...values, car_url: e.target.value })}
-              />
-            </label>
-            <label className="block">
-              <span className="text-sm font-medium">Místo kontroly (město)</span>
-              <input
-                className={`${inputCls} mt-1.5`}
-                value={values.location}
-                onChange={(e) => setValues({ ...values, location: e.target.value })}
-              />
-            </label>
-            <label className="block">
-              <span className="text-sm font-medium">Preferovaný termín</span>
-              <input
-                type="date"
-                className={`${inputCls} mt-1.5`}
-                value={values.preferred_date}
-                onChange={(e) => setValues({ ...values, preferred_date: e.target.value })}
-              />
-            </label>
-            <label className="block sm:col-span-2">
-              <span className="text-sm font-medium">Poznámka</span>
-              <textarea
-                rows={3}
-                className={`${inputCls} mt-1.5 resize-none`}
-                value={values.note}
-                onChange={(e) => setValues({ ...values, note: e.target.value })}
-              />
-            </label>
-          </div>
-          <button type="submit" disabled={loading} className="btn-primary w-full mt-6 !py-3.5">
-            {loading ? "Odesílám..." : "Odeslat objednávku"}
-          </button>
-          <p className="text-xs text-muted-foreground text-center mt-3">Ozveme se do 24 hodin a potvrdíme termín.</p>
-        </form>
-      </div>
-    </section>
-  );
-}
 
 function FAQ() {
   const { data } = useQuery({
