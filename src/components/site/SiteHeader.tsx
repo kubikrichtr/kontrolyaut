@@ -4,6 +4,7 @@ import { useState } from "react";
 import logoAsset from "@/assets/kontroly-logo.svg.asset.json";
 
 const NAV = [
+  { to: "/o-mne", label: "O mně" },
   { to: "/#jak-probiha", label: "Jak kontrola probíhá" },
   { to: "/#faq", label: "Časté dotazy" },
   { to: "/#reference", label: "Realizované kontroly" },
