@@ -51,13 +51,15 @@ function Hero() {
   return (
     <section className="relative overflow-hidden bg-white">
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 bg-cover bg-no-repeat bg-[position:78%_center] sm:bg-right md:bg-center"
         style={{ backgroundImage: `url(${heroWorkshop.url})` }}
         aria-hidden
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-white/30" />
-      <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-white/40" />
+      <div className="absolute inset-0 bg-white/55 sm:bg-white/35 md:bg-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-b from-white via-white/70 to-white/90 md:bg-gradient-to-r md:from-white md:via-white/85 md:to-white/30" />
+      <div className="absolute inset-0 hidden md:block bg-gradient-to-t from-white via-transparent to-white/40" />
       <div className="absolute inset-0 opacity-[0.05] bg-[radial-gradient(circle_at_1px_1px,_var(--primary)_1px,_transparent_0)] [background-size:24px_24px]" />
+
       <div className="container-page relative py-24 md:py-32">
         <div className="max-w-2xl">
           <span className="inline-block text-xs font-semibold tracking-wider uppercase text-primary bg-primary/10 px-3 py-1.5 rounded-full">
