@@ -33,7 +33,6 @@ const orderSchema = z.object({
   note: z.string().trim().max(1000).optional().or(z.literal("")),
 });
 
-
 function HomePage() {
   return (
     <>
@@ -124,7 +123,7 @@ function Benefits() {
   return (
     <section className="container-page py-20">
       <div className="text-center max-w-2xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold">Co pro vás zkontrolujeme</h2>
+        <h2 className="text-3xl md:text-4xl font-bold">Co pro Vás zkontrolujeme</h2>
         <p className="mt-3 text-muted-foreground">Kompletní posouzení stavu vozu, které ochrání vaše peníze i nervy.</p>
       </div>
       <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -309,7 +308,6 @@ function OrderForm() {
       note: "",
     });
   }
-
 
   const inputCls =
     "w-full rounded-xl border border-border bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition";
