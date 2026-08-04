@@ -19,12 +19,22 @@ export const Route = createFileRoute("/o-mne")({
           "Lukáš Doubek — autorizovaný prodejce a technický poradce s více než 15 lety zkušeností ve světě automobilů.",
       },
       { property: "og:type", content: "profile" },
+      { property: "og:url", content: "https://kontrolyaut.lovable.app/o-mne" },
+      { property: "og:image", content: `https://kontrolyaut.lovable.app${lukasAsset.url}` },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "O mně | Lukáš Doubek | KontrolyAut" },
+      {
+        name: "twitter:description",
+        content: "Technický poradce s více než 15 lety zkušeností ve světě automobilů.",
+      },
+      { name: "twitter:image", content: `https://kontrolyaut.lovable.app${lukasAsset.url}` },
     ],
     links: [
+      { rel: "canonical", href: "https://kontrolyaut.lovable.app/o-mne" },
       { rel: "preload", as: "image", href: lukasAsset.url, type: "image/webp", fetchpriority: "high" },
     ],
   }),
+
   component: AboutMePage,
 });
 
