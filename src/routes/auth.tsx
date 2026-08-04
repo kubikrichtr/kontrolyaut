@@ -6,7 +6,22 @@ import { lovable } from "@/integrations/lovable";
 import logoAsset from "@/assets/kontroly-logo.svg.asset.json";
 
 export const Route = createFileRoute("/auth")({
-  head: () => ({ meta: [{ title: "Přihlášení | KontrolyAut" }, { name: "description", content: "Klientská zóna KontrolyAut." }] }),
+  head: () => ({
+    meta: [
+      { title: "Přihlášení do klientské zóny | KontrolyAut" },
+      { name: "description", content: "Přihlaste se do klientské zóny KontrolyAut a sledujte stav svých objednaných kontrol." },
+      { property: "og:title", content: "Přihlášení do klientské zóny | KontrolyAut" },
+      { property: "og:description", content: "Klientská zóna KontrolyAut — přehled objednaných kontrol vozů." },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://kontrolyaut.lovable.app/auth" },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Přihlášení do klientské zóny | KontrolyAut" },
+      { name: "twitter:description", content: "Klientská zóna KontrolyAut." },
+      { name: "robots", content: "noindex" },
+    ],
+    links: [{ rel: "canonical", href: "https://kontrolyaut.lovable.app/auth" }],
+  }),
+
   component: AuthPage,
 });
 

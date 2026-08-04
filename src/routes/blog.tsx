@@ -6,11 +6,18 @@ export const Route = createFileRoute("/blog")({
   head: () => ({
     meta: [
       { title: "Blog o kontrole ojetých vozů | KontrolyAut" },
-      { name: "description", content: "Rady a tipy, jak nenaletět při koupi ojetého vozu." },
-      { property: "og:title", content: "Blog | KontrolyAut" },
-      { property: "og:description", content: "Články o kontrole a koupi ojetých vozů." },
+      { name: "description", content: "Rady a tipy, jak nenaletět při koupi ojetého vozu — články od technika." },
+      { property: "og:title", content: "Blog o kontrole ojetých vozů | KontrolyAut" },
+      { property: "og:description", content: "Články o kontrole, výběru a koupi ojetých vozů." },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://kontrolyaut.lovable.app/blog" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Blog o kontrole ojetých vozů | KontrolyAut" },
+      { name: "twitter:description", content: "Články o kontrole, výběru a koupi ojetých vozů." },
     ],
+    links: [{ rel: "canonical", href: "https://kontrolyaut.lovable.app/blog" }],
   }),
+
   component: BlogList,
 });
 

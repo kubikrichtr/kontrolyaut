@@ -23,8 +23,20 @@ export const Route = createFileRoute("/")({
         content:
           "Zajišťujeme nezávislou kontrolu osobních i užitkových vozů před koupí. Díky tomu předejdete zbytečným výdajům a nepříjemným překvapením po nákupu vozu.",
       },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://kontrolyaut.lovable.app/" },
+      { property: "og:image", content: `https://kontrolyaut.lovable.app${heroWorkshop.url}` },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Kontrola ojetých vozů před koupí | KontrolyAut" },
+      {
+        name: "twitter:description",
+        content: "Nezávislá kontrola ojetých vozů před koupí. Přes 100 kontrolních bodů, protokol s fotografiemi.",
+      },
+      { name: "twitter:image", content: `https://kontrolyaut.lovable.app${heroWorkshop.url}` },
     ],
+    links: [{ rel: "canonical", href: "https://kontrolyaut.lovable.app/" }],
   }),
+
   component: HomePage,
 });
 

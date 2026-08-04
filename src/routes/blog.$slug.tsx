@@ -4,8 +4,28 @@ import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft } from "lucide-react";
 
 export const Route = createFileRoute("/blog/$slug")({
+  head: ({ params }) => {
+    const url = `https://kontrolyaut.lovable.app/blog/${params.slug}`;
+    const title = "Článek z blogu | KontrolyAut";
+    const description = "Rady a zkušenosti z kontrol ojetých vozů před koupí.";
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "article" },
+        { property: "og:url", content: url },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+      ],
+      links: [{ rel: "canonical", href: url }],
+    };
+  },
   component: BlogPost,
 });
+
 
 function BlogPost() {
   const { slug } = Route.useParams();
