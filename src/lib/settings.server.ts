@@ -1,11 +1,14 @@
 import process from "node:process";
-import { createClient } from "@supabase/supabase-js";
 
 /**
- * Server-only čtení editovatelných nastavení z tabulky public.sb_settings
- * ve sdílené databázi CARS-EU. Klíče tohoto webu mají prefix `ka_`,
- * aby se nemíchaly s nastavením Stavbaterie.
+ * Server-only čtení editovatelných nastavení z admin menu CARS-EU.
+ * Primárně tabulka `public.ka_settings` (nastavení tohoto webu),
+ * fallback `public.sb_settings` (sdílené se Stavbaterií).
  */
+
+const CARS_EU_URL = "https://ajafqafoonxoubbhcxnk.supabase.co";
+const CARS_EU_ANON =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqYWZxYWZvb254b3ViYmhjeG5rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNzM1NTQsImV4cCI6MjA4MzY0OTU1NH0.j5SJwClkiZD_fIVTI4UBKRK2Z76ykMuk1HLF169c-6A";
 
 export interface GeoSettings {
   basePrice: number;
@@ -33,30 +36,28 @@ function coord(raw: string | undefined | null, fallback: number): number {
   return Number.isFinite(n) ? n : fallback;
 }
 
-async function loadSettingsMap(): Promise<Map<string, string>> {
-  const url =
-    import.meta.env.VITE_SUPABASE_URL ??
-    process.env["SUPABASE_URL"] ??
-    process.env["VITE_SUPABASE_URL"];
-  const key =
-    import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ??
-    process.env["SUPABASE_PUBLISHABLE_KEY"] ??
-    process.env["VITE_SUPABASE_PUBLISHABLE_KEY"];
-  if (!url || !key) return new Map();
-
+async function fetchTable(table: string): Promise<Array<{ key: string; value: string | null }>> {
   try {
-    const client = createClient(url, key, {
-      auth: { persistSession: false, autoRefreshToken: false },
+    const res = await fetch(`${CARS_EU_URL}/rest/v1/${table}?select=key,value`, {
+      headers: { apikey: CARS_EU_ANON, Authorization: `Bearer ${CARS_EU_ANON}` },
     });
-    const { data, error } = await client.from("sb_settings").select("key, value");
-    if (error || !data) return new Map();
-    return new Map<string, string>(
-      (data as Array<{ key: string; value: string | null }>).map((r) => [r.key, r.value ?? ""]),
-    );
+    if (!res.ok) {
+      console.error(`settings ${table} failed [${res.status}]: ${await res.text()}`);
+      return [];
+    }
+    return (await res.json()) as Array<{ key: string; value: string | null }>;
   } catch (err) {
-    console.error("loadSettingsMap failed", err);
-    return new Map();
+    console.error(`settings ${table} error`, err);
+    return [];
   }
+}
+
+async function loadSettingsMap(): Promise<Map<string, string>> {
+  const [ka, sb] = await Promise.all([fetchTable("ka_settings"), fetchTable("sb_settings")]);
+  const map = new Map<string, string>();
+  for (const r of sb) if (r.value) map.set(r.key, r.value);
+  for (const r of ka) if (r.value) map.set(r.key, r.value);
+  return map;
 }
 
 export async function loadGeoSettings(): Promise<GeoSettings> {
@@ -84,25 +85,30 @@ export interface MapsAuth {
 
 /**
  * Pořadí zdrojů klíče:
- * 1) Lovable connector gateway (LOVABLE_API_KEY + GOOGLE_MAPS_API_KEY)
- * 2) klíč nastavený v adminu CARS-EU (sb_settings: ka_google_maps_byok_key
- *    nebo sdílený google_maps_byok_key)
+ * 1) klíč nastavený v adminu CARS-EU (ka_settings / sb_settings)
+ * 2) Lovable connector gateway (LOVABLE_API_KEY + GOOGLE_MAPS_API_KEY)
  * 3) secret GOOGLE_MAPS_BYOK_KEY
  */
 export async function getMapsAuth(): Promise<MapsAuth | null> {
+  const map = await loadSettingsMap();
+  const candidates = [
+    "ka_google_maps_server_key",
+    "google_maps_server_key",
+    "ka_google_maps_byok_key",
+    "google_maps_byok_key",
+    "ka_google_maps_api_key",
+    "google_maps_api_key",
+    "ka_google_maps_browser_key",
+    "google_maps_browser_key",
+  ];
+  for (const c of candidates) {
+    const v = (map.get(c) ?? "").trim();
+    if (v) return { byok: true, key: v };
+  }
+
   const lovableKey = process.env["LOVABLE_API_KEY"];
   const mapsKey = process.env["GOOGLE_MAPS_API_KEY"];
   if (lovableKey && mapsKey) return { byok: false, key: mapsKey, lovableKey };
-
-  const map = await loadSettingsMap();
-  const fromSettings = (
-    map.get("ka_google_maps_byok_key") ||
-    map.get("google_maps_byok_key") ||
-    map.get("ka_google_maps_api_key") ||
-    map.get("google_maps_api_key") ||
-    ""
-  ).trim();
-  if (fromSettings) return { byok: true, key: fromSettings };
 
   const byok = process.env["GOOGLE_MAPS_BYOK_KEY"];
   if (byok) return { byok: true, key: byok };
