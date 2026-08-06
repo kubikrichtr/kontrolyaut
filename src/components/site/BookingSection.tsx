@@ -119,6 +119,26 @@ export function BookingSection() {
 
   const finalPrice = priceInfo?.ok ? priceInfo.totalPrice ?? null : null;
 
+  const cityValue = watch("city") ?? "";
+  const cityPlaceId = watch("cityPlaceId") ?? "";
+
+  // Ruční zadání PSČ zpětně doplní město, pokud ještě není vybráno.
+  useEffect(() => {
+    if (priceInfo?.ok && priceInfo.city && !cityValue.trim()) {
+      setValue("city", priceInfo.city, { shouldValidate: false });
+      setValue("cityPlaceId", `psc:${postalCode}`, { shouldValidate: false });
+    }
+  }, [priceInfo?.ok, priceInfo?.city, cityValue, postalCode, setValue]);
+
+  const postalMismatch =
+    !!priceInfo?.ok &&
+    !!priceInfo.city &&
+    !!cityValue.trim() &&
+    normalize(priceInfo.city) !== normalize(cityValue) &&
+    !normalize(cityValue).includes(normalize(priceInfo.city)) &&
+    !normalize(priceInfo.city).includes(normalize(cityValue));
+
+
   const onSubmit = async (values: FormValues) => {
     const attendanceText =
       values.attendance === "yes"
