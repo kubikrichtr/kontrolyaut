@@ -87,6 +87,8 @@ export function BookingSection() {
     reset,
     setFocus,
     setValue,
+    trigger,
+    clearErrors,
     watch,
     control,
     formState: { errors, isSubmitting, isSubmitted },
