@@ -30,28 +30,46 @@ const CARS_EU_URL = "https://ajafqafoonxoubbhcxnk.supabase.co/functions/v1/publi
 const CARS_EU_ANON =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqYWZxYWZvb254b3ViYmhjeG5rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNzM1NTQsImV4cCI6MjA4MzY0OTU1NH0.j5SJwClkiZD_fIVTI4UBKRK2Z76ykMuk1HLF169c-6A";
 
-const schema = z.object({
-  fullName: z.string().trim().min(2, { message: "Zadejte jméno a příjmení" }).max(100),
-  email: z.string().trim().email({ message: "Zadejte platnou e-mailovou adresu" }).max(255),
-  phone: z
-    .string()
-    .trim()
-    .min(9, { message: "Zadejte platné telefonní číslo" })
-    .max(20)
-    .regex(/^[+\d\s()-]+$/, { message: "Telefon obsahuje neplatné znaky" }),
-  carUrl: z.string().trim().max(500).optional(),
-  preferredDate: z.string().trim().optional(),
-  attendance: z.string().optional(),
-  city: z.string().trim().min(2, { message: "Zadejte město (vyberte z našeptávače)" }).max(100),
-  cityPlaceId: z.string().optional(),
-  postalCode: z
-    .string()
-    .trim()
-    .regex(/^\d{3}\s?\d{2}$/, { message: "Zadejte PSČ (5 číslic)" }),
-  note: z.string().trim().max(1000).optional(),
-});
+const schema = z
+  .object({
+    fullName: z.string().trim().min(2, { message: "Zadejte jméno a příjmení" }).max(100),
+    email: z.string().trim().email({ message: "Zadejte platnou e-mailovou adresu" }).max(255),
+    phone: z
+      .string()
+      .trim()
+      .min(9, { message: "Zadejte platné telefonní číslo" })
+      .max(20)
+      .regex(/^[+\d\s()-]+$/, { message: "Telefon obsahuje neplatné znaky" }),
+    carUrl: z.string().trim().max(500).optional(),
+    preferredDate: z.string().trim().optional(),
+    attendance: z.string().optional(),
+    city: z.string().trim().min(2, { message: "Zadejte město (vyberte z našeptávače)" }).max(100),
+    cityPlaceId: z.string().optional(),
+    postalCode: z
+      .string()
+      .trim()
+      .regex(/^\d{3}\s?\d{2}$/, { message: "Zadejte PSČ (5 číslic)" }),
+    note: z.string().trim().max(1000).optional(),
+  })
+  .superRefine((v, ctx) => {
+    if (!v.cityPlaceId) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["city"],
+        message: "Vyberte město ze seznamu našeptávače",
+      });
+    }
+  });
 
 type FormValues = z.infer<typeof schema>;
+
+const normalize = (s: string) =>
+  s
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+
 
 const FEATURES = [
   "Nezávislá kontrola přes 100 bodů",
