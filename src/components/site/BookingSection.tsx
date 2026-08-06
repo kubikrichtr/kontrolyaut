@@ -301,17 +301,20 @@ export function BookingSection() {
                   value={cityValue}
                   invalid={!!errors.city}
                   onChange={(v) => {
+                    setValue("cityPlaceId", "");
                     setValue("city", v, { shouldValidate: isSubmitted });
-                    setValue("cityPlaceId", "", { shouldValidate: isSubmitted });
                   }}
                   onSelect={async (s) => {
-                    setValue("city", s.name, { shouldValidate: true });
-                    setValue("cityPlaceId", s.placeId, { shouldValidate: true });
+                    setValue("cityPlaceId", s.placeId);
+                    setValue("city", s.name);
+                    clearErrors("city");
+                    void trigger("city");
                     const info = await cityLookup({ data: { placeId: s.placeId } });
                     if (info.ok && info.postalCode) {
                       setValue("postalCode", info.postalCode, { shouldValidate: true });
                     }
                   }}
+
                 />
                 {!errors.city && cityPlaceId && (
                   <p className="mt-1.5 flex items-center gap-1 text-xs font-medium text-primary">
