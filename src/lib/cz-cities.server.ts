@@ -6318,20 +6318,72 @@ export function findCityById(id: string): CzCity | null {
   );
 }
 
-/** Fulltext bez ohledu na diakritiku; prefixové shody mají přednost. */
-export function searchCities(query: string, limit = 8): CzCity[] {
-  const q = stripDiacritics(query);
-  if (q.length < 2) return [];
-  const starts: CzCity[] = [];
-  const contains: CzCity[] = [];
-  for (const e of load()) {
-    if (e.norm.startsWith(q)) starts.push(e.city);
-    else if (e.norm.includes(q)) contains.push(e.city);
-    if (starts.length >= limit) break;
+/** Levenshteinova vzdálenost s předčasným ukončením (tolerance překlepů). */
+function editDistance(a: string, b: string, max: number): number {
+  if (Math.abs(a.length - b.length) > max) return max + 1;
+  let prev = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i];
+    let best = i;
+    for (let j = 1; j <= b.length; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      const v = Math.min(prev[j]! + 1, cur[j - 1]! + 1, prev[j - 1]! + cost);
+      cur[j] = v;
+      if (v < best) best = v;
+    }
+    if (best > max) return max + 1;
+    prev = cur;
   }
-  const byPopularity = (a: CzCity, b: CzCity) => a.name.length - b.name.length;
-  return [...starts.sort(byPopularity), ...contains.sort(byPopularity)].slice(0, limit);
+  return prev[b.length]!;
 }
+
+/**
+ * Fulltext bez ohledu na diakritiku, s tolerancí překlepů.
+ * Pořadí: přesná shoda → prefix → prefix slova → obsahuje → překlep (Levenshtein).
+ */
+export function searchCities(query: string, limit = 8): CzCity[] {
+  const q = stripDiacritics(query).replace(/\s+/g, " ");
+  if (q.length < 2) return [];
+
+  // Hledání podle PSČ (uživatel zadá číslice do pole města).
+  const digits = q.replace(/\D/g, "");
+  if (digits.length >= 3 && /^[\d\s]+$/.test(q)) {
+    return load()
+      .filter((e) => e.city.postalCode.startsWith(digits))
+      .map((e) => e.city)
+      .sort((a, b) => a.name.length - b.name.length)
+      .slice(0, limit);
+  }
+
+  const maxTypos = q.length >= 8 ? 2 : q.length >= 4 ? 1 : 0;
+  const scored: Array<{ city: CzCity; score: number }> = [];
+
+  for (const e of load()) {
+    const n = e.norm;
+    let score: number;
+    if (n === q) score = 0;
+    else if (n.startsWith(q)) score = 1;
+    else if (n.split(/[\s-]+/).some((w) => w.startsWith(q))) score = 2;
+    else if (n.includes(q)) score = 3;
+    else if (maxTypos > 0) {
+      const d = editDistance(q, n, maxTypos);
+      if (d > maxTypos) {
+        // překlep jen v prvním slově názvu (např. "Ceske Budejovyce")
+        const head = n.slice(0, q.length + maxTypos);
+        const dh = editDistance(q, head, maxTypos);
+        if (dh > maxTypos) continue;
+        score = 5 + dh;
+      } else score = 4 + d;
+    } else continue;
+    scored.push({ city: e.city, score });
+  }
+
+  return scored
+    .sort((a, b) => a.score - b.score || a.city.name.length - b.city.name.length)
+    .slice(0, limit)
+    .map((s) => s.city);
+}
+
 
 /** Najde obec (nebo nejbližší obec) podle PSČ. */
 export function findByPostalCode(postalCode: string): CzCity | null {
