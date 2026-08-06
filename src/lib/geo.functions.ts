@@ -41,7 +41,7 @@ export const getPricingSettings = createServerFn({ method: "GET" }).handler(
   },
 );
 
-/** Našeptávač českých měst (Places API New – autocomplete). */
+/** Našeptávač českých měst – primárně vestavěný číselník obcí ČR, doplňkově Google Places. */
 export const suggestCities = createServerFn({ method: "POST" })
   .inputValidator((data: { query: string }) => {
     const q = String(data?.query ?? "").trim().slice(0, 80);
@@ -49,10 +49,19 @@ export const suggestCities = createServerFn({ method: "POST" })
   })
   .handler(async ({ data }): Promise<CitySuggestion[]> => {
     if (data.query.length < 2) return [];
+
+    const { searchCities, cityId } = await import("./cz-cities.server");
+    const local: CitySuggestion[] = searchCities(data.query, 8).map((c) => ({
+      placeId: cityId(c),
+      name: c.name,
+      region: `${c.district} · ${c.postalCode.slice(0, 3)} ${c.postalCode.slice(3)}`,
+    }));
+    if (local.length >= 5) return local;
+
     const { getMapsAuth } = await import("./settings.server");
     const { mapsFetch } = await import("./maps.server");
     const auth = await getMapsAuth();
-    if (!auth) return [];
+    if (!auth) return local;
 
     const res = await mapsFetch(auth, "/places/v1/places:autocomplete", {
       method: "POST",
@@ -67,7 +76,7 @@ export const suggestCities = createServerFn({ method: "POST" })
 
     if (!res.ok) {
       console.error(`Autocomplete failed [${res.status}]: ${await res.text()}`);
-      return [];
+      return local;
     }
 
     const json = (await res.json()) as {
@@ -79,7 +88,7 @@ export const suggestCities = createServerFn({ method: "POST" })
       }>;
     };
 
-    return (json.suggestions ?? [])
+    const remote = (json.suggestions ?? [])
       .map((s) => s.placePrediction)
       .filter((p): p is NonNullable<typeof p> => !!p?.placeId && !!p.structuredFormat?.mainText?.text)
       .map((p) => ({
@@ -87,7 +96,11 @@ export const suggestCities = createServerFn({ method: "POST" })
         name: p.structuredFormat?.mainText?.text as string,
         region: p.structuredFormat?.secondaryText?.text,
       }));
+
+    const seen = new Set(local.map((l) => l.name.toLowerCase()));
+    return [...local, ...remote.filter((r) => !seen.has(r.name.toLowerCase()))].slice(0, 8);
   });
+
 
 /** Ověří město podle placeId a doplní PSČ + cenu dopravy. */
 export const lookupCityPrice = createServerFn({ method: "POST" })
