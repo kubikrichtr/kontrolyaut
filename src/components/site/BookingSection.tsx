@@ -30,28 +30,46 @@ const CARS_EU_URL = "https://ajafqafoonxoubbhcxnk.supabase.co/functions/v1/publi
 const CARS_EU_ANON =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqYWZxYWZvb254b3ViYmhjeG5rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNzM1NTQsImV4cCI6MjA4MzY0OTU1NH0.j5SJwClkiZD_fIVTI4UBKRK2Z76ykMuk1HLF169c-6A";
 
-const schema = z.object({
-  fullName: z.string().trim().min(2, { message: "Zadejte jméno a příjmení" }).max(100),
-  email: z.string().trim().email({ message: "Zadejte platnou e-mailovou adresu" }).max(255),
-  phone: z
-    .string()
-    .trim()
-    .min(9, { message: "Zadejte platné telefonní číslo" })
-    .max(20)
-    .regex(/^[+\d\s()-]+$/, { message: "Telefon obsahuje neplatné znaky" }),
-  carUrl: z.string().trim().max(500).optional(),
-  preferredDate: z.string().trim().optional(),
-  attendance: z.string().optional(),
-  city: z.string().trim().min(2, { message: "Zadejte město (vyberte z našeptávače)" }).max(100),
-  cityPlaceId: z.string().optional(),
-  postalCode: z
-    .string()
-    .trim()
-    .regex(/^\d{3}\s?\d{2}$/, { message: "Zadejte PSČ (5 číslic)" }),
-  note: z.string().trim().max(1000).optional(),
-});
+const schema = z
+  .object({
+    fullName: z.string().trim().min(2, { message: "Zadejte jméno a příjmení" }).max(100),
+    email: z.string().trim().email({ message: "Zadejte platnou e-mailovou adresu" }).max(255),
+    phone: z
+      .string()
+      .trim()
+      .min(9, { message: "Zadejte platné telefonní číslo" })
+      .max(20)
+      .regex(/^[+\d\s()-]+$/, { message: "Telefon obsahuje neplatné znaky" }),
+    carUrl: z.string().trim().max(500).optional(),
+    preferredDate: z.string().trim().optional(),
+    attendance: z.string().optional(),
+    city: z.string().trim().min(2, { message: "Zadejte město (vyberte z našeptávače)" }).max(100),
+    cityPlaceId: z.string().optional(),
+    postalCode: z
+      .string()
+      .trim()
+      .regex(/^\d{3}\s?\d{2}$/, { message: "Zadejte PSČ (5 číslic)" }),
+    note: z.string().trim().max(1000).optional(),
+  })
+  .superRefine((v, ctx) => {
+    if (!v.cityPlaceId) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["city"],
+        message: "Vyberte město ze seznamu našeptávače",
+      });
+    }
+  });
 
 type FormValues = z.infer<typeof schema>;
+
+const normalize = (s: string) =>
+  s
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+
 
 const FEATURES = [
   "Nezávislá kontrola přes 100 bodů",
@@ -100,6 +118,26 @@ export function BookingSection() {
   });
 
   const finalPrice = priceInfo?.ok ? priceInfo.totalPrice ?? null : null;
+
+  const cityValue = watch("city") ?? "";
+  const cityPlaceId = watch("cityPlaceId") ?? "";
+
+  // Ruční zadání PSČ zpětně doplní město, pokud ještě není vybráno.
+  useEffect(() => {
+    if (priceInfo?.ok && priceInfo.city && !cityValue.trim()) {
+      setValue("city", priceInfo.city, { shouldValidate: false });
+      setValue("cityPlaceId", `psc:${postalCode}`, { shouldValidate: false });
+    }
+  }, [priceInfo?.ok, priceInfo?.city, cityValue, postalCode, setValue]);
+
+  const postalMismatch =
+    !!priceInfo?.ok &&
+    !!priceInfo.city &&
+    !!cityValue.trim() &&
+    normalize(priceInfo.city) !== normalize(cityValue) &&
+    !normalize(cityValue).includes(normalize(priceInfo.city)) &&
+    !normalize(priceInfo.city).includes(normalize(cityValue));
+
 
   const onSubmit = async (values: FormValues) => {
     const attendanceText =
@@ -258,21 +296,26 @@ export function BookingSection() {
 
               <Field label="Město kontroly" id="city" error={errors.city?.message}>
                 <CityAutocomplete
-                  value={watch("city") ?? ""}
+                  value={cityValue}
                   invalid={!!errors.city}
                   onChange={(v) => {
                     setValue("city", v, { shouldValidate: isSubmitted });
-                    setValue("cityPlaceId", "");
+                    setValue("cityPlaceId", "", { shouldValidate: isSubmitted });
                   }}
                   onSelect={async (s) => {
                     setValue("city", s.name, { shouldValidate: true });
-                    setValue("cityPlaceId", s.placeId);
+                    setValue("cityPlaceId", s.placeId, { shouldValidate: true });
                     const info = await cityLookup({ data: { placeId: s.placeId } });
                     if (info.ok && info.postalCode) {
                       setValue("postalCode", info.postalCode, { shouldValidate: true });
                     }
                   }}
                 />
+                {!errors.city && cityPlaceId && (
+                  <p className="mt-1.5 flex items-center gap-1 text-xs font-medium text-primary">
+                    <Check className="h-3.5 w-3.5 shrink-0" /> Město ověřeno
+                  </p>
+                )}
               </Field>
 
               <Field label="PSČ" id="postalCode" error={errors.postalCode?.message}>
@@ -284,7 +327,15 @@ export function BookingSection() {
                   className="h-12 rounded-lg border-border bg-background text-base sm:text-sm"
                   {...register("postalCode")}
                 />
+                {!errors.postalCode && postalMismatch && (
+                  <p className="mt-1.5 flex items-center gap-1 text-xs font-medium text-muted-foreground">
+                    <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                    PSČ {postalCode.slice(0, 3)} {postalCode.slice(3)} patří k obci{" "}
+                    {priceInfo?.city}. Zkontrolujte prosím zadání.
+                  </p>
+                )}
               </Field>
+
 
               <Field
                 label="Preferovaný termín (nepovinné)"
