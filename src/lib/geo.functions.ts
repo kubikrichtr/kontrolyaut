@@ -110,11 +110,33 @@ export const lookupCityPrice = createServerFn({ method: "POST" })
     return { placeId: id };
   })
   .handler(async ({ data }): Promise<PostalLookupResult> => {
-    const { getMapsAuth, loadGeoSettings } = await import("./settings.server");
-    const { mapsFetch, haversineKm } = await import("./maps.server");
-    const auth = await getMapsAuth();
-    if (!auth) return { ok: false, error: "Služba pro výpočet dopravy není dostupná." };
+    const { loadGeoSettings, getMapsAuth } = await import("./settings.server");
+    const { haversineKm, mapsFetch } = await import("./maps.server");
     const settings = await loadGeoSettings();
+
+    // 1) Lokální číselník obcí ČR – funguje vždy, bez Google API.
+    if (data.placeId.startsWith("cz:")) {
+      const { findCityById } = await import("./cz-cities.server");
+      const city = findCityById(data.placeId);
+      if (!city) return { ok: false, error: "Město se nepodařilo ověřit. Vyberte jej ze seznamu." };
+      const distanceKm = haversineKm(settings.origin, { lat: city.lat, lng: city.lng });
+      const travelPrice = Math.round(distanceKm * settings.coefficient * settings.pricePerKm);
+      return {
+        ok: true,
+        postalCode: `${city.postalCode.slice(0, 3)} ${city.postalCode.slice(3)}`,
+        city: city.name,
+        distanceKm: Math.round(distanceKm * 10) / 10,
+        travelPrice,
+        basePrice: settings.basePrice,
+        totalPrice: settings.basePrice + travelPrice,
+      };
+    }
+
+    // 2) Google Places (adresy mimo číselník).
+    const auth = await getMapsAuth();
+    if (!auth) return { ok: false, error: "Vyberte město ze seznamu našeptávače." };
+
+
 
     const detailsRes = await mapsFetch(
       auth,
