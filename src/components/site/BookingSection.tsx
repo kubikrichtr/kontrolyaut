@@ -458,11 +458,13 @@ export function BookingSection() {
 function CityAutocomplete({
   value,
   invalid,
+  selected,
   onChange,
   onSelect,
 }: {
   value: string;
   invalid?: boolean;
+  selected?: boolean;
   onChange: (v: string) => void;
   onSelect: (s: CitySuggestion) => void;
 }) {
@@ -470,13 +472,21 @@ function CityAutocomplete({
   const [query, setQuery] = useState(value);
   const [open, setOpen] = useState(false);
   const [debounced, setDebounced] = useState(value);
+  const [active, setActive] = useState(0);
   const skipNext = useRef(false);
   const boxRef = useRef<HTMLDivElement>(null);
+  const autoRef = useRef("");
 
   useEffect(() => {
     const t = setTimeout(() => setDebounced(query.trim()), 250);
     return () => clearTimeout(t);
   }, [query]);
+
+  // Pole města upravené ručně po výběru – když se text vrátí do stavu čitelné obce, drž ho synchronizovaný.
+  useEffect(() => {
+    if (value !== query && !open) setQuery(value);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
 
   useEffect(() => {
     const onDoc = (e: MouseEvent) => {
@@ -492,6 +502,30 @@ function CityAutocomplete({
     enabled: debounced.length >= 2 && !skipNext.current,
     staleTime: 10 * 60 * 1000,
   });
+
+  useEffect(() => setActive(0), [options]);
+
+  // Ruční přepsání města: pokud text přesně odpovídá jedné obci, potvrď ji automaticky.
+  useEffect(() => {
+    if (selected || !debounced || autoRef.current === debounced) return;
+    const q = normalize(debounced);
+    const exact = options.filter((o) => normalize(o.name) === q);
+    if (exact.length === 1) {
+      autoRef.current = debounced;
+      onSelect(exact[0]!);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [options, debounced, selected]);
+
+  const choose = (o: CitySuggestion) => {
+    skipNext.current = true;
+    autoRef.current = o.name;
+    setQuery(o.name);
+    setDebounced(o.name);
+    setOpen(false);
+    onSelect(o);
+  };
+
 
   return (
     <div className="relative" ref={boxRef}>
