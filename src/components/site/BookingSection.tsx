@@ -535,17 +535,40 @@ function CityAutocomplete({
         role="combobox"
         aria-expanded={open}
         aria-autocomplete="list"
-        placeholder="Např. Brno"
+        placeholder="Např. Brno nebo 60200"
         aria-invalid={invalid}
         className="h-12 rounded-lg border-border bg-background text-base sm:text-sm"
         value={query}
         onChange={(e) => {
           skipNext.current = false;
+          autoRef.current = "";
           setQuery(e.target.value);
           setOpen(true);
           onChange(e.target.value);
         }}
         onFocus={() => setOpen(true)}
+        onKeyDown={(e) => {
+          if (!open || options.length === 0) return;
+          if (e.key === "ArrowDown") {
+            e.preventDefault();
+            setActive((i) => (i + 1) % options.length);
+          } else if (e.key === "ArrowUp") {
+            e.preventDefault();
+            setActive((i) => (i - 1 + options.length) % options.length);
+          } else if (e.key === "Enter") {
+            e.preventDefault();
+            choose(options[active] ?? options[0]!);
+          } else if (e.key === "Escape") {
+            setOpen(false);
+          }
+        }}
+        onBlur={() => {
+          // Ruční zadání bez výběru: pokud sedí jediný návrh, potvrď ho.
+          if (selected) return;
+          const q = normalize(query);
+          const exact = options.filter((o) => normalize(o.name) === q);
+          if (exact.length === 1) choose(exact[0]!);
+        }}
       />
       {isFetching && (
         <Loader2 className="pointer-events-none absolute right-3 top-4 h-4 w-4 animate-spin text-muted-foreground" />
@@ -555,20 +578,18 @@ function CityAutocomplete({
           role="listbox"
           className="absolute z-50 mt-1 max-h-64 w-full overflow-auto rounded-lg border border-border bg-popover py-1 shadow-lg"
         >
-          {options.map((o) => (
+          {options.map((o, i) => (
             <li key={o.placeId}>
               <button
                 type="button"
                 role="option"
-                aria-selected={o.name === value}
-                className="flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm hover:bg-accent"
-                onClick={() => {
-                  skipNext.current = true;
-                  setQuery(o.name);
-                  setDebounced(o.name);
-                  setOpen(false);
-                  onSelect(o);
-                }}
+                aria-selected={i === active}
+                className={`flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm hover:bg-accent ${
+                  i === active ? "bg-accent" : ""
+                }`}
+                onMouseEnter={() => setActive(i)}
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => choose(o)}
               >
                 <MapPin className="h-3.5 w-3.5 shrink-0 text-primary" />
                 <span className="font-medium">{o.name}</span>
@@ -581,6 +602,7 @@ function CityAutocomplete({
     </div>
   );
 }
+
 
 function Field({
   label,
