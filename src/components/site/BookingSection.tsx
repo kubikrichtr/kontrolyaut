@@ -299,6 +299,7 @@ export function BookingSection() {
               <Field label="Město kontroly" id="city" error={errors.city?.message}>
                 <CityAutocomplete
                   value={cityValue}
+                  selected={!!cityPlaceId}
                   invalid={!!errors.city}
                   onChange={(v) => {
                     setValue("cityPlaceId", "");
