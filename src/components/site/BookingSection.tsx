@@ -296,21 +296,26 @@ export function BookingSection() {
 
               <Field label="Město kontroly" id="city" error={errors.city?.message}>
                 <CityAutocomplete
-                  value={watch("city") ?? ""}
+                  value={cityValue}
                   invalid={!!errors.city}
                   onChange={(v) => {
                     setValue("city", v, { shouldValidate: isSubmitted });
-                    setValue("cityPlaceId", "");
+                    setValue("cityPlaceId", "", { shouldValidate: isSubmitted });
                   }}
                   onSelect={async (s) => {
                     setValue("city", s.name, { shouldValidate: true });
-                    setValue("cityPlaceId", s.placeId);
+                    setValue("cityPlaceId", s.placeId, { shouldValidate: true });
                     const info = await cityLookup({ data: { placeId: s.placeId } });
                     if (info.ok && info.postalCode) {
                       setValue("postalCode", info.postalCode, { shouldValidate: true });
                     }
                   }}
                 />
+                {!errors.city && cityPlaceId && (
+                  <p className="mt-1.5 flex items-center gap-1 text-xs font-medium text-primary">
+                    <Check className="h-3.5 w-3.5 shrink-0" /> Město ověřeno
+                  </p>
+                )}
               </Field>
 
               <Field label="PSČ" id="postalCode" error={errors.postalCode?.message}>
@@ -322,7 +327,15 @@ export function BookingSection() {
                   className="h-12 rounded-lg border-border bg-background text-base sm:text-sm"
                   {...register("postalCode")}
                 />
+                {!errors.postalCode && postalMismatch && (
+                  <p className="mt-1.5 flex items-center gap-1 text-xs font-medium text-muted-foreground">
+                    <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                    PSČ {postalCode.slice(0, 3)} {postalCode.slice(3)} patří k obci{" "}
+                    {priceInfo?.city}. Zkontrolujte prosím zadání.
+                  </p>
+                )}
               </Field>
+
 
               <Field
                 label="Preferovaný termín (nepovinné)"
