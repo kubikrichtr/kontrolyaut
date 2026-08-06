@@ -194,12 +194,34 @@ export const lookupPostalPrice = createServerFn({ method: "POST" })
   .handler(async ({ data }): Promise<PostalLookupResult> => {
     const { getMapsAuth, loadGeoSettings } = await import("./settings.server");
     const { mapsFetch, haversineKm } = await import("./maps.server");
-    const auth = await getMapsAuth();
-    if (!auth) return { ok: false, error: "Služba pro výpočet dopravy není dostupná." };
     const settings = await loadGeoSettings();
 
     const pc = data.postalCode;
     const formatted = `${pc.slice(0, 3)} ${pc.slice(3)}`;
+
+    // 1) Lokální číselník obcí ČR.
+    const { findByPostalCode } = await import("./cz-cities.server");
+    const local = findByPostalCode(pc);
+    if (local) {
+      const distanceKm = haversineKm(settings.origin, { lat: local.lat, lng: local.lng });
+      const travelPrice = Math.round(distanceKm * settings.coefficient * settings.pricePerKm);
+      return {
+        ok: true,
+        postalCode: formatted,
+        city: local.name,
+        distanceKm: Math.round(distanceKm * 10) / 10,
+        travelPrice,
+        basePrice: settings.basePrice,
+        totalPrice: settings.basePrice + travelPrice,
+      };
+    }
+
+    // 2) Google Geocoding (PSČ mimo číselník – např. pošt. přihrádky velkých měst).
+    const auth = await getMapsAuth();
+    if (!auth) {
+      return { ok: false, error: "PSČ nebylo nalezeno. Zkontrolujte prosím zadání." };
+    }
+
     const res = await mapsFetch(
       auth,
       `/maps/api/geocode/json?components=${encodeURIComponent(
