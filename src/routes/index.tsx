@@ -35,6 +35,73 @@ export const Route = createFileRoute("/")({
       { name: "twitter:image", content: `https://kontrolyaut.lovable.app${heroWorkshop.url}` },
     ],
     links: [{ rel: "canonical", href: "https://kontrolyaut.lovable.app/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: [
+            {
+              "@type": "Question",
+              name: "Kolik stojí kontrola ojetého vozu?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Základní kontrola ojetého vozu stojí 2 490 Kč včetně DPH. Součástí je diagnostika elektroniky, kontrola karoserie, podvozku, motoru a testovací jízda.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Kontrola ojetého vozu v Praze – kolik stojí a co zahrnuje?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Kontrola ojetého vozu v Praze a okolí stojí od 2 490 Kč včetně DPH. Cena zahrnuje diagnostiku elektroniky, kontrolu motoru, převodovky, podvozku, karoserie, interiéru i zkušební jízdu. Dopravu do Prahy a Středočeského kraje si spočítáte v objednávkovém formuláři.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Jak dlouho trvá kontrola auta před koupí v Praze?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Kontrola ojetého vozu v Praze a okolí trvá obvykle 60 až 90 minut. Výsledek a doporučení dostanete okamžitě na místě, písemný protokol s fotografiemi pak e-mailem do 24 hodin.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Přijedete s kontrolou za prodejcem do Prahy?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Ano, přijedeme přímo za vámi – k autobazaru, do servisu nebo na adresu soukromého prodejce v Praze a celém Středočeském kraji (např. Kladno, Mladá Boleslav, Příbram, Beroun, Kolín).",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Kontrolujete auta i mimo Prahu, ve Středočeském kraji?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Ano, kromě Prahy obsluhujeme celý Středočeský kraj a po dohodě i další místa po celé ČR. Cenu dopravy předem spočítá kalkulačka v objednávkovém formuláři.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Proč si nechat zkontrolovat ojetý vůz před koupí v Praze?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Nezávislá kontrola v Praze a okolí odhalí skryté vady, stočený tachometr či vůz po havárii dřív, než podepíšete kupní smlouvu. Vyhnete se tak opravám za desítky tisíc korun a protokol využijete i při jednání o slevě.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Jak objednat kontrolu ojetého vozu v Praze?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Vyplňte objednávkový formulář na této stránce nebo zavolejte. Kontaktujeme vás do 24 hodin, domluvíme termín kontroly u prodejce v Praze či okolí a připravíme cenovou nabídku včetně dopravy.",
+              },
+            },
+          ],
+        }),
+      },
+    ],
   }),
 
   component: HomePage,
