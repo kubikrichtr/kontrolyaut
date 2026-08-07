@@ -33,6 +33,20 @@ export const Route = createFileRoute("/o-mne")({
       { rel: "canonical", href: "https://kontrolyaut.lovable.app/o-mne" },
       { rel: "preload", as: "image", href: lukasAsset.url, type: "image/webp", fetchpriority: "high" },
     ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Person",
+          name: "Lukáš Doubek",
+          jobTitle: "Technický poradce a kontrolor vozidel",
+          image: `https://kontrolyaut.lovable.app${lukasAsset.url}`,
+          url: "https://kontrolyaut.lovable.app/o-mne",
+          worksFor: { "@type": "Organization", name: "KontrolyAut", url: "https://kontrolyaut.lovable.app/" },
+        }),
+      },
+    ],
   }),
 
   component: AboutMePage,

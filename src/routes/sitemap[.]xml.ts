@@ -1,20 +1,67 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { createClient } from "@supabase/supabase-js";
 import type {} from "@tanstack/react-start";
 
-const BASE_URL = "";
+const BASE_URL = "https://kontrolyaut.lovable.app";
+
+interface SitemapEntry {
+  path: string;
+  lastmod?: string;
+  changefreq?: string;
+  priority?: string;
+}
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
       GET: async () => {
-        const entries = [
+        const entries: SitemapEntry[] = [
           { path: "/", changefreq: "weekly", priority: "1.0" },
+          { path: "/o-mne", changefreq: "monthly", priority: "0.6" },
           { path: "/blog", changefreq: "weekly", priority: "0.7" },
-          { path: "/auth", changefreq: "yearly", priority: "0.3" },
         ];
-        const urls = entries.map((e) => `  <url>\n    <loc>${BASE_URL}${e.path}</loc>\n    <changefreq>${e.changefreq}</changefreq>\n    <priority>${e.priority}</priority>\n  </url>`);
+
+        try {
+          const key = process.env["SUPABASE_PUBLISHABLE_KEY"] ?? process.env["SUPABASE_ANON_KEY"];
+          const url = process.env["SUPABASE_URL"];
+          if (key && url) {
+            const client = createClient(url, key, {
+              auth: { persistSession: false, autoRefreshToken: false },
+            });
+            const { data } = await client
+              .from("blog_posts")
+              .select("slug, published_at")
+              .eq("published", true);
+            for (const post of data ?? []) {
+              entries.push({
+                path: `/blog/${post.slug}`,
+                lastmod: post.published_at ? new Date(post.published_at).toISOString() : undefined,
+                changefreq: "monthly",
+                priority: "0.6",
+              });
+            }
+          }
+        } catch {
+          // sitemap still returns static routes if blog fetch fails
+        }
+
+        const urls = entries.map((e) =>
+          [
+            `  <url>`,
+            `    <loc>${BASE_URL}${e.path}</loc>`,
+            e.lastmod ? `    <lastmod>${e.lastmod}</lastmod>` : null,
+            e.changefreq ? `    <changefreq>${e.changefreq}</changefreq>` : null,
+            e.priority ? `    <priority>${e.priority}</priority>` : null,
+            `  </url>`,
+          ]
+            .filter(Boolean)
+            .join("\n"),
+        );
+
         const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>`;
-        return new Response(xml, { headers: { "Content-Type": "application/xml", "Cache-Control": "public, max-age=3600" } });
+        return new Response(xml, {
+          headers: { "Content-Type": "application/xml", "Cache-Control": "public, max-age=3600" },
+        });
       },
     },
   },

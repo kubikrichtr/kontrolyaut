@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import heroWorkshop from "@/assets/hero-workshop.png.asset.json";
+
+const OG_IMAGE = `https://kontrolyaut.lovable.app${heroWorkshop.url}`;
 
 export const Route = createFileRoute("/blog")({
   head: () => ({
@@ -11,9 +14,11 @@ export const Route = createFileRoute("/blog")({
       { property: "og:description", content: "Články o kontrole, výběru a koupi ojetých vozů." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://kontrolyaut.lovable.app/blog" },
+      { property: "og:image", content: OG_IMAGE },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Blog o kontrole ojetých vozů | KontrolyAut" },
       { name: "twitter:description", content: "Články o kontrole, výběru a koupi ojetých vozů." },
+      { name: "twitter:image", content: OG_IMAGE },
     ],
     links: [{ rel: "canonical", href: "https://kontrolyaut.lovable.app/blog" }],
   }),

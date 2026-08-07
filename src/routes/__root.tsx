@@ -56,14 +56,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Kontroly ojetých vozů před koupí | KontrolyAut" },
-      {
-        name: "description",
-        content:
-          "Zajišťujeme nezávislou kontrolu osobních i užitkových vozů před koupí. Díky tomu předejdete zbytečným výdajům a nepříjemným překvapením po nákupu vozu.",
-      },
-      { property: "og:title", content: "Kontroly ojetých vozů před koupí | KontrolyAut" },
-      { property: "og:description", content: "Nezávislá technická kontrola ojetých vozů před koupí po celé ČR." },
+      { property: "og:site_name", content: "KontrolyAut" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
