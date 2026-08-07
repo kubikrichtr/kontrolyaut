@@ -63,6 +63,7 @@ function AuthPage() {
     <section className="container-page py-16 flex justify-center">
       <div className="w-full max-w-md rounded-3xl border border-border bg-white p-8 shadow-xl shadow-primary/5">
         <div className="flex justify-center mb-6"><img src={logoAsset.url} alt="" className="h-12" /></div>
+        <h1 className="text-2xl font-bold text-center mb-6">Přihlášení do klientské zóny</h1>
         <div className="flex gap-2 p-1 rounded-full bg-muted mb-6">
           <button onClick={() => setMode("login")} className={`flex-1 py-2 rounded-full text-sm font-medium transition ${mode === "login" ? "bg-white shadow-sm" : "text-muted-foreground"}`}>Přihlášení</button>
           <button onClick={() => setMode("signup")} className={`flex-1 py-2 rounded-full text-sm font-medium transition ${mode === "signup" ? "bg-white shadow-sm" : "text-muted-foreground"}`}>Registrace</button>
