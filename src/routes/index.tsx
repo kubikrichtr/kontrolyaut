@@ -295,6 +295,7 @@ function Realized() {
       return data;
     },
   });
+  if (!data || data.length === 0) return null;
   return (
     <section id="reference" className="container-page py-20">
       <div className="flex items-end justify-between gap-6 flex-wrap">
