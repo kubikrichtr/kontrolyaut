@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft } from "lucide-react";
 
-const SITE = "https://kontrolyaut.lovable.app";
+const SITE = "https://kontrolyaut.cz";
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
