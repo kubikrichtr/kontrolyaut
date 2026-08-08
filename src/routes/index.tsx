@@ -15,7 +15,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Nezávislá technická kontrola ojetých vozů před koupí. Přes 100 kontrolních bodů, protokol s fotografiemi, po celé ČR.",
+          "Nezávislá technická kontrola ojetých vozů před koupí. Protokol s fotografiemi, po celé ČR.",
       },
       { property: "og:title", content: "Kontrola ojetých vozů před koupí | KontrolyAut" },
       {
@@ -30,7 +30,7 @@ export const Route = createFileRoute("/")({
       { name: "twitter:title", content: "Kontrola ojetých vozů před koupí | KontrolyAut" },
       {
         name: "twitter:description",
-        content: "Nezávislá kontrola ojetých vozů před koupí. Přes 100 kontrolních bodů, protokol s fotografiemi.",
+        content: "Nezávislá kontrola ojetých vozů před koupí. Protokol s fotografiemi.",
       },
       { name: "twitter:image", content: `https://kontrolyaut.cz${heroWorkshop.url}` },
     ],
@@ -188,15 +188,6 @@ function Hero() {
               <CheckCircle2 className="h-4 w-4 text-primary" /> Do 24 hodin
             </li>
           </ul>
-          <div className="mt-10 inline-flex bg-card/90 backdrop-blur rounded-2xl shadow-xl border border-border p-4 items-center gap-3">
-            <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
-              <ShieldCheck className="h-6 w-6 text-primary" />
-            </div>
-            <div>
-              <div className="text-2xl font-bold">100+</div>
-              <div className="text-xs text-muted-foreground">kontrolních bodů</div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
