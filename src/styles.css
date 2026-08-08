@@ -59,7 +59,7 @@
 
 @layer base {
   * { border-color: var(--color-border); }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
@@ -107,4 +107,13 @@
   background: white;
   transition: background-color 0.15s ease, border-color 0.15s ease;
   &:hover { background-color: var(--muted); border-color: var(--primary); color: var(--primary); }
+}
+
+@utility tap-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+@utility pb-safe {
+  padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
 }

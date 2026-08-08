@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Phone, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import logoAsset from "@/assets/kontroly-logo.svg.asset.json";
 
 const NAV = [
@@ -15,6 +15,22 @@ const NAV = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const firstLinkRef = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    firstLinkRef.current?.focus();
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
@@ -39,20 +55,49 @@ export function SiteHeader() {
           </a>
           <a href="/#kontakt" className="btn-primary whitespace-nowrap">Objednat kontrolu</a>
         </div>
-        <button className="xl:hidden p-2" onClick={() => setOpen(!open)} aria-label="Menu">
+        <button
+          className="tap-target xl:hidden flex items-center justify-center rounded-md"
+          onClick={() => setOpen(!open)}
+          aria-label={open ? "Zavřít menu" : "Otevřít menu"}
+          aria-expanded={open}
+          aria-controls="mobile-nav-panel"
+        >
           {open ? <X /> : <Menu />}
         </button>
       </div>
       {open && (
-        <div className="xl:hidden border-t border-border bg-background">
-          <div className="container-page py-4 flex flex-col gap-3">
-            {NAV.map((n) => (
-              <a key={n.to} href={n.to} onClick={() => setOpen(false)} className="py-2 text-sm">
+        <div
+          id="mobile-nav-panel"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Hlavní navigace"
+          className="xl:hidden border-t border-border bg-background"
+        >
+          <div className="container-page py-4 flex flex-col gap-1">
+            {NAV.map((n, i) => (
+              <a
+                key={n.to}
+                href={n.to}
+                ref={i === 0 ? firstLinkRef : undefined}
+                onClick={() => setOpen(false)}
+                className="tap-target flex items-center rounded-md px-2 py-3 text-base"
+              >
                 {n.label}
               </a>
             ))}
-            <a href="tel:+420737008532" className="py-2 text-sm text-primary">+420 737 008 532</a>
-            <a href="/#kontakt" onClick={() => setOpen(false)} className="btn-primary">Objednat kontrolu</a>
+            <a
+              href="tel:+420737008532"
+              className="tap-target flex items-center px-2 py-3 text-base text-primary"
+            >
+              +420 737 008 532
+            </a>
+            <a
+              href="/#kontakt"
+              onClick={() => setOpen(false)}
+              className="btn-primary mt-2 justify-center"
+            >
+              Objednat kontrolu
+            </a>
           </div>
         </div>
       )}
