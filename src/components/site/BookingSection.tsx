@@ -43,7 +43,7 @@ const schema = z
     carUrl: z.string().trim().max(500).optional(),
     preferredDate: z.string().trim().optional(),
     attendance: z.string().optional(),
-    city: z.string().trim().min(2, { message: "Zadejte město (vyberte z našeptávače)" }).max(100),
+    city: z.string().trim().min(2, { message: "Zadejte město (vyberte z našeptavače)" }).max(100),
     cityPlaceId: z.string().optional(),
     postalCode: z
       .string()
@@ -56,7 +56,7 @@ const schema = z
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["city"],
-        message: "Vyberte město ze seznamu našeptávače",
+        message: "Vyberte město ze seznamu našeptavače",
       });
     }
   });
@@ -72,7 +72,7 @@ const normalize = (s: string) =>
 
 
 const FEATURES = [
-  "Nezávislá kontrola přes 100 bodů",
+  "Nezávislá technická kontrola vozu",
   "Report s fotodokumentací",
   "Přijedeme kamkoli po ČR",
 ];
