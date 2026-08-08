@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Check, AlertCircle, ArrowRight, Loader2, MapPin } from "lucide-react";
+import { Check, AlertCircle, ArrowRight, Loader2, MapPin, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -403,30 +403,73 @@ export function BookingSection() {
                 />
               </Field>
 
-              <div
-                aria-live="polite"
-                className="flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 px-4 py-3 text-sm font-semibold text-primary sm:col-span-2 lg:col-span-3"
-              >
-                <MapPin className="h-4 w-4 shrink-0" />
-                {priceLoading ? (
-                  <span className="inline-flex items-center gap-2">
-                    <Loader2 className="h-4 w-4 animate-spin" /> Počítám cenu dopravy…
-                  </span>
-                ) : !pscValid ? (
-                  <span className="text-muted-foreground">
-                    Zadejte město a PSČ pro výpočet konečné ceny
-                  </span>
-                ) : priceInfo?.ok && finalPrice ? (
-                  <span>
-                    Konečná cena včetně dopravy {czk(finalPrice)} Kč
-                    <span className="ml-2 font-normal text-muted-foreground">
-                      (doprava {czk(priceInfo.travelPrice ?? 0)} Kč · ~{priceInfo.distanceKm} km)
-                    </span>
-                  </span>
-                ) : (
-                  <span className="text-destructive">
-                    {priceInfo?.error ?? "Cenu dopravy se nepodařilo spočítat."}
-                  </span>
+              <div className="sm:col-span-2 lg:col-span-3">
+                <div
+                  aria-live="polite"
+                  className="rounded-2xl border border-border bg-card p-4"
+                >
+                  {priceLoading ? (
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Loader2 className="h-4 w-4 shrink-0 animate-spin" /> Počítám cenu dopravy…
+                    </div>
+                  ) : !pscValid ? (
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <MapPin className="h-4 w-4 shrink-0" />
+                      Zadejte město a PSČ pro výpočet konečné ceny
+                    </div>
+                  ) : priceInfo?.ok && finalPrice ? (
+                    <div>
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <p className="text-[15px] font-medium text-muted-foreground">Cena celkem</p>
+                          <p className="mt-0.5 text-[13px] text-muted-foreground">Včetně dopravy</p>
+                        </div>
+                        <p className="text-right text-[27px] font-bold leading-none text-primary">
+                          {czk(finalPrice)} Kč
+                        </p>
+                      </div>
+                      <div className="my-3 h-px bg-border" aria-hidden />
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between text-[14px]">
+                          <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+                            <Truck className="h-3.5 w-3.5 shrink-0" /> Doprava
+                          </span>
+                          <span className="font-medium text-foreground">
+                            {czk(priceInfo.travelPrice ?? 0)} Kč
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between text-[14px]">
+                          <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+                            <MapPin className="h-3.5 w-3.5 shrink-0" /> Vzdálenost
+                          </span>
+                          <span className="font-medium text-foreground">
+                            {Math.round(priceInfo.distanceKm ?? 0)} km
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2 text-sm text-destructive">
+                      <AlertCircle className="h-4 w-4 shrink-0" />
+                      {priceInfo?.error ?? "Cenu dopravy se nepodařilo spočítat."}
+                    </div>
+                  )}
+                </div>
+                {priceInfo?.ok && finalPrice && cityValue.trim() && (
+                  <p className="mt-2 text-center text-xs text-muted-foreground">
+                    Cena je spočítána pro {cityValue} ·{" "}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setValue("cityPlaceId", "");
+                        setValue("city", "", { shouldValidate: false });
+                        document.getElementById("city")?.focus();
+                      }}
+                      className="tap-target inline font-medium text-primary underline-offset-2 hover:underline"
+                    >
+                      Změnit
+                    </button>
+                  </p>
                 )}
               </div>
 
