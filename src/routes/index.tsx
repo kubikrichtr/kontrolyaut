@@ -156,11 +156,11 @@ function Hero() {
       <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 via-transparent to-primary/5" />
       <div className="absolute inset-0 hidden md:block bg-gradient-to-t from-background via-transparent to-background/40" />
       <div className="absolute inset-0 opacity-[0.05] bg-[radial-gradient(circle_at_1px_1px,_var(--primary)_1px,_transparent_0)] [background-size:24px_24px]" />
-      <div className="container-page relative py-24 md:py-32">
+      <div className="container-page relative py-16 md:py-32">
         <div className="max-w-2xl">
           <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-wider text-primary bg-primary/10 border border-primary/20 px-3 py-1.5 rounded-full">
             <ShieldCheck className="h-4 w-4 text-primary" />
-            Jistota při koupi vozu
+            Jistota před podpisem kupní smlouvy
           </span>
           <h1 className="mt-5 text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
             Kontrola ojetého vozu <span className="text-primary">před koupí</span>
@@ -174,7 +174,7 @@ function Hero() {
               Objednat kontrolu
             </a>
             <a href="#jak-probiha" className="btn-outline">
-              Jak kontrola probíhá
+              Jak to funguje
             </a>
           </div>
           <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
@@ -185,9 +185,15 @@ function Hero() {
               <CheckCircle2 className="h-4 w-4 text-primary" /> Protokol s fotografiemi
             </li>
             <li className="flex items-center gap-2">
+              <CheckCircle2 className="h-4 w-4 text-primary" /> Výjezd po celé ČR
+            </li>
+            <li className="flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-primary" /> Do 24 hodin
             </li>
           </ul>
+          <p className="mt-4 text-sm font-semibold text-foreground">
+            Cena od <span className="text-primary">2 490 Kč</span> vč. DPH + doprava
+          </p>
         </div>
       </div>
     </section>
@@ -219,12 +225,12 @@ function Benefits() {
     },
   ];
   return (
-    <section className="container-page py-20">
+    <section className="container-page py-16 md:py-20">
       <div className="text-center max-w-2xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold">Co pro Vás zkontrolujeme</h2>
         <p className="mt-3 text-muted-foreground">Přehled kontrolních bodů naší prohlídky</p>
       </div>
-      <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {items.map((it) => (
           <div
             key={it.title}
@@ -258,13 +264,36 @@ function HowItWorks() {
     },
   ];
   return (
-    <section id="jak-probiha" className="bg-muted/40 py-20">
+    <section id="jak-probiha" className="bg-muted/40 py-16 md:py-20">
       <div className="container-page">
         <div className="text-center max-w-2xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold">Jak kontrola probíhá?</h2>
           <p className="mt-3 text-muted-foreground">Jednoduchý proces ve čtyřech krocích.</p>
         </div>
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+
+        {/* Mobilní vertikální timeline */}
+        <ol className="mt-10 space-y-6 sm:hidden">
+          {steps.map((s, i) => (
+            <li key={s.title} className="relative flex gap-4 pl-1">
+              {i < steps.length - 1 && (
+                <span
+                  className="absolute left-[23px] top-12 bottom-[-24px] w-px bg-border"
+                  aria-hidden
+                />
+              )}
+              <span className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold">
+                {i + 1}
+              </span>
+              <div className="rounded-2xl border border-border bg-card p-4 flex-1">
+                <h3 className="font-semibold">{s.title}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">{s.text}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        {/* Desktop/tablet grid karet */}
+        <div className="mt-12 hidden sm:grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((s) => (
             <div
               key={s.title}
@@ -277,6 +306,12 @@ function HowItWorks() {
               <p className="mt-2 text-sm text-muted-foreground">{s.text}</p>
             </div>
           ))}
+        </div>
+
+        <div className="mt-10 text-center">
+          <a href="#kontakt" className="btn-primary">
+            Objednat kontrolu
+          </a>
         </div>
       </div>
     </section>
@@ -299,7 +334,7 @@ function Realized() {
   });
   if (!data || data.length === 0) return null;
   return (
-    <section id="reference" className="container-page py-20">
+    <section id="reference" className="container-page py-16 md:py-20">
       <div className="flex items-end justify-between gap-6 flex-wrap">
         <div>
           <span className="text-xs font-semibold tracking-wider uppercase text-primary">Reference</span>
@@ -357,7 +392,7 @@ function FAQ() {
   });
   const [open, setOpen] = useState<string | null>(null);
   return (
-    <section id="faq" className="container-page py-20">
+    <section id="faq" className="container-page py-16 md:py-20">
       <div className="text-center max-w-2xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold">Časté dotazy</h2>
         <p className="mt-3 text-muted-foreground">Vše, co potřebujete vědět o kontrole ojetého vozu.</p>
@@ -369,11 +404,12 @@ function FAQ() {
             <div key={f.id} className="rounded-2xl border border-border bg-card overflow-hidden">
               <button
                 onClick={() => setOpen(isOpen ? null : f.id)}
-                className="w-full text-left p-5 flex items-center justify-between gap-4 hover:bg-muted/40 transition"
+                aria-expanded={isOpen}
+                className="tap-target w-full text-left p-5 flex items-center justify-between gap-4 hover:bg-muted/40 transition"
               >
                 <span className="font-semibold">{f.question}</span>
                 <span
-                  className={`h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center transition-transform ${isOpen ? "rotate-45" : ""}`}
+                  className={`h-8 w-8 shrink-0 rounded-full bg-primary/10 text-primary flex items-center justify-center transition-transform ${isOpen ? "rotate-45" : ""}`}
                 >
                   +
                 </span>

@@ -6,6 +6,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "../components/site/SiteHeader";
 import { SiteFooter } from "../components/site/SiteFooter";
+import { MobileStickyCta } from "../components/site/MobileStickyCta";
 import { Toaster } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -108,10 +109,11 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <div className="flex min-h-screen flex-col bg-background">
         <SiteHeader />
-        <main className="flex-1">
+        <main className="flex-1 pb-20 md:pb-0">
           <Outlet />
         </main>
         <SiteFooter />
+        <MobileStickyCta />
       </div>
       <Toaster richColors position="top-center" />
     </QueryClientProvider>

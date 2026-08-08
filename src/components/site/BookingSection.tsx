@@ -359,6 +359,8 @@ export function BookingSection() {
               <Field label="Odkaz na inzerát (nepovinné)" id="carUrl" error={errors.carUrl?.message}>
                 <Input
                   id="carUrl"
+                  type="url"
+                  autoComplete="url"
                   placeholder="https://..."
                   className="h-12 rounded-lg border-border bg-background text-base sm:text-sm"
                   {...register("carUrl")}
