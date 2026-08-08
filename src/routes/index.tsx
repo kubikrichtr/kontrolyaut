@@ -191,9 +191,6 @@ function Hero() {
               <CheckCircle2 className="h-4 w-4 text-primary" /> Do 24 hodin
             </li>
           </ul>
-          <p className="mt-4 text-sm font-semibold text-foreground">
-            Cena od <span className="text-primary">2 490 Kč</span> vč. DPH + doprava
-          </p>
         </div>
       </div>
     </section>
