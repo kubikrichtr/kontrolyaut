@@ -215,7 +215,30 @@ function VehicleInspectionPage() {
       <section className="border-y border-border bg-muted/30 py-16 md:py-24">
         <div className="container-page">
           <h2 className="text-2xl font-bold md:text-3xl">Jak prověření vozidla probíhá</h2>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+
+          {/* Mobilní vertikální timeline */}
+          <ol className="mt-10 space-y-6 sm:hidden">
+            {STEPS.map((s, i) => (
+              <li key={s.title} className="relative flex gap-4 pl-1">
+                {i < STEPS.length - 1 && (
+                  <span
+                    className="absolute left-[23px] top-12 bottom-[-24px] w-px bg-border"
+                    aria-hidden
+                  />
+                )}
+                <span className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold">
+                  {i + 1}
+                </span>
+                <div className="rounded-2xl border border-border bg-card p-4 flex-1">
+                  <h3 className="font-semibold">{s.title}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{s.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+
+          {/* Desktop/tablet grid karet */}
+          <div className="mt-10 hidden sm:grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {STEPS.map((s) => (
               <div key={s.title} className="rounded-2xl border border-border bg-card p-6">
                 <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
@@ -225,6 +248,12 @@ function VehicleInspectionPage() {
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.text}</p>
               </div>
             ))}
+          </div>
+
+          <div className="mt-10 text-center">
+            <a href="/#kontakt" className="btn-primary">
+              Objednat prověření vozu
+            </a>
           </div>
         </div>
       </section>
