@@ -14,7 +14,7 @@ import heroWorkshop from "@/assets/hero-workshop.png.asset.json";
 
 const TITLE = "Prověření vozidla před koupí | Praha a celá ČR | KontrolyAut";
 const DESCRIPTION =
-  "Nezávislé prověření vozidla před koupí — historie, stav karoserie, motoru, podvozku i diagnostika elektroniky. Přes 100 kontrolních bodů, protokol s fotografiemi. Praha a celá ČR od 2 490 Kč.";
+  "Nezávislé prověření vozidla před koupí — historie, stav karoserie, motoru, podvozku i diagnostika elektroniky. Protokol s fotografiemi. Praha a celá ČR od 2 490 Kč.";
 const URL = "https://kontrolyaut.cz/provereni-vozidla";
 const IMAGE = `https://kontrolyaut.cz${heroWorkshop.url}`;
 
@@ -36,7 +36,7 @@ const FAQ = [
     a: "Ano. Přijedeme přímo na místo, kde je vůz k vidění — do autobazaru, servisu nebo k soukromému prodejci v Praze, Středočeském kraji i kdekoliv v ČR.",
   },
   {
-    q: "Poznáte při prověření vozidla stočený tachometr nebo havarovaný vůz?",
+    q: "Poznate při prověření vozidla stočený tachometr nebo havarovaný vůz?",
     a: "Ano, patří to k nejčastějším nálezům. Kombinujeme diagnostiku řídicích jednotek, kontrolu servisní historie, měření tloušťky laku a prohlídku podvozku, což spolehlivě odhalí stočený tachometr i neopravenou nebo špatně opravenou havárii.",
   },
   {
@@ -80,7 +80,7 @@ const CHECKS = [
 
 const STEPS = [
   { icon: Phone, title: "Konzultace a domluva", text: "Ozveme se vám, upřesníme vůz, místo a termín prohlídky." },
-  { icon: Car, title: "Prověření vozu na místě", text: "Přijedeme za vozem a projdeme přes 100 kontrolních bodů." },
+  { icon: Car, title: "Prověření vozu na místě", text: "Přijedeme za vozem a provedeme důkladnou technickou kontrolu." },
   { icon: CheckCircle2, title: "Vyhodnocení", text: "Ihned na místě sdělíme nálezy a reálnou hodnotu vozu." },
   { icon: Handshake, title: "Další postup", text: "Doporučíme koupit, vyjednat slevu, nebo od nákupu odstoupit." },
 ];
@@ -172,7 +172,7 @@ function VehicleInspectionPage() {
             </h1>
             <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
               Nezávislé prověření vozidla vám ukáže skutečný stav auta dřív, než za něj zaplatíte.
-              Projdeme přes 100 kontrolních bodů, odhalíme stočený tachometr, skryté havárie i drahé
+              Provedeme důkladnou technickou kontrolu, odhalíme stočený tachometr, skryté havárie i drahé
               závady a dostanete jasné doporučení, zda vůz koupit. Praha, Středočeský kraj i celá ČR
               od 2 490 Kč.
             </p>
@@ -247,7 +247,7 @@ function VehicleInspectionPage() {
             </div>
           </div>
           <div>
-            <h2 className="text-2xl font-bold md:text-3xl">Proč prověření vozidla vyplatí</h2>
+            <h2 className="text-2xl font-bold md:text-3xl">Proč prověření vozidla vyplátí</h2>
             <ul className="mt-4 space-y-3">
               {[
                 "Průměrná skrytá závada na ojetém voze stojí desítky tisíc korun.",
