@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://kontrolyaut.lovable.app/sitemap.xml
+Sitemap: https://kontrolyaut.cz/sitemap.xml
