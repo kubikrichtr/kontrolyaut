@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Check, AlertCircle, ArrowRight, Loader2, MapPin } from "lucide-react";
+import { Check, AlertCircle, ArrowRight, Loader2, MapPin, BatteryCharging } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -474,6 +474,30 @@ export function BookingSection() {
               </div>
             </form>
           )}
+        </div>
+
+        {/* Cross-promo: link to Stavbaterie.cz */}
+        <div className="mt-6 flex flex-col items-start justify-between gap-4 rounded-2xl border border-primary/30 bg-primary/5 p-5 sm:flex-row sm:items-center sm:p-6">
+          <div className="flex items-start gap-4">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <BatteryCharging className="h-5 w-5" />
+            </span>
+            <div>
+              <p className="font-semibold text-foreground">
+                Chcete znát skutečný stav baterie elektromobilu?
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Objednejte si nezávislé měření SOH baterie s certifikovaným reportem AVILOO na Stavbaterie.cz.
+              </p>
+            </div>
+          </div>
+          <a
+            href="https://stavbaterie.cz"
+            className="group inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-sm font-semibold text-primary hover:underline"
+          >
+            Zjistit stav baterie
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </a>
         </div>
       </div>
     </section>
