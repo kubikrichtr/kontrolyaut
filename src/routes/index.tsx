@@ -6,8 +6,6 @@ import { z } from "zod";
 import { ShieldCheck, Search, FileCheck, CheckCircle2, Wrench, Gauge, Phone, Car, Handshake } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { BookingSection } from "@/components/site/BookingSection";
-import { fetchRealizedInspections } from "@/lib/realized";
-
 import heroWorkshop from "@/assets/hero-workshop.png.asset.json";
 
 export const Route = createFileRoute("/")({
@@ -319,8 +317,17 @@ function HowItWorks() {
 
 function Realized() {
   const { data } = useQuery({
-    queryKey: ["realized", "cars-eu"],
-    queryFn: fetchRealizedInspections,
+    queryKey: ["realized"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("realized_inspections")
+        .select("*")
+        .eq("published", true)
+        .order("created_at", { ascending: false })
+        .limit(8);
+      if (error) throw error;
+      return data;
+    },
   });
   if (!data || data.length === 0) return null;
   return (
@@ -335,47 +342,38 @@ function Realized() {
         </p>
       </div>
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {data.map((r) => {
-          const image = r.images?.[0];
-          return (
-            <article
-              key={r.id}
-              className="group rounded-2xl overflow-hidden border border-border bg-card hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all"
-            >
-              <div className="aspect-[4/3] overflow-hidden bg-muted">
-                {image && (
-                  <img
-                    src={image}
-                    alt={`Kontrola vozu ${r.title}`}
-                    loading="lazy"
-                    className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                )}
+        {(data ?? []).map((r) => (
+          <article
+            key={r.id}
+            className="group rounded-2xl overflow-hidden border border-border bg-card hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all"
+          >
+            <div className="aspect-[4/3] overflow-hidden bg-muted">
+              {r.image_url && (
+                <img
+                  src={r.image_url}
+                  alt={r.title}
+                  className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              )}
+            </div>
+            <div className="p-5">
+              <h3 className="font-semibold line-clamp-2">{r.title}</h3>
+              <div className="mt-3 flex items-center justify-between">
+                <span className="text-xs text-muted-foreground">
+                  {r.car_brand} · {r.year ?? ""}
+                </span>
+                <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 text-primary text-xs font-bold px-2.5 py-1">
+                  {r.score}
+                  <span className="opacity-70 font-medium">{r.score_label}</span>
+                </span>
               </div>
-              <div className="p-5">
-                <h3 className="font-semibold line-clamp-2">{r.title}</h3>
-                {r.description && (
-                  <p className="mt-2 text-sm text-muted-foreground line-clamp-3">{r.description}</p>
-                )}
-                <div className="mt-3 flex items-center justify-between gap-2">
-                  <span className="text-xs text-muted-foreground">
-                    {r.customer_name ?? "Ověřený zákazník"}
-                  </span>
-                  {r.completed_at && (
-                    <span className="inline-flex items-center rounded-full bg-primary/10 text-primary text-xs font-semibold px-2.5 py-1">
-                      {new Date(r.completed_at).toLocaleDateString("cs-CZ")}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </article>
-          );
-        })}
+            </div>
+          </article>
+        ))}
       </div>
     </section>
   );
 }
-
 
 
 
