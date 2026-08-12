@@ -136,6 +136,7 @@ function HomePage() {
       <Benefits />
       <HowItWorks />
       <Realized />
+      <Testimonials />
       <BookingSection />
       <FAQ />
     </>
