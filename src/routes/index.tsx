@@ -332,7 +332,7 @@ function Realized() {
   });
   if (!data || data.length === 0) return null;
   return (
-    <section id="reference" className="container-page py-16 md:py-20">
+    <section className="container-page py-16 md:py-20">
       <div className="flex items-end justify-between gap-6 flex-wrap">
         <div>
           <span className="text-xs font-semibold tracking-wider uppercase text-primary">Reference</span>
