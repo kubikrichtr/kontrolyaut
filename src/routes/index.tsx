@@ -376,7 +376,59 @@ function Realized() {
   );
 }
 
+const TESTIMONIALS = [
+  {
+    quote:
+      "Děkuji moc pánovi Doubkovi za rychlé vyřízení moji žádosti a za krásné a detailní zkontrolovaní vozidla. Všem doporučuji.",
+    name: "Tobias S.",
+    city: "Lovosice",
+    car: "Škoda Octavia 1.5 TSi DSG",
+  },
+  {
+    quote:
+      "Rychlá reakce, profesionální přístup a informace nám výrazně pomohli při rozhodování. Znalosti a dovednosti naprosto profesionální. Děkujeme",
+    name: "Jaroslav Z.",
+    city: "Praha",
+    car: "Škoda Octavia 1.5 TSi",
+  },
+];
 
+function Testimonials() {
+  return (
+    <section id="reference" className="bg-muted/40 py-16 md:py-20">
+      <div className="container-page">
+        <div className="text-center max-w-2xl mx-auto">
+          <span className="text-xs font-semibold tracking-wider uppercase text-primary">Reference</span>
+          <h2 className="mt-2 text-3xl md:text-4xl font-bold">Co říkají naši klienti</h2>
+          <p className="mt-3 text-muted-foreground">
+            Hodnocení spokojených klientů, kteří využili našich služeb.
+          </p>
+        </div>
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 max-w-4xl mx-auto">
+          {TESTIMONIALS.map((t) => (
+            <figure
+              key={t.name}
+              className="rounded-2xl border border-border bg-card p-6 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all"
+            >
+              <div className="flex gap-1 text-primary" aria-hidden>
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="h-4 w-4 fill-current" />
+                ))}
+              </div>
+              <blockquote className="mt-4 text-sm text-muted-foreground">„{t.quote}“</blockquote>
+              <figcaption className="mt-5 border-t border-border pt-4">
+                <span className="block font-semibold">{t.name}</span>
+                <span className="block text-xs text-muted-foreground">
+                  {t.city} · {t.car}
+                </span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 
 function FAQ() {
