@@ -316,119 +316,126 @@ function HowItWorks() {
   );
 }
 
+function Stars({ count = 5 }: { count?: number }) {
+  return (
+    <div className="flex gap-0.5 text-primary" aria-hidden>
+      {Array.from({ length: count }).map((_, i) => (
+        <Star key={i} className="h-4 w-4 fill-current" />
+      ))}
+    </div>
+  );
+}
+
 function Realized() {
+  const [showAll, setShowAll] = useState(false);
   const { data } = useQuery({
-    queryKey: ["realized"],
+    queryKey: ["carseu-reviews"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("realized_inspections")
-        .select("*")
-        .eq("published", true)
-        .order("created_at", { ascending: false })
-        .limit(8);
+      const { data, error } = await carsEu
+        .from("reviews")
+        .select("id,customer_name,customer_location,car_name,rating,text,images,created_at")
+        .eq("show_on_kontrolyaut", true)
+        .eq("is_approved", true)
+        .order("created_at", { ascending: false });
       if (error) throw error;
-      return data;
+      return (data ?? []) as CarsEuReview[];
     },
   });
+
   if (!data || data.length === 0) return null;
+
+  const withPhoto = data.filter((r) => (r.images?.length ?? 0) > 0);
+  const withoutPhoto = data.filter((r) => (r.images?.length ?? 0) === 0);
+  const visible = showAll ? withPhoto : withPhoto.slice(0, 8);
+
   return (
-    <section className="container-page py-16 md:py-20">
-      <div className="flex items-end justify-between gap-6 flex-wrap">
-        <div>
-          <span className="text-xs font-semibold tracking-wider uppercase text-primary">Reference</span>
-          <h2 className="mt-2 text-3xl md:text-4xl font-bold">Realizované kontroly</h2>
-        </div>
-        <p className="text-muted-foreground max-w-md">
-          Vybíráme z posledních prověřených vozů. Každý zákazník obdržel detailní protokol.
-        </p>
-      </div>
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {(data ?? []).map((r) => (
-          <article
-            key={r.id}
-            className="group rounded-2xl overflow-hidden border border-border bg-card hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all"
-          >
-            <div className="aspect-[4/3] overflow-hidden bg-muted">
-              {r.image_url && (
-                <img
-                  src={r.image_url}
-                  alt={r.title}
-                  className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              )}
+    <>
+      {withPhoto.length > 0 && (
+        <section className="container-page py-16 md:py-20">
+          <div className="text-center max-w-2xl mx-auto">
+            <span className="text-xs font-semibold tracking-wider uppercase text-primary">Portfolio</span>
+            <h2 className="mt-2 text-3xl md:text-4xl font-bold">Realizované kontroly</h2>
+            <p className="mt-3 text-muted-foreground">
+              Vybrané vozy, které jsme prověřili a pomohli klientům s jejich koupí.
+            </p>
+          </div>
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {visible.map((r) => (
+              <article
+                key={r.id}
+                className="group flex flex-col rounded-2xl overflow-hidden border border-border bg-card hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all"
+              >
+                <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+                  <img
+                    src={r.images![0]}
+                    alt={r.car_name ?? "Realizovaná kontrola vozu"}
+                    loading="lazy"
+                    className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <span className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-primary text-primary-foreground text-xs font-bold px-2.5 py-1 shadow">
+                    <Star className="h-3 w-3 fill-current" />
+                    {r.rating ?? 5}
+                  </span>
+                </div>
+                <div className="p-5 flex flex-col gap-2">
+                  <h3 className="font-semibold">{r.car_name}</h3>
+                  <p className="text-sm text-muted-foreground line-clamp-3">{r.text}</p>
+                  <span className="mt-1 text-xs text-muted-foreground">
+                    {r.customer_name}
+                    {r.customer_location ? ` · ${r.customer_location}` : ""}
+                  </span>
+                </div>
+              </article>
+            ))}
+          </div>
+          {withPhoto.length > 8 && (
+            <div className="mt-10 text-center">
+              <button onClick={() => setShowAll(!showAll)} className="btn-outline">
+                {showAll ? "Zobrazit méně" : `Zobrazit všechny kontroly (${withPhoto.length})`}
+              </button>
             </div>
-            <div className="p-5">
-              <h3 className="font-semibold line-clamp-2">{r.title}</h3>
-              <div className="mt-3 flex items-center justify-between">
-                <span className="text-xs text-muted-foreground">
-                  {r.car_brand} · {r.year ?? ""}
-                </span>
-                <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 text-primary text-xs font-bold px-2.5 py-1">
-                  {r.score}
-                  <span className="opacity-70 font-medium">{r.score_label}</span>
-                </span>
-              </div>
+          )}
+        </section>
+      )}
+
+      {withoutPhoto.length > 0 && (
+        <section id="reference" className="bg-muted/40 py-16 md:py-20">
+          <div className="container-page">
+            <div className="text-center max-w-2xl mx-auto">
+              <span className="text-xs font-semibold tracking-wider uppercase text-primary">Reference</span>
+              <h2 className="mt-2 text-3xl md:text-4xl font-bold">Co říkají naši klienti</h2>
+              <p className="mt-3 text-muted-foreground">
+                Hodnocení spokojených klientů, kteří využili našich služeb.
+              </p>
             </div>
-          </article>
-        ))}
-      </div>
-    </section>
+            <div className="mt-10 grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
+              {withoutPhoto.map((r) => (
+                <figure
+                  key={r.id}
+                  className="relative rounded-2xl border border-border bg-card p-6 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all"
+                >
+                  <Quote className="absolute right-5 top-5 h-8 w-8 text-primary/15" aria-hidden />
+                  <Stars count={r.rating ?? 5} />
+                  <blockquote className="mt-4 text-sm text-muted-foreground">„{r.text}“</blockquote>
+                  <figcaption className="mt-5 flex items-end justify-between gap-4 border-t border-border pt-4">
+                    <span>
+                      <span className="block font-semibold">{r.customer_name}</span>
+                      {r.customer_location && (
+                        <span className="block text-xs text-muted-foreground">{r.customer_location}</span>
+                      )}
+                    </span>
+                    {r.car_name && <span className="text-xs font-medium text-primary">{r.car_name}</span>}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+    </>
   );
 }
 
-const TESTIMONIALS = [
-  {
-    quote:
-      "Děkuji moc pánovi Doubkovi za rychlé vyřízení moji žádosti a za krásné a detailní zkontrolovaní vozidla. Všem doporučuji.",
-    name: "Tobias S.",
-    city: "Lovosice",
-    car: "Škoda Octavia 1.5 TSi DSG",
-  },
-  {
-    quote:
-      "Rychlá reakce, profesionální přístup a informace nám výrazně pomohli při rozhodování. Znalosti a dovednosti naprosto profesionální. Děkujeme",
-    name: "Jaroslav Z.",
-    city: "Praha",
-    car: "Škoda Octavia 1.5 TSi",
-  },
-];
-
-function Testimonials() {
-  return (
-    <section id="reference" className="bg-muted/40 py-16 md:py-20">
-      <div className="container-page">
-        <div className="text-center max-w-2xl mx-auto">
-          <span className="text-xs font-semibold tracking-wider uppercase text-primary">Reference</span>
-          <h2 className="mt-2 text-3xl md:text-4xl font-bold">Co říkají naši klienti</h2>
-          <p className="mt-3 text-muted-foreground">
-            Hodnocení spokojených klientů, kteří využili našich služeb.
-          </p>
-        </div>
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 max-w-4xl mx-auto">
-          {TESTIMONIALS.map((t) => (
-            <figure
-              key={t.name}
-              className="rounded-2xl border border-border bg-card p-6 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all"
-            >
-              <div className="flex gap-1 text-primary" aria-hidden>
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-current" />
-                ))}
-              </div>
-              <blockquote className="mt-4 text-sm text-muted-foreground">„{t.quote}“</blockquote>
-              <figcaption className="mt-5 border-t border-border pt-4">
-                <span className="block font-semibold">{t.name}</span>
-                <span className="block text-xs text-muted-foreground">
-                  {t.city} · {t.car}
-                </span>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 
 function FAQ() {
