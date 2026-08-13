@@ -11,7 +11,7 @@ import heroWorkshop from "@/assets/hero-workshop.png.asset.json";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Montrola ojetých vozů před koupí | KontrolyAut" },
+      { title: "Kontrola ojetých vozů před koupí | KontrolyAut" },
       {
         name: "description",
         content:
@@ -163,7 +163,7 @@ function Hero() {
             Jistota před podpisem kupní smlouvy
           </span>
           <h1 className="mt-5 text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-            Montrola ojetého vozu <span className="text-primary">před koupí</span>
+            Kontrola ojetého vozu <span className="text-primary">před koupí</span>
           </h1>
           <p className="mt-5 text-lg text-muted-foreground max-w-xl">
             Zajišťujeme nezávislou kontrolu osobních i užitkových vozů před koupí. Díky tomu předejdete zbytečným
