@@ -152,9 +152,9 @@ function Hero() {
         style={{ backgroundImage: `url(${heroWorkshop.url})` }}
         aria-hidden
       />
-      {/* modro-bílý brand overlay ve stylu Cars-eu / Stavbaterie - snížená průhlednost pravé strany o 30 % */}
-      <div className="absolute inset-0 bg-background/85 sm:bg-background/65 md:bg-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/75 to-accent/90 md:bg-gradient-to-r md:from-background md:via-background/95 md:to-accent/60" />
+      {/* modro-bílý brand overlay ve stylu Cars-eu / Stavbaterie */}
+      <div className="absolute inset-0 bg-background/55 sm:bg-background/35 md:bg-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/75 to-accent/60 md:bg-gradient-to-r md:from-background md:via-background/85 md:to-accent/30" />
       <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 via-transparent to-primary/5" />
       <div className="absolute inset-0 hidden md:block bg-gradient-to-t from-background via-transparent to-background/40" />
       <div className="absolute inset-0 opacity-[0.05] bg-[radial-gradient(circle_at_1px_1px,_var(--primary)_1px,_transparent_0)] [background-size:24px_24px]" />
