@@ -413,7 +413,7 @@ function Lightbox({
         <img
           src={item.src}
           alt={item.car ?? "Realizovaná kontrola vozu"}
-          className="mx-auto max-h-[78vh] w-auto rounded-xl object-contain"
+          className="mx-auto max-h-[64vh] md:max-h-[70vh] w-auto rounded-xl object-contain"
         />
         <figcaption className="mt-4 text-center text-sm text-background">
           {item.car}
@@ -422,6 +422,20 @@ function Lightbox({
             {index + 1}/{items.length}
           </span>
         </figcaption>
+        <div className="mt-4 flex gap-2 overflow-x-auto justify-start md:justify-center pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {items.map((it, i) => (
+            <button
+              key={`${it.src}-${i}`}
+              onClick={() => onIndex(i)}
+              aria-label={`Fotka ${i + 1}`}
+              className={`shrink-0 h-14 w-20 overflow-hidden rounded-lg border-2 transition ${
+                i === index ? "border-primary opacity-100" : "border-transparent opacity-60 hover:opacity-100"
+              }`}
+            >
+              <img src={it.src} alt="" loading="lazy" className="h-full w-full object-cover" />
+            </button>
+          ))}
+        </div>
       </figure>
     </div>
   );
