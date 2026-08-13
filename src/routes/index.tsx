@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { ShieldCheck, Search, FileCheck, CheckCircle2, Wrench, Gauge, Phone, Car, Handshake, Star, Quote } from "lucide-react";
+import { ShieldCheck, Search, FileCheck, CheckCircle2, Wrench, Gauge, Phone, Car, Handshake, Star, Quote, X, ChevronLeft, ChevronRight, Image as ImageIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { carsEu, type CarsEuReview } from "@/lib/cars-eu-client";
 import { BookingSection } from "@/components/site/BookingSection";
@@ -327,8 +327,95 @@ function Stars({ count = 5 }: { count?: number }) {
   );
 }
 
+type LightboxItem = { src: string; car: string | null; customer: string | null };
+
+function Lightbox({
+  items,
+  index,
+  onClose,
+  onIndex,
+}: {
+  items: LightboxItem[];
+  index: number;
+  onClose: () => void;
+  onIndex: (i: number) => void;
+}) {
+  const prev = () => onIndex((index - 1 + items.length) % items.length);
+  const next = () => onIndex((index + 1) % items.length);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") next();
+    };
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [index, items.length]);
+
+  const item = items[index];
+  if (!item) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-foreground/90 p-4"
+      role="dialog"
+      aria-modal="true"
+      onClick={onClose}
+    >
+      <button
+        onClick={onClose}
+        aria-label="Zavřít"
+        className="absolute right-4 top-4 h-11 w-11 rounded-full bg-background/90 text-foreground flex items-center justify-center hover:bg-background transition"
+      >
+        <X className="h-5 w-5" />
+      </button>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          prev();
+        }}
+        aria-label="Předchozí fotka"
+        className="absolute left-3 md:left-6 h-11 w-11 rounded-full bg-background/90 text-foreground flex items-center justify-center hover:bg-background transition"
+      >
+        <ChevronLeft className="h-5 w-5" />
+      </button>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          next();
+        }}
+        aria-label="Další fotka"
+        className="absolute right-3 md:right-6 h-11 w-11 rounded-full bg-background/90 text-foreground flex items-center justify-center hover:bg-background transition"
+      >
+        <ChevronRight className="h-5 w-5" />
+      </button>
+
+      <figure className="max-w-5xl w-full" onClick={(e) => e.stopPropagation()}>
+        <img
+          src={item.src}
+          alt={item.car ?? "Realizovaná kontrola vozu"}
+          className="mx-auto max-h-[78vh] w-auto rounded-xl object-contain"
+        />
+        <figcaption className="mt-4 text-center text-sm text-background">
+          {item.car}
+          {item.customer ? ` · ${item.customer}` : ""}
+          <span className="ml-2 opacity-70">
+            {index + 1}/{items.length}
+          </span>
+        </figcaption>
+      </figure>
+    </div>
+  );
+}
+
 function Realized() {
-  const [showAll, setShowAll] = useState(false);
+  const [lightbox, setLightbox] = useState<number | null>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const { data } = useQuery({
     queryKey: ["carseu-reviews"],
     queryFn: async () => {
@@ -347,54 +434,108 @@ function Realized() {
 
   const withPhoto = data.filter((r) => (r.images?.length ?? 0) > 0);
   const withoutPhoto = data.filter((r) => (r.images?.length ?? 0) === 0);
-  const visible = showAll ? withPhoto : withPhoto.slice(0, 8);
+
+  const photos: LightboxItem[] = withPhoto.flatMap((r) =>
+    (r.images ?? []).map((src) => ({
+      src,
+      car: r.car_name,
+      customer: r.customer_name
+        ? `${r.customer_name}${r.customer_location ? ` · ${r.customer_location}` : ""}`
+        : null,
+    })),
+  );
+  const firstPhotoIndex = (rid: string) => {
+    let i = 0;
+    for (const r of withPhoto) {
+      if (r.id === rid) return i;
+      i += r.images?.length ?? 0;
+    }
+    return 0;
+  };
+
+  const scrollBy = (dir: 1 | -1) => {
+    const el = trackRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * Math.max(280, el.clientWidth * 0.8), behavior: "smooth" });
+  };
 
   return (
     <>
       {withPhoto.length > 0 && (
-        <section className="container-page py-16 md:py-20">
-          <div className="text-center max-w-2xl mx-auto">
-            <span className="text-xs font-semibold tracking-wider uppercase text-primary">Portfolio</span>
-            <h2 className="mt-2 text-3xl md:text-4xl font-bold">Realizované kontroly</h2>
-            <p className="mt-3 text-muted-foreground">
-              Vybrané vozy, které jsme prověřili a pomohli klientům s jejich koupí.
-            </p>
-          </div>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {visible.map((r) => (
-              <article
-                key={r.id}
-                className="group flex flex-col rounded-2xl overflow-hidden border border-border bg-card hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all"
-              >
-                <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-                  <img
-                    src={r.images![0]}
-                    alt={r.car_name ?? "Realizovaná kontrola vozu"}
-                    loading="lazy"
-                    className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <span className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-primary text-primary-foreground text-xs font-bold px-2.5 py-1 shadow">
-                    <Star className="h-3 w-3 fill-current" />
-                    {r.rating ?? 5}
-                  </span>
-                </div>
-                <div className="p-5 flex flex-col gap-2">
-                  <h3 className="font-semibold">{r.car_name}</h3>
-                  <p className="text-sm text-muted-foreground line-clamp-3">{r.text}</p>
-                  <span className="mt-1 text-xs text-muted-foreground">
-                    {r.customer_name}
-                    {r.customer_location ? ` · ${r.customer_location}` : ""}
-                  </span>
-                </div>
-              </article>
-            ))}
-          </div>
-          {withPhoto.length > 8 && (
-            <div className="mt-10 text-center">
-              <button onClick={() => setShowAll(!showAll)} className="btn-outline">
-                {showAll ? "Zobrazit méně" : `Zobrazit všechny kontroly (${withPhoto.length})`}
-              </button>
+        <section className="py-16 md:py-20">
+          <div className="container-page">
+            <div className="text-center max-w-2xl mx-auto">
+              <span className="text-xs font-semibold tracking-wider uppercase text-primary">Portfolio</span>
+              <h2 className="mt-2 text-3xl md:text-4xl font-bold">Realizované kontroly</h2>
+              <p className="mt-3 text-muted-foreground">
+                Vybrané vozy, které jsme prověřili a pomohli klientům s jejich koupí.
+              </p>
             </div>
+
+            <div className="relative mt-10">
+              <button
+                onClick={() => scrollBy(-1)}
+                aria-label="Posunout doleva"
+                className="hidden md:flex absolute -left-4 top-1/2 -translate-y-1/2 z-10 h-11 w-11 rounded-full border border-border bg-card shadow items-center justify-center hover:border-primary/40 transition"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+              <button
+                onClick={() => scrollBy(1)}
+                aria-label="Posunout doprava"
+                className="hidden md:flex absolute -right-4 top-1/2 -translate-y-1/2 z-10 h-11 w-11 rounded-full border border-border bg-card shadow items-center justify-center hover:border-primary/40 transition"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+
+              <div
+                ref={trackRef}
+                className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-4 px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              >
+                {withPhoto.map((r) => (
+                  <article
+                    key={r.id}
+                    className="group snap-start shrink-0 w-[80%] sm:w-[48%] lg:w-[calc((100%-3rem)/3)] xl:w-[calc((100%-4.5rem)/4)] flex flex-col rounded-2xl overflow-hidden border border-border bg-card hover:shadow-xl hover:shadow-primary/5 transition-all"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setLightbox(firstPhotoIndex(r.id))}
+                      className="relative aspect-[4/3] overflow-hidden bg-muted text-left"
+                      aria-label={`Zvětšit fotky – ${r.car_name ?? "kontrola vozu"}`}
+                    >
+                      <img
+                        src={r.images![0]}
+                        alt={r.car_name ?? "Realizovaná kontrola vozu"}
+                        loading="lazy"
+                        className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <span className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-primary text-primary-foreground text-xs font-bold px-2.5 py-1 shadow">
+                        <Star className="h-3 w-3 fill-current" />
+                        {r.rating ?? 5}
+                      </span>
+                      {(r.images?.length ?? 0) > 1 && (
+                        <span className="absolute bottom-3 left-3 inline-flex items-center gap-1 rounded-full bg-background/90 text-foreground text-xs font-medium px-2.5 py-1">
+                          <ImageIcon className="h-3 w-3" />
+                          {r.images!.length}
+                        </span>
+                      )}
+                    </button>
+                    <div className="p-5 flex flex-col gap-2">
+                      <h3 className="font-semibold">{r.car_name}</h3>
+                      <p className="text-sm text-muted-foreground line-clamp-3">{r.text}</p>
+                      <span className="mt-1 text-xs text-muted-foreground">
+                        {r.customer_name}
+                        {r.customer_location ? ` · ${r.customer_location}` : ""}
+                      </span>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {lightbox !== null && (
+            <Lightbox items={photos} index={lightbox} onClose={() => setLightbox(null)} onIndex={setLightbox} />
           )}
         </section>
       )}
