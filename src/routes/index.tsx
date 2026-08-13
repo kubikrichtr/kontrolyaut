@@ -357,6 +357,8 @@ function Lightbox({
     };
   }, [index, items.length]);
 
+  const touchX = useRef<number | null>(null);
+
   const item = items[index];
   if (!item) return null;
 
@@ -366,6 +368,18 @@ function Lightbox({
       role="dialog"
       aria-modal="true"
       onClick={onClose}
+      onTouchStart={(e) => {
+        touchX.current = e.touches[0]?.clientX ?? null;
+      }}
+      onTouchEnd={(e) => {
+        const start = touchX.current;
+        const end = e.changedTouches[0]?.clientX;
+        touchX.current = null;
+        if (start == null || end == null) return;
+        if (Math.abs(end - start) < 40) return;
+        if (end < start) next();
+        else prev();
+      }}
     >
       <button
         onClick={onClose}
