@@ -567,8 +567,23 @@ function Realized() {
                   </article>
                 ))}
               </div>
+
+              <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+                {withPhoto.map((r, i) => (
+                  <button
+                    key={r.id}
+                    onClick={() => goTo(i)}
+                    aria-label={`Přejít na kontrolu ${i + 1}`}
+                    aria-current={i === active}
+                    className={`h-2 rounded-full transition-all ${
+                      i === active ? "w-6 bg-primary" : "w-2 bg-border hover:bg-primary/40"
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
+
 
           {lightbox !== null && (
             <Lightbox items={photos} index={lightbox} onClose={() => setLightbox(null)} onIndex={setLightbox} />
