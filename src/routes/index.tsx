@@ -357,6 +357,8 @@ function Lightbox({
     };
   }, [index, items.length]);
 
+  const touchX = useRef<number | null>(null);
+
   const item = items[index];
   if (!item) return null;
 
@@ -366,6 +368,18 @@ function Lightbox({
       role="dialog"
       aria-modal="true"
       onClick={onClose}
+      onTouchStart={(e) => {
+        touchX.current = e.touches[0]?.clientX ?? null;
+      }}
+      onTouchEnd={(e) => {
+        const start = touchX.current;
+        const end = e.changedTouches[0]?.clientX;
+        touchX.current = null;
+        if (start == null || end == null) return;
+        if (Math.abs(end - start) < 40) return;
+        if (end < start) next();
+        else prev();
+      }}
     >
       <button
         onClick={onClose}
@@ -399,7 +413,7 @@ function Lightbox({
         <img
           src={item.src}
           alt={item.car ?? "Realizovaná kontrola vozu"}
-          className="mx-auto max-h-[78vh] w-auto rounded-xl object-contain"
+          className="mx-auto max-h-[64vh] md:max-h-[70vh] w-auto rounded-xl object-contain"
         />
         <figcaption className="mt-4 text-center text-sm text-background">
           {item.car}
@@ -408,6 +422,20 @@ function Lightbox({
             {index + 1}/{items.length}
           </span>
         </figcaption>
+        <div className="mt-4 flex gap-2 overflow-x-auto justify-start md:justify-center pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {items.map((it, i) => (
+            <button
+              key={`${it.src}-${i}`}
+              onClick={() => onIndex(i)}
+              aria-label={`Fotka ${i + 1}`}
+              className={`shrink-0 h-14 w-20 overflow-hidden rounded-lg border-2 transition ${
+                i === index ? "border-primary opacity-100" : "border-transparent opacity-60 hover:opacity-100"
+              }`}
+            >
+              <img src={it.src} alt="" loading="lazy" className="h-full w-full object-cover" />
+            </button>
+          ))}
+        </div>
       </figure>
     </div>
   );
@@ -415,7 +443,29 @@ function Lightbox({
 
 function Realized() {
   const [lightbox, setLightbox] = useState<number | null>(null);
+  const [active, setActive] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const card = el.firstElementChild as HTMLElement | null;
+      if (!card) return;
+      const step = card.offsetWidth + 24;
+      setActive(Math.round(el.scrollLeft / step));
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const goTo = (i: number) => {
+    const el = trackRef.current;
+    const card = el?.firstElementChild as HTMLElement | null;
+    if (!el || !card) return;
+    el.scrollTo({ left: i * (card.offsetWidth + 24), behavior: "smooth" });
+  };
+
   const { data } = useQuery({
     queryKey: ["carseu-reviews"],
     queryFn: async () => {
@@ -531,8 +581,23 @@ function Realized() {
                   </article>
                 ))}
               </div>
+
+              <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+                {withPhoto.map((r, i) => (
+                  <button
+                    key={r.id}
+                    onClick={() => goTo(i)}
+                    aria-label={`Přejít na kontrolu ${i + 1}`}
+                    aria-current={i === active}
+                    className={`h-2 rounded-full transition-all ${
+                      i === active ? "w-6 bg-primary" : "w-2 bg-border hover:bg-primary/40"
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
+
 
           {lightbox !== null && (
             <Lightbox items={photos} index={lightbox} onClose={() => setLightbox(null)} onIndex={setLightbox} />
