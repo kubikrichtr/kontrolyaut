@@ -17,7 +17,7 @@ export const Route = createFileRoute("/")({
         content:
           "Nezávislá technická kontrola ojetých vozů před koupí. Protokol s fotografiemi, po celé ČR.",
       },
-      { property: "og:title", content: "Kontrola ojetých vozů před koupí | KontrolyAut" },
+      { property: "og:title", content: "Montrola ojetých vozů před koupí | KontrolyAut" },
       {
         property: "og:description",
         content:
