@@ -429,7 +429,29 @@ function Lightbox({
 
 function Realized() {
   const [lightbox, setLightbox] = useState<number | null>(null);
+  const [active, setActive] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const card = el.firstElementChild as HTMLElement | null;
+      if (!card) return;
+      const step = card.offsetWidth + 24;
+      setActive(Math.round(el.scrollLeft / step));
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const goTo = (i: number) => {
+    const el = trackRef.current;
+    const card = el?.firstElementChild as HTMLElement | null;
+    if (!el || !card) return;
+    el.scrollTo({ left: i * (card.offsetWidth + 24), behavior: "smooth" });
+  };
+
   const { data } = useQuery({
     queryKey: ["carseu-reviews"],
     queryFn: async () => {
