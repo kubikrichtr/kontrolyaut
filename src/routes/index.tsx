@@ -11,7 +11,7 @@ import heroWorkshop from "@/assets/hero-workshop.png.asset.json";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Kontrola ojetých vozů před koupí | KontrolyAut" },
+      { title: "Montrola ojetých vozů před koupí | KontrolyAut" },
       {
         name: "description",
         content:
