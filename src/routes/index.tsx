@@ -17,7 +17,7 @@ export const Route = createFileRoute("/")({
         content:
           "Nezávislá technická kontrola ojetých vozů před koupí. Protokol s fotografiemi, po celé ČR.",
       },
-      { property: "og:title", content: "Montrola ojetých vozů před koupí | KontrolyAut" },
+      { property: "og:title", content: "M ojetých vozů před koupí | KontrolyAut" },
       {
         property: "og:description",
         content:
@@ -163,7 +163,7 @@ function Hero() {
             Jistota před podpisem kupní smlouvy
           </span>
           <h1 className="mt-5 text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-            Kontrola ojetého vozu <span className="text-primary">před koupí</span>
+            Montrola ojetého vozu <span className="text-primary">před koupí</span>
           </h1>
           <p className="mt-5 text-lg text-muted-foreground max-w-xl">
             Zajišťujeme nezávislou kontrolu osobních i užitkových vozů před koupí. Díky tomu předejdete zbytečným
