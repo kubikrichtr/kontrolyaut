@@ -148,38 +148,34 @@ function Hero() {
   return (
     <section className="relative overflow-hidden bg-background">
       <div
-        className="absolute inset-0 bg-cover bg-no-repeat bg-[position:78%_center] sm:bg-right md:bg-center contrast-[1.3] brightness-[1.05]"
+        className="absolute inset-0 bg-cover bg-no-repeat bg-[position:78%_center] sm:bg-right md:bg-center opacity-60"
         style={{ backgroundImage: `url(${heroWorkshop.url})` }}
         aria-hidden
       />
-      {/* modro-bílý brand overlay ve stylu Cars-eu / Stavbaterie */}
-      <div className="absolute inset-0 bg-background/55 sm:bg-background/35 md:bg-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/75 to-transparent md:bg-gradient-to-r md:from-background md:via-background/85 md:to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 via-transparent to-primary/5" />
-      <div className="absolute inset-0 hidden md:block bg-gradient-to-t from-background via-transparent to-background/40" />
-      <div className="absolute inset-0 opacity-[0.05] bg-[radial-gradient(circle_at_1px_1px,_var(--primary)_1px,_transparent_0)] [background-size:24px_24px]" />
+      {/* levý gradient pouze za textem – auto na pravé straně zůstává bez překrytí */}
+      <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/70 to-transparent sm:from-background/85 sm:via-background/60 sm:to-transparent md:from-background/75 md:via-background/45 md:to-transparent" />
       <div className="container-page relative py-16 md:py-32">
         <div className="max-w-2xl">
           <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-wider text-primary bg-primary/10 border border-primary/20 px-3 py-2 rounded-full">
             <ShieldCheck className="h-4 w-4 text-primary" />
             Jistota při koupi vozu
           </span>
-          <h1 className="mt-5 text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+          <h1 className="mt-5 text-4xl md:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-sm">
             Kontrola ojetého vozu <span className="text-primary">před koupí</span>
           </h1>
-          <p className="mt-5 text-lg text-muted-foreground max-w-xl">
+          <p className="mt-5 text-lg text-foreground/90 max-w-xl drop-shadow-sm">
             Zajišťujeme nezávislou kontrolu osobních i užitkových vozů před koupí. Díky tomu předejdete zbytečným
             výdajům a nepříjemným překvapením po nákupu vozu.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href="#kontakt" className="btn-primary">
+            <a href="#kontakt" className="btn-primary shadow-lg">
               Objednat kontrolu
             </a>
-            <a href="#jak-probiha" className="btn-outline">
+            <a href="#jak-probiha" className="btn-outline shadow-sm bg-background/90 backdrop-blur-sm">
               Jak to funguje
             </a>
           </div>
-          <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
+          <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-foreground/80">
             <li className="flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4 text-primary" /> Nezávislé posouzení
             </li>
