@@ -148,12 +148,12 @@ function Hero() {
   return (
     <section className="relative overflow-hidden bg-background">
       <div
-        className="absolute inset-0 bg-cover bg-no-repeat bg-[position:78%_center] sm:bg-right md:bg-center opacity-80"
+        className="absolute inset-0 bg-cover bg-no-repeat bg-[position:78%_center] sm:bg-right md:bg-center opacity-90"
         style={{ backgroundImage: `url(${heroWorkshop.url})` }}
         aria-hidden
       />
       {/* levý gradient pouze za textem – auto na pravé straně zůstává bez překrytí */}
-      <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/80 to-transparent sm:from-background/90 sm:via-background/70 sm:to-transparent md:from-background/85 md:via-background/55 md:to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/80 to-transparent sm:from-background/90 sm:via-background/75 sm:to-transparent md:from-background/90 md:via-background/65 md:to-transparent" />
       <div className="container-page relative py-16 md:py-32">
         <div className="max-w-2xl">
           <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-wider text-primary bg-primary/10 border border-primary/20 px-3 py-2 rounded-full">
