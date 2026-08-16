@@ -148,7 +148,7 @@ function Hero() {
   return (
     <section className="relative overflow-hidden bg-background">
       <div
-        className="absolute inset-0 bg-cover bg-no-repeat bg-[position:78%_center] sm:bg-right md:bg-center contrast-[1.9] saturate-[1.9] brightness-[1.25]"
+        className="absolute inset-0 bg-cover bg-no-repeat bg-[position:78%_center] sm:bg-right md:bg-center contrast-[1.3] brightness-[1.05]"
         style={{ backgroundImage: `url(${heroWorkshop.url})` }}
         aria-hidden
       />
