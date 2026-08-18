@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { carsEu, KONTROLY_SITES, type CarsEuBlogPost } from "@/lib/cars-eu-client";
 import heroWorkshop from "@/assets/hero-workshop.png.asset.json";
 
 const OG_IMAGE = `https://kontrolyaut.cz${heroWorkshop.url}`;
@@ -28,17 +28,22 @@ export const Route = createFileRoute("/blog")({
 
 function BlogList() {
   const { data, isLoading } = useQuery({
-    queryKey: ["blog"],
+    queryKey: ["carseu-blog"],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await carsEu
         .from("blog_posts")
-        .select("id, slug, title, excerpt, cover_image_url, published_at")
-        .eq("published", true)
+        .select("id, slug, title, perex, cover_image_url, category, published_at")
+        .in("source_site", KONTROLY_SITES as unknown as string[])
+        .eq("status", "published")
         .order("published_at", { ascending: false });
       if (error) throw error;
-      return data;
+      return (data ?? []) as Pick<
+        CarsEuBlogPost,
+        "id" | "slug" | "title" | "perex" | "cover_image_url" | "category" | "published_at"
+      >[];
     },
   });
+
   return (
     <section className="container-page py-16">
       <div className="max-w-2xl">
@@ -48,6 +53,9 @@ function BlogList() {
       </div>
       <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {isLoading && <p>Načítám…</p>}
+        {!isLoading && (data ?? []).length === 0 && (
+          <p className="text-muted-foreground">Zatím zde nejsou žádné články.</p>
+        )}
         {(data ?? []).map((p) => (
           <Link
             key={p.id}
@@ -57,12 +65,20 @@ function BlogList() {
           >
             <div className="aspect-[16/9] bg-muted overflow-hidden">
               {p.cover_image_url && (
-                <img src={p.cover_image_url} alt={p.title} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img
+                  src={p.cover_image_url}
+                  alt={p.title}
+                  loading="lazy"
+                  className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
               )}
             </div>
             <div className="p-5">
-              <h2 className="font-semibold text-lg line-clamp-2 group-hover:text-primary transition">{p.title}</h2>
-              <p className="mt-2 text-sm text-muted-foreground line-clamp-3">{p.excerpt}</p>
+              {p.category && (
+                <span className="text-xs font-semibold uppercase tracking-wider text-primary">{p.category}</span>
+              )}
+              <h2 className="mt-1 font-semibold text-lg line-clamp-2 group-hover:text-primary transition">{p.title}</h2>
+              <p className="mt-2 text-sm text-muted-foreground line-clamp-3">{p.perex}</p>
             </div>
           </Link>
         ))}
