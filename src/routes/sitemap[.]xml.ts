@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createClient } from "@supabase/supabase-js";
 import type {} from "@tanstack/react-start";
 
 const BASE_URL = "https://kontrolyaut.cz";
