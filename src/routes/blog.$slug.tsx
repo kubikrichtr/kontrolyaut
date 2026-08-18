@@ -1,31 +1,36 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { supabase } from "@/integrations/supabase/client";
+import { carsEu, KONTROLY_SITES, type CarsEuBlogPost } from "@/lib/cars-eu-client";
 import { ArrowLeft } from "lucide-react";
 
 const SITE = "https://kontrolyaut.cz";
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
-    const { data, error } = await supabase
+    const { data, error } = await carsEu
       .from("blog_posts")
       .select("*")
       .eq("slug", params.slug)
-      .eq("published", true)
+      .in("source_site", KONTROLY_SITES as unknown as string[])
+      .eq("status", "published")
       .maybeSingle();
     if (error) throw error;
     if (!data) throw notFound();
-    return data;
+    return data as CarsEuBlogPost;
   },
   head: ({ params, loaderData }) => {
     const url = `${SITE}/blog/${params.slug}`;
-    const title = loaderData?.title
-      ? `${loaderData.title} | KontrolyAut`.slice(0, 60)
-      : "Článek z blogu | KontrolyAut";
+    const title = (loaderData?.seo_title || loaderData?.title
+      ? `${loaderData.seo_title || loaderData.title} | KontrolyAut`
+      : "Článek z blogu | KontrolyAut"
+    ).slice(0, 70);
     const description =
-      loaderData?.excerpt?.slice(0, 158) ??
-      (loaderData?.content ? loaderData.content.replace(/\s+/g, " ").slice(0, 158) : null) ??
+      loaderData?.seo_description?.slice(0, 158) ??
+      loaderData?.perex?.slice(0, 158) ??
+      (loaderData?.content
+        ? loaderData.content.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 158)
+        : null) ??
       "Rady a zkušenosti z kontrol ojetých vozů před koupí.";
-    const image = loaderData?.cover_image_url ?? undefined;
+    const image = loaderData?.og_image_url ?? loaderData?.cover_image_url ?? undefined;
     return {
       meta: [
         { title },
@@ -39,6 +44,7 @@ export const Route = createFileRoute("/blog/$slug")({
         { name: "twitter:title", content: title },
         { name: "twitter:description", content: description },
         ...(image ? [{ name: "twitter:image", content: image }] : []),
+        ...(loaderData ? [] : [{ name: "robots", content: "noindex" }]),
       ],
       links: [{ rel: "canonical", href: url }],
       scripts: loaderData
@@ -53,7 +59,7 @@ export const Route = createFileRoute("/blog/$slug")({
                 image: image ? [image] : undefined,
                 datePublished: loaderData.published_at ?? loaderData.created_at,
                 mainEntityOfPage: url,
-                author: { "@type": "Person", name: "Lukáš Doubek" },
+                author: { "@type": "Person", name: loaderData.author ?? "Lukáš Doubek" },
                 publisher: { "@type": "Organization", name: "KontrolyAut", url: SITE },
               }),
             },
@@ -74,13 +80,21 @@ function BlogPost() {
         <ArrowLeft className="h-4 w-4" /> Zpět na blog
       </Link>
       {data.cover_image_url && (
-        <img src={data.cover_image_url} alt={data.title} className="w-full rounded-2xl mb-8 aspect-[16/9] object-cover" />
+        <img
+          src={data.cover_image_url}
+          alt={data.title}
+          className="w-full rounded-2xl mb-8 aspect-[16/9] object-cover"
+        />
       )}
-      <h1 className="text-4xl md:text-5xl font-bold">{data.title}</h1>
-      {data.excerpt && <p className="mt-4 text-lg text-muted-foreground">{data.excerpt}</p>}
-      <div className="prose prose-slate max-w-none mt-8 whitespace-pre-line text-foreground/90 leading-relaxed">
-        {data.content}
-      </div>
+      {data.category && (
+        <span className="text-xs font-semibold uppercase tracking-wider text-primary">{data.category}</span>
+      )}
+      <h1 className="mt-2 text-4xl md:text-5xl font-bold">{data.title}</h1>
+      {data.perex && <p className="mt-4 text-lg text-muted-foreground">{data.perex}</p>}
+      <div
+        className="prose prose-slate max-w-none mt-8 text-foreground/90 leading-relaxed prose-headings:font-bold prose-a:text-primary"
+        dangerouslySetInnerHTML={{ __html: data.content }}
+      />
     </article>
   );
 }
