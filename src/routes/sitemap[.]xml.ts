@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createClient } from "@supabase/supabase-js";
 import type {} from "@tanstack/react-start";
 
 const BASE_URL = "https://kontrolyaut.cz";
@@ -23,28 +22,24 @@ export const Route = createFileRoute("/sitemap.xml")({
         ];
 
         try {
-          const key = process.env["SUPABASE_PUBLISHABLE_KEY"] ?? process.env["SUPABASE_ANON_KEY"];
-          const url = process.env["SUPABASE_URL"];
-          if (key && url) {
-            const client = createClient(url, key, {
-              auth: { persistSession: false, autoRefreshToken: false },
+          const { carsEu, KONTROLY_SITES } = await import("@/lib/cars-eu-client");
+          const { data } = await carsEu
+            .from("blog_posts")
+            .select("slug, published_at")
+            .in("source_site", KONTROLY_SITES as unknown as string[])
+            .eq("status", "published");
+          for (const post of data ?? []) {
+            entries.push({
+              path: `/blog/${post.slug}`,
+              lastmod: post.published_at ? new Date(post.published_at).toISOString() : undefined,
+              changefreq: "monthly",
+              priority: "0.6",
             });
-            const { data } = await client
-              .from("blog_posts")
-              .select("slug, published_at")
-              .eq("published", true);
-            for (const post of data ?? []) {
-              entries.push({
-                path: `/blog/${post.slug}`,
-                lastmod: post.published_at ? new Date(post.published_at).toISOString() : undefined,
-                changefreq: "monthly",
-                priority: "0.6",
-              });
-            }
           }
         } catch {
           // sitemap still returns static routes if blog fetch fails
         }
+
 
         const urls = entries.map((e) =>
           [
