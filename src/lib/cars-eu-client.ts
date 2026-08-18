@@ -19,3 +19,25 @@ export type CarsEuReview = {
   images: string[] | null;
   created_at: string;
 };
+
+// Blog: články spravované v admin menu CARS-EU, označené pro tento web
+export const KONTROLY_SITES = ["kontrolyaut", "kontrolyaut.cz"] as const;
+
+export type CarsEuBlogPost = {
+  id: string;
+  slug: string;
+  title: string;
+  perex: string | null;
+  content: string;
+  cover_image_url: string | null;
+  category: string | null;
+  tags: string[] | null;
+  status: string;
+  published_at: string | null;
+  author: string | null;
+  seo_title: string | null;
+  seo_description: string | null;
+  og_image_url: string | null;
+  created_at: string;
+  source_site: string | null;
+};
