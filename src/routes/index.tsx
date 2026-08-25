@@ -437,8 +437,19 @@ function Lightbox({
   );
 }
 
-function Realized() {
-  const [lightbox, setLightbox] = useState<number | null>(null);
+function Carousel({
+  children,
+  itemCount,
+  prevLabel = "Předchozí",
+  nextLabel = "Další",
+  dotLabel = "Přejít na",
+}: {
+  children: ReactNode;
+  itemCount: number;
+  prevLabel?: string;
+  nextLabel?: string;
+  dotLabel?: string;
+}) {
   const [active, setActive] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -461,6 +472,64 @@ function Realized() {
     if (!el || !card) return;
     el.scrollTo({ left: i * (card.offsetWidth + 24), behavior: "smooth" });
   };
+
+  const scrollBy = (dir: 1 | -1) => {
+    const el = trackRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * Math.max(280, el.clientWidth * 0.8), behavior: "smooth" });
+  };
+
+  if (itemCount === 0) return null;
+
+  return (
+    <div className="relative">
+      {itemCount > 1 && (
+        <>
+          <button
+            onClick={() => scrollBy(-1)}
+            aria-label={prevLabel}
+            className="hidden md:flex absolute -left-4 top-1/2 -translate-y-1/2 z-10 h-11 w-11 rounded-full border border-border bg-card shadow items-center justify-center hover:border-primary/40 transition"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <button
+            onClick={() => scrollBy(1)}
+            aria-label={nextLabel}
+            className="hidden md:flex absolute -right-4 top-1/2 -translate-y-1/2 z-10 h-11 w-11 rounded-full border border-border bg-card shadow items-center justify-center hover:border-primary/40 transition"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+        </>
+      )}
+
+      <div
+        ref={trackRef}
+        className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-4 px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {children}
+      </div>
+
+      {itemCount > 1 && (
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+          {Array.from({ length: itemCount }).map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              aria-label={`${dotLabel} ${i + 1}`}
+              aria-current={i === active}
+              className={`h-2 rounded-full transition-all ${
+                i === active ? "w-6 bg-primary" : "w-2 bg-border hover:bg-primary/40"
+              }`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Realized() {
+  const [lightbox, setLightbox] = useState<number | null>(null);
 
   const { data } = useQuery({
     queryKey: ["carseu-reviews"],
@@ -499,12 +568,6 @@ function Realized() {
     return 0;
   };
 
-  const scrollBy = (dir: 1 | -1) => {
-    const el = trackRef.current;
-    if (!el) return;
-    el.scrollBy({ left: dir * Math.max(280, el.clientWidth * 0.8), behavior: "smooth" });
-  };
-
   return (
     <section id="reference" className="py-16 md:py-20">
       <div className="container-page">
@@ -517,25 +580,12 @@ function Realized() {
         </div>
 
         {withPhoto.length > 0 && (
-          <div className="relative mt-10">
-            <button
-              onClick={() => scrollBy(-1)}
-              aria-label="Posunout doleva"
-              className="hidden md:flex absolute -left-4 top-1/2 -translate-y-1/2 z-10 h-11 w-11 rounded-full border border-border bg-card shadow items-center justify-center hover:border-primary/40 transition"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-            <button
-              onClick={() => scrollBy(1)}
-              aria-label="Posunout doprava"
-              className="hidden md:flex absolute -right-4 top-1/2 -translate-y-1/2 z-10 h-11 w-11 rounded-full border border-border bg-card shadow items-center justify-center hover:border-primary/40 transition"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
-
-            <div
-              ref={trackRef}
-              className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-4 px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          <div className="mt-10">
+            <Carousel
+              itemCount={withPhoto.length}
+              prevLabel="Posunout doleva"
+              nextLabel="Posunout doprava"
+              dotLabel="Přejít na kontrolu"
             >
               {withPhoto.map((r) => (
                 <article
@@ -575,45 +625,39 @@ function Realized() {
                   </div>
                 </article>
               ))}
-            </div>
-
-            <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
-              {withPhoto.map((r, i) => (
-                <button
-                  key={r.id}
-                  onClick={() => goTo(i)}
-                  aria-label={`Přejít na kontrolu ${i + 1}`}
-                  aria-current={i === active}
-                  className={`h-2 rounded-full transition-all ${
-                    i === active ? "w-6 bg-primary" : "w-2 bg-border hover:bg-primary/40"
-                  }`}
-                />
-              ))}
-            </div>
+            </Carousel>
           </div>
         )}
 
         {withoutPhoto.length > 0 && (
-          <div className="mt-12 grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
-            {withoutPhoto.map((r) => (
-              <figure
-                key={r.id}
-                className="relative rounded-2xl border border-border bg-card p-6 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all"
-              >
-                <Quote className="absolute right-5 top-5 h-8 w-8 text-primary/15" aria-hidden />
-                <Stars count={r.rating ?? 5} />
-                <blockquote className="mt-4 text-sm text-muted-foreground">„{r.text}“</blockquote>
-                <figcaption className="mt-5 flex items-end justify-between gap-4 border-t border-border pt-4">
-                  <span>
-                    <span className="block font-semibold">{r.customer_name}</span>
-                    {r.customer_location && (
-                      <span className="block text-xs text-muted-foreground">{r.customer_location}</span>
-                    )}
-                  </span>
-                  {r.car_name && <span className="text-xs font-medium text-primary">{r.car_name}</span>}
-                </figcaption>
-              </figure>
-            ))}
+          <div className="mt-12">
+            <h3 className="text-center text-xl font-bold mb-6">Hodnocení klientů</h3>
+            <Carousel
+              itemCount={withoutPhoto.length}
+              prevLabel="Posunout doleva"
+              nextLabel="Posunout doprava"
+              dotLabel="Přejít na hodnocení"
+            >
+              {withoutPhoto.map((r) => (
+                <figure
+                  key={r.id}
+                  className="snap-start shrink-0 w-[80%] sm:w-[48%] lg:w-[calc((100%-3rem)/3)] xl:w-[calc((100%-4.5rem)/4)] relative rounded-2xl border border-border bg-card p-6 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all"
+                >
+                  <Quote className="absolute right-5 top-5 h-8 w-8 text-primary/15" aria-hidden />
+                  <Stars count={r.rating ?? 5} />
+                  <blockquote className="mt-4 text-sm text-muted-foreground">„{r.text}“</blockquote>
+                  <figcaption className="mt-5 flex items-end justify-between gap-4 border-t border-border pt-4">
+                    <span>
+                      <span className="block font-semibold">{r.customer_name}</span>
+                      {r.customer_location && (
+                        <span className="block text-xs text-muted-foreground">{r.customer_location}</span>
+                      )}
+                    </span>
+                    {r.car_name && <span className="text-xs font-medium text-primary">{r.car_name}</span>}
+                  </figcaption>
+                </figure>
+              ))}
+            </Carousel>
           </div>
         )}
       </div>
