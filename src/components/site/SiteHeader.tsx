@@ -7,7 +7,7 @@ const NAV = [
   { to: "/provereni-vozidla", label: "Prověření vozidla" },
   { to: "/#jak-probiha", label: "Jak kontrola probíhá" },
   { to: "/#faq", label: "Časté dotazy" },
-  { to: "/#reference", label: "Realizované kontroly" },
+  { to: "/#reference", label: "Realizované kontroly a hodnocení" },
   { to: "/blog", label: "Blog" },
   { to: "/#kontakt", label: "Kontakt" },
   { to: "/o-mne", label: "O mně" },
