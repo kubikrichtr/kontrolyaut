@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, type ReactNode } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { ShieldCheck, Search, FileCheck, CheckCircle2, Wrench, Gauge, Phone, Car, Handshake, Star, Quote, X, ChevronLeft, ChevronRight, Image as ImageIcon } from "lucide-react";
