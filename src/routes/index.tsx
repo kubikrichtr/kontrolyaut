@@ -506,136 +506,122 @@ function Realized() {
   };
 
   return (
-    <>
-      {withPhoto.length > 0 && (
-        <section className="py-16 md:py-20">
-          <div className="container-page">
-            <div className="text-center max-w-2xl mx-auto">
-              <span className="text-xs font-semibold tracking-wider uppercase text-primary">Portfolio</span>
-              <h2 className="mt-2 text-3xl md:text-4xl font-bold">Realizované kontroly</h2>
-              <p className="mt-3 text-muted-foreground">
-                Vybrané vozy, které jsme prověřili a pomohli klientům s jejich koupí.
-              </p>
-            </div>
+    <section id="reference" className="py-16 md:py-20">
+      <div className="container-page">
+        <div className="text-center max-w-2xl mx-auto">
+          <span className="text-xs font-semibold tracking-wider uppercase text-primary">Portfolio a reference</span>
+          <h2 className="mt-2 text-3xl md:text-4xl font-bold">Realizované kontroly a hodnocení</h2>
+          <p className="mt-3 text-muted-foreground">
+            Vybrané vozy, které jsme prověřili, a hodnocení spokojených klientů.
+          </p>
+        </div>
 
-            <div className="relative mt-10">
-              <button
-                onClick={() => scrollBy(-1)}
-                aria-label="Posunout doleva"
-                className="hidden md:flex absolute -left-4 top-1/2 -translate-y-1/2 z-10 h-11 w-11 rounded-full border border-border bg-card shadow items-center justify-center hover:border-primary/40 transition"
-              >
-                <ChevronLeft className="h-5 w-5" />
-              </button>
-              <button
-                onClick={() => scrollBy(1)}
-                aria-label="Posunout doprava"
-                className="hidden md:flex absolute -right-4 top-1/2 -translate-y-1/2 z-10 h-11 w-11 rounded-full border border-border bg-card shadow items-center justify-center hover:border-primary/40 transition"
-              >
-                <ChevronRight className="h-5 w-5" />
-              </button>
+        {withPhoto.length > 0 && (
+          <div className="relative mt-10">
+            <button
+              onClick={() => scrollBy(-1)}
+              aria-label="Posunout doleva"
+              className="hidden md:flex absolute -left-4 top-1/2 -translate-y-1/2 z-10 h-11 w-11 rounded-full border border-border bg-card shadow items-center justify-center hover:border-primary/40 transition"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              onClick={() => scrollBy(1)}
+              aria-label="Posunout doprava"
+              className="hidden md:flex absolute -right-4 top-1/2 -translate-y-1/2 z-10 h-11 w-11 rounded-full border border-border bg-card shadow items-center justify-center hover:border-primary/40 transition"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
 
-              <div
-                ref={trackRef}
-                className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-4 px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-              >
-                {withPhoto.map((r) => (
-                  <article
-                    key={r.id}
-                    className="group snap-start shrink-0 w-[80%] sm:w-[48%] lg:w-[calc((100%-3rem)/3)] xl:w-[calc((100%-4.5rem)/4)] flex flex-col rounded-2xl overflow-hidden border border-border bg-card hover:shadow-xl hover:shadow-primary/5 transition-all"
-                  >
-                    <button
-                      type="button"
-                      onClick={() => setLightbox(firstPhotoIndex(r.id))}
-                      className="relative aspect-[4/3] overflow-hidden bg-muted text-left"
-                      aria-label={`Zvětšit fotky – ${r.car_name ?? "kontrola vozu"}`}
-                    >
-                      <img
-                        src={r.images![0]}
-                        alt={r.car_name ?? "Realizovaná kontrola vozu"}
-                        loading="lazy"
-                        className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <span className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-primary text-primary-foreground text-xs font-bold px-2.5 py-1 shadow">
-                        <Star className="h-3 w-3 fill-current" />
-                        {r.rating ?? 5}
-                      </span>
-                      {(r.images?.length ?? 0) > 1 && (
-                        <span className="absolute bottom-3 left-3 inline-flex items-center gap-1 rounded-full bg-background/90 text-foreground text-xs font-medium px-2.5 py-1">
-                          <ImageIcon className="h-3 w-3" />
-                          {r.images!.length}
-                        </span>
-                      )}
-                    </button>
-                    <div className="p-5 flex flex-col gap-2">
-                      <h3 className="font-semibold">{r.car_name}</h3>
-                      <p className="text-sm text-muted-foreground line-clamp-3">{r.text}</p>
-                      <span className="mt-1 text-xs text-muted-foreground">
-                        {r.customer_name}
-                        {r.customer_location ? ` · ${r.customer_location}` : ""}
-                      </span>
-                    </div>
-                  </article>
-                ))}
-              </div>
-
-              <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
-                {withPhoto.map((r, i) => (
-                  <button
-                    key={r.id}
-                    onClick={() => goTo(i)}
-                    aria-label={`Přejít na kontrolu ${i + 1}`}
-                    aria-current={i === active}
-                    className={`h-2 rounded-full transition-all ${
-                      i === active ? "w-6 bg-primary" : "w-2 bg-border hover:bg-primary/40"
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-
-
-          {lightbox !== null && (
-            <Lightbox items={photos} index={lightbox} onClose={() => setLightbox(null)} onIndex={setLightbox} />
-          )}
-        </section>
-      )}
-
-      {withoutPhoto.length > 0 && (
-        <section id="reference" className="bg-muted/40 py-16 md:py-20">
-          <div className="container-page">
-            <div className="text-center max-w-2xl mx-auto">
-              <span className="text-xs font-semibold tracking-wider uppercase text-primary">Reference</span>
-              <h2 className="mt-2 text-3xl md:text-4xl font-bold">Co říkají naši klienti</h2>
-              <p className="mt-3 text-muted-foreground">
-                Hodnocení spokojených klientů, kteří využili našich služeb.
-              </p>
-            </div>
-            <div className="mt-10 grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
-              {withoutPhoto.map((r) => (
-                <figure
+            <div
+              ref={trackRef}
+              className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-4 px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            >
+              {withPhoto.map((r) => (
+                <article
                   key={r.id}
-                  className="relative rounded-2xl border border-border bg-card p-6 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all"
+                  className="group snap-start shrink-0 w-[80%] sm:w-[48%] lg:w-[calc((100%-3rem)/3)] xl:w-[calc((100%-4.5rem)/4)] flex flex-col rounded-2xl overflow-hidden border border-border bg-card hover:shadow-xl hover:shadow-primary/5 transition-all"
                 >
-                  <Quote className="absolute right-5 top-5 h-8 w-8 text-primary/15" aria-hidden />
-                  <Stars count={r.rating ?? 5} />
-                  <blockquote className="mt-4 text-sm text-muted-foreground">„{r.text}“</blockquote>
-                  <figcaption className="mt-5 flex items-end justify-between gap-4 border-t border-border pt-4">
-                    <span>
-                      <span className="block font-semibold">{r.customer_name}</span>
-                      {r.customer_location && (
-                        <span className="block text-xs text-muted-foreground">{r.customer_location}</span>
-                      )}
+                  <button
+                    type="button"
+                    onClick={() => setLightbox(firstPhotoIndex(r.id))}
+                    className="relative aspect-[4/3] overflow-hidden bg-muted text-left"
+                    aria-label={`Zvětšit fotky – ${r.car_name ?? "kontrola vozu"}`}
+                  >
+                    <img
+                      src={r.images![0]}
+                      alt={r.car_name ?? "Realizovaná kontrola vozu"}
+                      loading="lazy"
+                      className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <span className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-primary text-primary-foreground text-xs font-bold px-2.5 py-1 shadow">
+                      <Star className="h-3 w-3 fill-current" />
+                      {r.rating ?? 5}
                     </span>
-                    {r.car_name && <span className="text-xs font-medium text-primary">{r.car_name}</span>}
-                  </figcaption>
-                </figure>
+                    {(r.images?.length ?? 0) > 1 && (
+                      <span className="absolute bottom-3 left-3 inline-flex items-center gap-1 rounded-full bg-background/90 text-foreground text-xs font-medium px-2.5 py-1">
+                        <ImageIcon className="h-3 w-3" />
+                        {r.images!.length}
+                      </span>
+                    )}
+                  </button>
+                  <div className="p-5 flex flex-col gap-2">
+                    <h3 className="font-semibold">{r.car_name}</h3>
+                    <p className="text-sm text-muted-foreground line-clamp-3">{r.text}</p>
+                    <span className="mt-1 text-xs text-muted-foreground">
+                      {r.customer_name}
+                      {r.customer_location ? ` · ${r.customer_location}` : ""}
+                    </span>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+              {withPhoto.map((r, i) => (
+                <button
+                  key={r.id}
+                  onClick={() => goTo(i)}
+                  aria-label={`Přejít na kontrolu ${i + 1}`}
+                  aria-current={i === active}
+                  className={`h-2 rounded-full transition-all ${
+                    i === active ? "w-6 bg-primary" : "w-2 bg-border hover:bg-primary/40"
+                  }`}
+                />
               ))}
             </div>
           </div>
-        </section>
+        )}
+
+        {withoutPhoto.length > 0 && (
+          <div className="mt-12 grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
+            {withoutPhoto.map((r) => (
+              <figure
+                key={r.id}
+                className="relative rounded-2xl border border-border bg-card p-6 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all"
+              >
+                <Quote className="absolute right-5 top-5 h-8 w-8 text-primary/15" aria-hidden />
+                <Stars count={r.rating ?? 5} />
+                <blockquote className="mt-4 text-sm text-muted-foreground">„{r.text}“</blockquote>
+                <figcaption className="mt-5 flex items-end justify-between gap-4 border-t border-border pt-4">
+                  <span>
+                    <span className="block font-semibold">{r.customer_name}</span>
+                    {r.customer_location && (
+                      <span className="block text-xs text-muted-foreground">{r.customer_location}</span>
+                    )}
+                  </span>
+                  {r.car_name && <span className="text-xs font-medium text-primary">{r.car_name}</span>}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {lightbox !== null && (
+        <Lightbox items={photos} index={lightbox} onClose={() => setLightbox(null)} onIndex={setLightbox} />
       )}
-    </>
+    </section>
   );
 }
 
