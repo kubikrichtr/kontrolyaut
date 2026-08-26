@@ -44,6 +44,23 @@ function BlogList() {
     },
   });
 
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState<string | null>(null);
+
+  const posts = data ?? [];
+  const categories = useMemo(
+    () => Array.from(new Set(posts.map((p) => p.category).filter(Boolean) as string[])).sort(),
+    [posts],
+  );
+  const filtered = useMemo(() => {
+    const q = norm(query.trim());
+    return posts.filter((p) => {
+      if (category && p.category !== category) return false;
+      if (!q) return true;
+      return norm(`${p.title} ${p.perex ?? ""} ${p.category ?? ""}`).includes(q);
+    });
+  }, [posts, query, category]);
+
   return (
     <section className="container-page py-16">
       <div className="max-w-2xl">
@@ -51,11 +68,58 @@ function BlogList() {
         <h1 className="mt-2 text-4xl md:text-5xl font-bold">Články a rady</h1>
         <p className="mt-4 text-muted-foreground">Praktické tipy pro každého, kdo kupuje ojetý vůz.</p>
       </div>
-      <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {isLoading && <p>Načítám…</p>}
-        {!isLoading && (data ?? []).length === 0 && (
-          <p className="text-muted-foreground">Zatím zde nejsou žádné články.</p>
+
+      <div className="mt-8 flex flex-col gap-4">
+        <div className="relative max-w-md">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Hledat v článcích…"
+            aria-label="Hledat v článcích"
+            className="w-full rounded-xl border border-border bg-background py-3 pl-10 pr-4 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+          />
+        </div>
+        {categories.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => setCategory(null)}
+              className={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-wider transition ${
+                category === null
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border text-muted-foreground hover:border-primary hover:text-primary"
+              }`}
+            >
+              Vše
+            </button>
+            {categories.map((c) => (
+              <button
+                key={c}
+                type="button"
+                onClick={() => setCategory(c === category ? null : c)}
+                className={`rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-wider transition ${
+                  category === c
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border text-muted-foreground hover:border-primary hover:text-primary"
+                }`}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
         )}
+      </div>
+
+      <div className="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {isLoading && <p>Načítám…</p>}
+        {!isLoading && filtered.length === 0 && (
+          <p className="text-muted-foreground">
+            {posts.length === 0 ? "Zatím zde nejsou žádné články." : "Žádné články neodpovídají hledání."}
+          </p>
+        )}
+
         {(data ?? []).map((p) => (
           <Link
             key={p.id}
