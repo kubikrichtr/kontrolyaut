@@ -250,7 +250,7 @@ function HowItWorks() {
       title: "Konzultace a domluva",
       text: "Společně vybereme vhodný vůz a domluvíme termín prohlídky s prodejcem.",
     },
-    { icon: Car, title: "Fyzická kontrola vozu", text: "Kompletní kontrola vozu u prodejce." },
+    { icon: Car, title: "Fyzická kontrola vozu", text: "Kompletní kontrola vozu u prodejce včetně testovací jízdy" },
     { icon: CheckCircle2, title: "Vyhodnocení", text: "Jasně doporučíme, zda vůz koupit, nebo raději hledat jiný." },
     {
       icon: Handshake,
