@@ -201,12 +201,12 @@ function Benefits() {
     {
       icon: Search,
       title: "Historie vozu",
-      text: "Ověření VIN, servisní historie, kontrola tachometru a nehodovosti.",
+      text: "Ověření servisní historie, historie oprav karoserie a kontrola stavu tachometru",
     },
     {
       icon: Wrench,
       title: "Technický stav",
-      text: "Motor, převodovka, podvozek, brzdy — vše na profesionálním zvedáku.",
+      text: "Motor, převodovka, spojka, brzdy, podvozek, klimatizace, ovládací prvky v interiéru",
     },
     {
       icon: Gauge,
