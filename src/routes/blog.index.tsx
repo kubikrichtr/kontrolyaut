@@ -1,9 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
+import { Search } from "lucide-react";
 import { carsEu, KONTROLY_SITES, type CarsEuBlogPost } from "@/lib/cars-eu-client";
 import heroWorkshop from "@/assets/hero-workshop.png.asset.json";
 
 const OG_IMAGE = `https://kontrolyaut.cz${heroWorkshop.url}`;
+
+const norm = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
 
 export const Route = createFileRoute("/blog/")({
   head: () => ({
