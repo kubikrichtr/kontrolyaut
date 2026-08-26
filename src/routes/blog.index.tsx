@@ -125,7 +125,7 @@ function BlogList() {
           </p>
         )}
 
-        {(data ?? []).map((p) => (
+        {filtered.map((p) => (
           <Link
             key={p.id}
             to="/blog/$slug"
