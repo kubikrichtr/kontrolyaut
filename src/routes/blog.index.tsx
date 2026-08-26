@@ -176,6 +176,22 @@ function BlogList() {
           </Link>
         ))}
       </div>
+
+      <div ref={sentinelRef} aria-hidden className="h-px" />
+
+      {hasNextPage && (
+        <div className="mt-10 flex justify-center">
+          <button
+            type="button"
+            onClick={() => fetchNextPage()}
+            disabled={isFetchingNextPage}
+            className="rounded-full border border-border px-6 py-3 text-sm font-semibold transition hover:border-primary hover:text-primary disabled:opacity-60"
+          >
+            {isFetchingNextPage ? "Načítám…" : "Načíst další články"}
+          </button>
+        </div>
+      )}
     </section>
+
   );
 }
