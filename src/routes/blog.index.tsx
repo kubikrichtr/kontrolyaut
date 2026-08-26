@@ -31,28 +31,37 @@ export const Route = createFileRoute("/blog/")({
   component: BlogList,
 });
 
+type BlogCard = Pick<
+  CarsEuBlogPost,
+  "id" | "slug" | "title" | "perex" | "cover_image_url" | "category" | "published_at"
+>;
+
+const PAGE_SIZE = 9;
+
 function BlogList() {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ["carseu-blog"],
-    queryFn: async () => {
+    initialPageParam: 0,
+    queryFn: async ({ pageParam }) => {
+      const from = (pageParam as number) * PAGE_SIZE;
       const { data, error } = await carsEu
         .from("blog_posts")
         .select("id, slug, title, perex, cover_image_url, category, published_at")
         .in("source_site", KONTROLY_SITES as unknown as string[])
         .eq("status", "published")
-        .order("published_at", { ascending: false });
+        .order("published_at", { ascending: false })
+        .range(from, from + PAGE_SIZE - 1);
       if (error) throw error;
-      return (data ?? []) as Pick<
-        CarsEuBlogPost,
-        "id" | "slug" | "title" | "perex" | "cover_image_url" | "category" | "published_at"
-      >[];
+      return (data ?? []) as BlogCard[];
     },
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.length < PAGE_SIZE ? undefined : allPages.length,
   });
 
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string | null>(null);
 
-  const posts = data ?? [];
+  const posts = useMemo(() => (data?.pages ?? []).flat(), [data]);
   const categories = useMemo(
     () => Array.from(new Set(posts.map((p) => p.category).filter(Boolean) as string[])).sort(),
     [posts],
@@ -65,6 +74,21 @@ function BlogList() {
       return norm(`${p.title} ${p.perex ?? ""} ${p.category ?? ""}`).includes(q);
     });
   }, [posts, query, category]);
+
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el || !hasNextPage) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting && !isFetchingNextPage) fetchNextPage();
+      },
+      { rootMargin: "300px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
 
   return (
     <section className="container-page py-16">
