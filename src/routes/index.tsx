@@ -161,7 +161,7 @@ function Hero() {
             Jistota při koupi vozu
           </span>
           <h1 className="mt-5 text-4xl md:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-sm">
-            Kontrola ojetého vozu <span className="text-primary">před koupí</span>
+            Kontrola ojetého auta <span className="text-primary">před koupí</span>
           </h1>
           <p className="mt-5 text-lg text-foreground/90 max-w-xl drop-shadow-sm">
             Zajišťujeme nezávislou kontrolu osobních i užitkových vozů před koupí. Díky tomu předejdete zbytečným
