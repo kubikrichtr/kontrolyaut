@@ -110,7 +110,7 @@ export const lookupCityPrice = createServerFn({ method: "POST" })
     return { placeId: id };
   })
   .handler(async ({ data }): Promise<PostalLookupResult> => {
-    const { loadGeoSettings, getMapsAuth } = await import("./settings.server");
+    const { loadGeoSettings, getMapsAuth, travelPriceCzk } = await import("./settings.server");
     const { haversineKm, mapsFetch } = await import("./maps.server");
     const settings = await loadGeoSettings();
 
@@ -120,7 +120,7 @@ export const lookupCityPrice = createServerFn({ method: "POST" })
       const city = findCityById(data.placeId);
       if (!city) return { ok: false, error: "Město se nepodařilo ověřit. Vyberte jej ze seznamu." };
       const distanceKm = haversineKm(settings.origin, { lat: city.lat, lng: city.lng });
-      const travelPrice = Math.round(distanceKm * settings.coefficient * settings.pricePerKm);
+      const travelPrice = travelPriceCzk(distanceKm, settings);
       return {
         ok: true,
         postalCode: `${city.postalCode.slice(0, 3)} ${city.postalCode.slice(3)}`,
@@ -172,7 +172,7 @@ export const lookupCityPrice = createServerFn({ method: "POST" })
     }
 
     const distanceKm = haversineKm(settings.origin, { lat, lng });
-    const travelPrice = Math.round(distanceKm * settings.coefficient * settings.pricePerKm);
+    const travelPrice = travelPriceCzk(distanceKm, settings);
 
     return {
       ok: true,
@@ -192,7 +192,7 @@ export const lookupPostalPrice = createServerFn({ method: "POST" })
     return { postalCode: raw };
   })
   .handler(async ({ data }): Promise<PostalLookupResult> => {
-    const { getMapsAuth, loadGeoSettings } = await import("./settings.server");
+    const { getMapsAuth, loadGeoSettings, travelPriceCzk } = await import("./settings.server");
     const { mapsFetch, haversineKm } = await import("./maps.server");
     const settings = await loadGeoSettings();
 
@@ -204,7 +204,7 @@ export const lookupPostalPrice = createServerFn({ method: "POST" })
     const local = findByPostalCode(pc);
     if (local) {
       const distanceKm = haversineKm(settings.origin, { lat: local.lat, lng: local.lng });
-      const travelPrice = Math.round(distanceKm * settings.coefficient * settings.pricePerKm);
+      const travelPrice = travelPriceCzk(distanceKm, settings);
       return {
         ok: true,
         postalCode: formatted,
@@ -256,7 +256,7 @@ export const lookupPostalPrice = createServerFn({ method: "POST" })
       "";
 
     const distanceKm = haversineKm(settings.origin, loc);
-    const travelPrice = Math.round(distanceKm * settings.coefficient * settings.pricePerKm);
+    const travelPrice = travelPriceCzk(distanceKm, settings);
 
     return {
       ok: true,
