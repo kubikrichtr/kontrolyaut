@@ -14,14 +14,16 @@ export interface GeoSettings {
   basePrice: number;
   pricePerKm: number;
   coefficient: number;
+  freeKm: number;
   originPostalCode: string;
   origin: { lat: number; lng: number };
 }
 
 export const GEO_DEFAULTS: GeoSettings = {
   basePrice: 2490,
-  pricePerKm: 20,
+  pricePerKm: 12.5,
   coefficient: 1.25,
+  freeKm: 30,
   originPostalCode: "158 00",
   origin: { lat: 50.0559, lng: 14.3086 },
 };
@@ -29,6 +31,11 @@ export const GEO_DEFAULTS: GeoSettings = {
 function num(raw: string | undefined | null, fallback: number): number {
   const n = Number(String(raw ?? "").replace(",", ".").trim());
   return Number.isFinite(n) && n > 0 ? n : fallback;
+}
+
+function nonNegative(raw: string | undefined | null, fallback: number): number {
+  const n = Number(String(raw ?? "").replace(",", ".").trim());
+  return Number.isFinite(n) && n >= 0 ? n : fallback;
 }
 
 function coord(raw: string | undefined | null, fallback: number): number {
@@ -65,16 +72,35 @@ export async function loadGeoSettings(): Promise<GeoSettings> {
   if (map.size === 0) return GEO_DEFAULTS;
   const get = (k: string) => map.get(`ka_${k}`) || map.get(k) || undefined;
 
+  const originPostalCode = get("origin_postal_code") || GEO_DEFAULTS.originPostalCode;
+
+  // Souřadnice výchozího bodu: z nastavení, jinak dopočet z PSČ (např. 158 00), jinak default.
+  let origin = { ...GEO_DEFAULTS.origin };
+  const rawLat = get("origin_lat");
+  const rawLng = get("origin_lng");
+  if (rawLat && rawLng) {
+    origin = { lat: coord(rawLat, origin.lat), lng: coord(rawLng, origin.lng) };
+  } else {
+    const { findByPostalCode } = await import("./cz-cities.server");
+    const city = findByPostalCode(originPostalCode.replace(/\s+/g, ""));
+    if (city) origin = { lat: city.lat, lng: city.lng };
+  }
+
   return {
     basePrice: Math.round(num(get("base_price_czk"), GEO_DEFAULTS.basePrice)),
     pricePerKm: num(get("price_per_km_czk"), GEO_DEFAULTS.pricePerKm),
     coefficient: num(get("distance_coefficient"), GEO_DEFAULTS.coefficient),
-    originPostalCode: get("origin_postal_code") || GEO_DEFAULTS.originPostalCode,
-    origin: {
-      lat: coord(get("origin_lat"), GEO_DEFAULTS.origin.lat),
-      lng: coord(get("origin_lng"), GEO_DEFAULTS.origin.lng),
-    },
+    freeKm: nonNegative(get("free_km"), GEO_DEFAULTS.freeKm),
+    originPostalCode,
+    origin,
   };
+}
+
+/** Cena dopravy: silniční km (vzdušná čára × koeficient) mínus kilometry zdarma. */
+export function travelPriceCzk(distanceKm: number, s: GeoSettings): number {
+  const roadKm = distanceKm * s.coefficient;
+  const billableKm = Math.max(0, roadKm - s.freeKm);
+  return Math.round(billableKm * s.pricePerKm);
 }
 
 export interface MapsAuth {
