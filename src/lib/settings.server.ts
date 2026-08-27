@@ -33,6 +33,11 @@ function num(raw: string | undefined | null, fallback: number): number {
   return Number.isFinite(n) && n > 0 ? n : fallback;
 }
 
+function nonNegative(raw: string | undefined | null, fallback: number): number {
+  const n = Number(String(raw ?? "").replace(",", ".").trim());
+  return Number.isFinite(n) && n >= 0 ? n : fallback;
+}
+
 function coord(raw: string | undefined | null, fallback: number): number {
   const n = Number(String(raw ?? "").replace(",", ".").trim());
   return Number.isFinite(n) ? n : fallback;
