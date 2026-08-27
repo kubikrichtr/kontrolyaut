@@ -14,14 +14,16 @@ export interface GeoSettings {
   basePrice: number;
   pricePerKm: number;
   coefficient: number;
+  freeKm: number;
   originPostalCode: string;
   origin: { lat: number; lng: number };
 }
 
 export const GEO_DEFAULTS: GeoSettings = {
   basePrice: 2490,
-  pricePerKm: 20,
+  pricePerKm: 12.5,
   coefficient: 1.25,
+  freeKm: 30,
   originPostalCode: "158 00",
   origin: { lat: 50.0559, lng: 14.3086 },
 };
