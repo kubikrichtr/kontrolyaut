@@ -24,6 +24,7 @@ export interface PricingSettings {
   basePrice: number;
   pricePerKm: number;
   coefficient: number;
+  freeKm: number;
   originPostalCode: string;
 }
 
@@ -36,6 +37,7 @@ export const getPricingSettings = createServerFn({ method: "GET" }).handler(
       basePrice: s.basePrice,
       pricePerKm: s.pricePerKm,
       coefficient: s.coefficient,
+      freeKm: s.freeKm,
       originPostalCode: s.originPostalCode,
     };
   },
