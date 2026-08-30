@@ -25,6 +25,7 @@ import {
   type CitySuggestion,
 } from "@/lib/geo.functions";
 import { toast } from "sonner";
+import { useBlockedDates } from "@/hooks/useBlockedDates";
 
 const CARS_EU_URL = "https://ajafqafoonxoubbhcxnk.supabase.co/functions/v1/public-submit-inquiry";
 const CARS_EU_ANON =
@@ -99,6 +100,7 @@ export function BookingSection() {
     defaultValues: { city: "", postalCode: "", attendance: "", note: "", carUrl: "" },
   });
 
+  const blockedDates = useBlockedDates("kontrolyaut");
   const postalCode = (watch("postalCode") ?? "").replace(/\s+/g, "");
 
   const { data: pricing } = useQuery({
@@ -142,6 +144,15 @@ export function BookingSection() {
 
 
   const onSubmit = async (values: FormValues) => {
+    if (values.preferredDate && blockedDates.includes(values.preferredDate)) {
+      setError("preferredDate", {
+        type: "manual",
+        message: "Tento termín je již obsazený, vyberte jiný den",
+      });
+      setFocus("preferredDate");
+      toast.error("Tento termín je již obsazený, vyberte jiný den");
+      return;
+    }
     const attendanceText =
       values.attendance === "yes"
         ? "Klient se chce kontroly účastnit"
@@ -351,6 +362,7 @@ export function BookingSection() {
                 <Input
                   id="preferredDate"
                   type="date"
+                  min={new Date().toISOString().slice(0, 10)}
                   className="h-12 rounded-lg border-border bg-background text-base sm:text-sm"
                   {...register("preferredDate")}
                 />
