@@ -7,6 +7,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "../components/site/SiteHeader";
 import { SiteFooter } from "../components/site/SiteFooter";
 import { MobileStickyCta } from "../components/site/MobileStickyCta";
+import { PageViewTracker } from "../components/PageViewTracker";
 import { Toaster } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -107,6 +108,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <PageViewTracker />
       <div className="flex min-h-screen flex-col bg-background">
         <SiteHeader />
         <main className="flex-1 pb-20 md:pb-0">
