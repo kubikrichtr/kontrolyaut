@@ -7,6 +7,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "../components/site/SiteHeader";
 import { SiteFooter } from "../components/site/SiteFooter";
 import { MobileStickyCta } from "../components/site/MobileStickyCta";
+import { PageViewTracker } from "../components/PageViewTracker";
 import { Toaster } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
