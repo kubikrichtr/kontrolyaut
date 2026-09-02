@@ -5,8 +5,29 @@ import { LogOut } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/_authenticated/klient")({
+  head: () => ({
+    meta: [
+      { title: "Klientská zóna | KontrolyAut" },
+      {
+        name: "description",
+        content:
+          "Přehled vašich objednaných kontrol ojetých vozů, jejich stav a výsledky na jednom místě.",
+      },
+      { property: "og:title", content: "Klientská zóna | KontrolyAut" },
+      {
+        property: "og:description",
+        content: "Přehled vašich objednaných kontrol ojetých vozů a jejich stavu.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://kontrolyaut.cz/klient" },
+      { name: "twitter:card", content: "summary" },
+      { name: "robots", content: "noindex" },
+    ],
+    links: [{ rel: "canonical", href: "https://kontrolyaut.cz/klient" }],
+  }),
   component: ClientZone,
 });
+
 
 function ClientZone() {
   const nav = useNavigate();
