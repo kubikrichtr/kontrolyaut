@@ -294,6 +294,80 @@ function VehicleInspectionPage() {
         </div>
       </section>
 
+      {/* Obsahová sekce pro vyhledávače */}
+      <section className="container-page py-16 md:py-24">
+        <div className="mx-auto max-w-3xl space-y-10">
+          <div>
+            <h2 className="text-2xl font-bold md:text-3xl">Prověření vozidla krok za krokem</h2>
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              Prověření vozidla začíná ještě před samotnou prohlídkou — z odkazu na inzerát a VIN
+              ověříme historii vozu, servisní záznamy a nálezy z dostupných databází. Na místě pak technik
+              zkontroluje karoserii měřičem tloušťky laku, prohlédne spáry, výztuhy a podvozek, načte paměti
+              závad všech řídicích jednotek a porovná u nich uložené stavy tachometru. Následuje kontrola
+              motoru za studena i po zahřátí, zkouška spojky a převodovky a nakonec testovací jízda, při které
+              se prokáže chování podvozku, řízení a brzd v reálném provozu.
+            </p>
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              Výsledkem není jen „ano / ne". Dostanete písemný protokol s fotografiemi jednotlivých nálezů,
+              odhadem nákladů na opravy a jasným doporučením — vůz koupit, smlouvat o ceně, nebo od koupě
+              raději odstoupit. Podrobnější pohled na celý proces najdete v článku{" "}
+              <Link to="/blog/$slug" params={{ slug: "kontrola-ojeteho-vozu-pred-koupi-praha" }} className="text-primary font-semibold hover:underline">
+                Kontrola ojetého vozu před koupí v Praze: kompletní průvodce
+              </Link>
+              .
+            </p>
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-bold md:text-3xl">Jaké závady při prověření odhalujeme nejčastěji</h2>
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              Z dlouholeté praxe jsou to především stočené tachometry, špatně opravené havárie, netěsnosti
+              motorů a opotřebené dvouspojkové převodovky, DPF filtry či turba. Právě stáčení kilometrů je
+              nejrozšířenějším podvodem na trhu — jak ho poznat už při první prohlídce popisujeme v článku{" "}
+              <Link to="/blog/$slug" params={{ slug: "jak-poznat-stoceny-tachometr" }} className="text-primary font-semibold hover:underline">
+                Jak poznat stočený tachometr
+              </Link>
+              . Kombinací diagnostiky řídicích jednotek, měření laku a kontroly servisní historie se nám daří
+              tyto triky odhalovat spolehlivě ještě před podpisem kupní smlouvy.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-bold md:text-3xl">Prověření vozidla v Praze a Středočeském kraji</h2>
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              Přijíždíme přímo za vozem — do autobazaru, k soukromému prodejci i do servisu. Nejvíce kontrol
+              provádíme v Praze a okolních městech jako Kladno, Mladá Boleslav, Beroun, Příbram či Kolín,
+              po domluvě ale zajedeme kamkoli v ČR. Kupujete-li ojetinu z bazaru, přečtěte si předem{" "}
+              <Link to="/blog/$slug" params={{ slug: "na-co-si-dat-pozor-pri-koupi-ojeteho-vozu-z-bazaru" }} className="text-primary font-semibold hover:underline">
+                na co si dát pozor při koupi ojetého vozu z bazaru
+              </Link>{" "}
+              — vyhnete se nejčastějším pastem, jako jsou nevratné rezervační zálohy nebo komisní prodej.
+              Kompletní přehled služby a objednávkový formulář najdete na{" "}
+              <Link to="/" className="text-primary font-semibold hover:underline">hlavní stránce KontrolyAut</Link>.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-bold md:text-3xl">Proč nechat vůz prověřit nezávislým technikem</h2>
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              Prodejce má vždy zájem vůz prodat — a i poctivý prodejce nemusí o všech vadách vědět. Nezávislý
+              technik pracuje výhradně pro vás. Investice do prověření se vrací nejen při odhalení vážné závady,
+              ale i běžně — vyčíslené nálezy z protokolu slouží jako páka při vyjednávání slevy, která obvykle
+              několikanásobně převýší cenu kontroly. Více o návratnosti v článku{" "}
+              <Link to="/blog/$slug" params={{ slug: "kolik-stoji-kontrola-vozu-pred-koupi" }} className="text-primary font-semibold hover:underline">
+                Kolik stojí kontrola vozu před koupí a kdy se vyplatí
+              </Link>
+              .
+            </p>
+            <div className="mt-6">
+              <a href="/#kontakt" className="btn-primary">
+                Objednat prověření vozidla
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* FAQ */}
       <section className="border-t border-border bg-muted/30 py-16 md:py-24">
         <div className="container-page">
