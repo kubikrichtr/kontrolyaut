@@ -18,7 +18,8 @@ values
 <h2>Co dostanete</h2>
 <p>Ihned na místě ústní shrnutí a doporučení, zda do koupě jít, a následně písemný report s fotodokumentací a odhadem nákladů na nutné opravy. Report je zároveň skvělý podklad pro vyjednání nižší ceny — kupující s ním běžně ušetří víc, než kontrola stála.</p>
 <h2>Kdy kontrolu objednat</h2>
-<p>Ideálně dřív, než složíte rezervační zálohu. Stačí nám odkaz na inzerát, adresa vozu a termín — zbytek domluvíme s prodejcem sami.</p>',
+<p>Ideálně dřív, než složíte rezervační zálohu. Stačí nám odkaz na inzerát, adresa vozu a termín — zbytek domluvíme s prodejcem sami.</p>
+<p>Detailní popis celé služby včetně ceníku najdete na stránce <a href="https://kontrolyaut.cz/provereni-vozidla">prověření vozidla před koupí</a>. Objednat kontrolu můžete přímo v <a href="https://kontrolyaut.cz/#kontakt">objednávkovém formuláři na hlavní stránce</a>.</p>',
    'Rady při koupi', ARRAY['kontrola ojetého vozu','Praha','koupě auta'], 'published', now(), 'Lukáš Doubek',
    'Kontrola ojetého vozu před koupí Praha | Průvodce 2026', 'Jak probíhá kontrola ojetého vozu před koupí v Praze — co technik prověří, jak dlouho trvá, kolik stojí a kdy se nejvíc vyplatí.', 'kontrolyaut'),
   ('jak-poznat-stoceny-tachometr', 'Jak poznat stočený tachometr: 7 znaků, které prodejce neschová', 'Stáčení kilometrů je stále nejčastější podvod na trhu s ojetinami. Ukážeme vám, podle čeho poznáte, že najeté kilometry nesedí.', '<h2>Stáčení kilometrů je běžnější, než si myslíte</h2>
@@ -38,7 +39,8 @@ values
 <h2>7. Historie v zahraničních databázích</h2>
 <p>U dovezených aut prověřujeme záznamy z původní země — často se objeví hodnota kilometrů z posledního servisu v zahraničí.</p>
 <h2>Nejjistější cesta</h2>
-<p>Kombinace diagnostiky, fyzické prohlídky a dohledání historie. Přesně to děláme při kontrole ojetého vozu před koupí — a výsledek dostanete písemně.</p>',
+<p>Kombinace diagnostiky, fyzické prohlídky a dohledání historie. Přesně to děláme při kontrole ojetého vozu před koupí — a výsledek dostanete písemně.</p>
+<p>Chcete mít jistotu ještě před podpisem smlouvy? Objednejte si <a href="https://kontrolyaut.cz/provereni-vozidla">nezávislé prověření vozidla</a> — stočený tachometr odhalíme diagnostikou i kontrolou historie.</p>',
    'Rady při koupi', ARRAY['stočený tachometr','ojetiny','podvody'], 'published', now(), 'Lukáš Doubek',
    'Jak poznat stočený tachometr u ojetého auta | 7 znaků', 'Stočený tachometr odhalíte podle opotřebení interiéru, servisní historie i dat z řídicích jednotek. 7 praktických znaků od technika.', 'kontrolyaut'),
   ('na-co-si-dat-pozor-pri-koupi-ojeteho-vozu-z-bazaru', 'Na co si dát pozor při koupi ojetého vozu z bazaru', 'Rezervační smlouva, výkupní cena, „vůz bez nehody“ — projděte si nejčastější pasti bazarů dřív, než podepíšete.', '<h2>1. Rezervační záloha jako past</h2>
@@ -54,7 +56,8 @@ values
 <h2>6. Nátlak na rychlé rozhodnutí</h2>
 <p>„Odpoledne se na něj jede podívat další zájemce“ je nejstarší prodejní trik. Seriózní prodejce nezávislou kontrolu neodmítne.</p>
 <h2>Jak se pojistit</h2>
-<p>Objednejte si nezávislého technika přímo na místo prohlídky. Kontrola trvá zhruba hodinu a její výsledek buď potvrdí dobrou koupi, nebo vám ušetří velké peníze.</p>',
+<p>Objednejte si nezávislého technika přímo na místo prohlídky. Kontrola trvá zhruba hodinu a její výsledek buď potvrdí dobrou koupi, nebo vám ušetří velké peníze.</p>
+<p>Více o tom, jak taková prohlídka probíhá a co vše zahrnuje, se dočtete na stránce <a href="https://kontrolyaut.cz/provereni-vozidla">prověření vozidla před koupí</a>.</p>',
    'Rady při koupi', ARRAY['bazar','koupě auta','smlouva'], 'published', now(), 'Lukáš Doubek',
    'Koupě ojetého vozu z bazaru: na co si dát pozor', 'Rezervační zálohy, zamlčené havárie, smlouvy na komisní prodej i skryté poplatky. Praktický přehled pastí při koupi ojetiny z bazaru.', 'kontrolyaut'),
   ('kolik-stoji-kontrola-vozu-pred-koupi', 'Kolik stojí kontrola vozu před koupí a kdy se vyplatí', 'Přehled toho, co cenu kontroly ovlivňuje, jak funguje doprava mimo Prahu a proč se investice vrátí už při první vyjednané slevě.', '<h2>Z čeho se cena skládá</h2>
@@ -71,7 +74,8 @@ values
 <h2>Návratnost</h2>
 <p>Report s vyčíslením nutných oprav je nejsilnější argument při smlouvání. Sleva vyjednaná na jeho základě obvykle několikanásobně převýší cenu kontroly — a když je vůz v pořádku, kupujete s klidnou hlavou.</p>
 <h2>Jak objednat</h2>
-<p>Vyplňte formulář na hlavní straně, pošlete odkaz na inzerát a preferovaný termín. Ozveme se obratem a domluvíme prohlídku i s prodejcem.</p>',
+<p>Vyplňte formulář na hlavní straně, pošlete odkaz na inzerát a preferovaný termín. Ozveme se obratem a domluvíme prohlídku i s prodejcem.</p>
+<p>Přesný rozsah kontroly a ceník najdete na stránce <a href="https://kontrolyaut.cz/provereni-vozidla">prověření vozidla</a>, objednat se můžete rovnou v <a href="https://kontrolyaut.cz/#kontakt">formuláři na kontrolyaut.cz</a>.</p>',
    'Ceník a služby', ARRAY['cena kontroly','prověření vozidla','služby'], 'published', now(), 'Lukáš Doubek',
    'Kolik stojí kontrola vozu před koupí | Ceny a co obsahuje', 'Cena kontroly ojetého vozu před koupí, co je v ní zahrnuto, jak se počítá doprava mimo Prahu a kdy se prohlídka nejvíc vyplatí.', 'kontrolyaut'),
   ('kontrola-elektromobilu-a-hybridu-pred-koupi', 'Kontrola elektromobilu a hybridu před koupí: na co se zaměřit', 'Stav baterie, historie nabíjení, chlazení i záruka výrobce — u ojetého elektromobilu rozhodují jiné parametry než u spalovacího vozu.', '<h2>Baterie je polovina ceny vozu</h2>
@@ -89,9 +93,42 @@ values
 <h2>Na co pozor u dovozu</h2>
 <p>Dovezené elektromobily mohou mít jiné softwarové nastavení, chybějící aktualizace nebo omezenou podporu v české servisní síti. Vždy ověřte, zda je vůz veden na účet předchozího majitele v aplikaci výrobce.</p>
 <h2>Objednejte kontrolu s diagnostikou baterie</h2>
-<p>Elektromobil a hybrid prověřujeme stejně důkladně jako spalovací vozy — včetně dat z vysokonapěťového systému. Výsledek dostanete v přehledném reportu.</p>',
+<p>Elektromobil a hybrid prověřujeme stejně důkladně jako spalovací vozy — včetně dat z vysokonapěťového systému. Výsledek dostanete v přehledném reportu.</p>
+<p>Kontrolu elektromobilu či hybridu objednáte stejně jako u spalovacího vozu — přes stránku <a href="https://kontrolyaut.cz/provereni-vozidla">prověření vozidla před koupí</a>.</p>',
    'Elektromobilita', ARRAY['elektromobil','hybrid','baterie','kontrola'], 'published', now(), 'Lukáš Doubek',
-   'Kontrola ojetého elektromobilu před koupí | Stav baterie', 'Jak prověřit ojetý elektromobil nebo hybrid: kapacita baterie (SoH), historie rychlonabíjení, chlazení, záruka a typické vady.', 'kontrolyaut')
+    'Kontrola ojetého elektromobilu před koupí | Stav baterie', 'Jak prověřit ojetý elektromobil nebo hybrid: kapacita baterie (SoH), historie rychlonabíjení, chlazení, záruka a typické vady.', 'kontrolyaut'),
+  ('kontrola-vozu-dovezeneho-z-nemecka', 'Kontrola vozu dovezeného z Německa: na co se zaměřit před koupí', 'Vozy z Německa lákají nízkou cenou a bohatou výbavou, ale skrývají i rizika — od odepsaných havárií po smazání z evidence. Víme, na co se u dovozu zaměřit.', '<h2>Proč jsou německé ojetiny rizikové</h2>
+<p>Německo je největším zdrojem ojetých aut do ČR. Nabídka je široká a ceny příznivé, ale právě u dovozu se nejčastěji objevují stočené tachometry, vozy po totálních škodách nebo exleasingové vozy s vyšisovaným servisem.</p>
+<h2>Co prověřujeme u dovezeného vozu</h2>
+<ul>
+<li><strong>Historii v zemi původu</strong> — záznamy o škodních událostech, servisní historie a stavy tachometru v zahraničních evidencích.</li>
+<li><strong>Stav při dovozu</strong> — doklady o dovozu, celní papíry a datum první registrace v ČR.</li>
+<li><strong>Vybavení pro český provoz</strong> — světlomety, rádio s českou lokalizací, navigační mapy.</li>
+<li><strong>Fyzický stav</strong> — měření laku, kontrola svařenců a geometrie, diagnostika řídicích jednotek.</li>
+</ul>
+<h2>Typické pasti</h2>
+<p>Vůz inzerovaný jako „po prvním majiteli" mohl v Německu jezdit v autopůjčovně nebo taxislužbě. Inzerovaná výbava nemusí odpovídat skutečnosti — kontrolou VIN výbavu ověříme. Pozor i na vozy vracené z leasingu s velkým nájezdem „přepočteným" na nižší hodnotu.</p>
+<h2>Má smysl kontrola i u vozu, který ještě není v ČR?</h2>
+<p>Ano — pokud vážně uvažujete o konkrétním voze, kontrola historie a VIN dává smysl ještě před cestou. Fyzickou prohlídku pak provedeme po příjezdu vozu do ČR, ideálně před podpisem kupní smlouvy.</p>
+<p>Podrobnosti o rozsahu kontroly najdete na stránce <a href="https://kontrolyaut.cz/provereni-vozidla">prověření vozidla před koupí</a>. Objednávku vyřídíte v <a href="https://kontrolyaut.cz/#kontakt">formuláři na hlavní stránce</a>.</p>',
+   'Rady při koupi', ARRAY['dovoz z Německa','ojetiny','historie vozu'], 'published', now(), 'Lukáš Doubek',
+   'Kontrola vozu dovezeného z Německa před koupí', 'Ojetý vůz z Německa? Prověřte historii v zemi původu, tachometr i skutečnou výbavu. Na co se zaměřit u dovozu a jaké jsou typické pasti.', 'kontrolyaut'),
+  ('nejcastejsi-skryte-zavady-ojetin', 'Nejčastější skryté závady ojetých aut, které prodejce neřekne', 'Dvouspojkové převodovky, DPF filtry, netěsné motory i koroze pod plasty. Přehled závad, které se vyplatí nechat zkontrolovat před koupí.', '<h2>Proč jsou skryté závady tak nebezpečné</h2>
+<p>Vizuálně repasované auto vypadá skvěle — čistý interiér, nový lak na předních dílech, voňavý motorový prostor. Právě „příliš čistý" motor či lesklý lak jen na části vozu bývá varovným signálem, že se něco maskovalo.</p>
+<h2>1. Dvouspojkové a automatické převodovky</h2>
+<p>Oprava za 50 000 až 150 000 Kč. Projeví se cukáním při rozjezdu, zpožděným řazením nebo zvuky při přeřazování — pozná se hlavně na testovací jízdě a v diagnostice.</p>
+<h2>2. DPF filtr a turbo</h2>
+<p>U dieselů krátce ježděných po městě bývá DPF ucpaný. Regenerace nestačí a výměna stojí desítky tisíc. Podobně opotřebené turbo poznáme podle zavíření oleje, kouře a odezvy.</p>
+<h2>3. Rozvodový řetěz</h2>
+<p>U řady motorizací (typicky menších přeplňovaných motorů) řetěz časem vytáhne. Razení za studena prozradí víc než inzerát — výměna s vodní pumpou jde do desítek tisíc.</p>
+<h2>4. Koroze pod plasty a izolacemi</h2>
+<p>Podvozek a prahy kontrolujeme na zvedáku — koroze schovaná pod plastovými kryty nebo novým nátěrem je častý nález u starších vozů.</p>
+<h2>5. Netěsnosti a opravy „na kolo"</h2>
+<p>Zalepené těsnění, provizorní opravy chlazení nebo olej v chladicí kapalině (prasklá hlava válců) patří k nálezům, které běžnou prohlídkou nepoznáte.</p>
+<h2>Jak se před závadami chránit</h2>
+<p>Diagnostika, testovací jízda a zkušené oko technika odhalí většinu těchto problémů za hodinu přímo u prodejce. Objednejte si <a href="https://kontrolyaut.cz/provereni-vozidla">prověření vozidla před koupí</a> a kupte si jistotu — kontrola stojí zlomek ceny jediné opravy.</p>',
+   'Technika a závady', ARRAY['skryté závady','ojetiny','kontrola vozu'], 'published', now(), 'Lukáš Doubek',
+   'Nejčastější skryté závady ojetých aut | KontrolyAut', 'Dvouspojkové převodovky, DPF, rozvody, koroze i maskované opravy. Přehled skrytých závad ojetin a jak je odhalit kontrolou před koupí.', 'kontrolyaut')
 on conflict (slug) do update set
   title = excluded.title,
   perex = excluded.perex,

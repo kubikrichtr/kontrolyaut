@@ -12,26 +12,26 @@ import heroWorkshop from "@/assets/hero-workshop.png.asset.json";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Kontrola ojetých vozů před koupí | KontrolyAut" },
+      { title: "Kontrola ojetého auta před koupí | Praha a ČR | KontrolyAut" },
       {
         name: "description",
         content:
-          "Nezávislá technická kontrola ojetých vozů před koupí. Protokol s fotografiemi, po celé ČR.",
+          "Nezávislá kontrola ojetého auta před koupí v Praze a po celé ČR. Odhalíme stočený tachometr, skryté havárie i drahé závady. Protokol s fotografiemi do 24 hodin.",
       },
-      { property: "og:title", content: "Kontrola ojetých vozů před koupí | KontrolyAut" },
+      { property: "og:title", content: "Kontrola ojetého auta před koupí | Praha a ČR | KontrolyAut" },
       {
         property: "og:description",
         content:
-          "Zajišťujeme nezávislou kontrolu osobních i užitkových vozů před koupí. Díky tomu předejdete zbytečným výdajům a nepříjemným překvapením po nákupu vozu.",
+          "Nezávislá kontrola ojetého auta před koupí v Praze a po celé ČR. Odhalíme stočený tachometr, skryté havárie i drahé závady dřív, než auto koupíte.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://kontrolyaut.cz/" },
       { property: "og:image", content: `https://kontrolyaut.cz${heroWorkshop.url}` },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Kontrola ojetých vozů před koupí | KontrolyAut" },
+      { name: "twitter:title", content: "Kontrola ojetého auta před koupí | Praha a ČR | KontrolyAut" },
       {
         name: "twitter:description",
-        content: "Nezávislá kontrola ojetých vozů před koupí. Protokol s fotografiemi.",
+        content: "Nezávislá kontrola ojetého auta před koupí v Praze a po celé ČR. Protokol s fotografiemi do 24 hodin.",
       },
       { name: "twitter:image", content: `https://kontrolyaut.cz${heroWorkshop.url}` },
     ],
@@ -164,8 +164,9 @@ function Hero() {
             Kontrola ojetého auta <span className="text-primary">před koupí</span>
           </h1>
           <p className="mt-5 text-lg text-foreground/90 max-w-xl drop-shadow-sm">
-            Zajišťujeme nezávislou kontrolu osobních i užitkových vozů před koupí. Díky tomu předejdete zbytečným
-            výdajům a nepříjemným překvapením po nákupu vozu.
+            Zajišťujeme nezávislou kontrolu ojetých aut před koupí v Praze, Středočeském kraji a po celé ČR.
+            Odhalíme stočený tachometr, skryté havárie i drahé závady — předejdete tak zbytečným výdajům
+            a nepříjemným překvapením po nákupu vozu.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a href="#kontakt" className="btn-primary shadow-lg">
