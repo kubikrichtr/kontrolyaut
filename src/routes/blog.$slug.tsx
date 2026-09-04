@@ -1,6 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { carsEu, KONTROLY_SITES, type CarsEuBlogPost } from "@/lib/cars-eu-client";
+import { BlogCover } from "@/components/site/BlogCover";
 import { ArrowLeft } from "lucide-react";
+
 
 const SITE = "https://kontrolyaut.cz";
 

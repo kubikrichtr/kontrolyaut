@@ -3,7 +3,9 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Search } from "lucide-react";
 import { carsEu, KONTROLY_SITES, type CarsEuBlogPost } from "@/lib/cars-eu-client";
+import { BlogCover } from "@/components/site/BlogCover";
 import heroWorkshop from "@/assets/hero-workshop.png.asset.json";
+
 
 const OG_IMAGE = `https://kontrolyaut.cz${heroWorkshop.url}`;
 
