@@ -3,7 +3,9 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Search } from "lucide-react";
 import { carsEu, KONTROLY_SITES, type CarsEuBlogPost } from "@/lib/cars-eu-client";
+import { BlogCover } from "@/components/site/BlogCover";
 import heroWorkshop from "@/assets/hero-workshop.png.asset.json";
+
 
 const OG_IMAGE = `https://kontrolyaut.cz${heroWorkshop.url}`;
 
@@ -157,15 +159,18 @@ function BlogList() {
             className="group rounded-2xl overflow-hidden border border-border bg-white hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all"
           >
             <div className="aspect-[16/9] bg-muted overflow-hidden">
-              {p.cover_image_url && (
+              {p.cover_image_url ? (
                 <img
                   src={p.cover_image_url}
                   alt={p.title}
                   loading="lazy"
                   className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
+              ) : (
+                <BlogCover title={p.title} category={p.category} className="transition-transform duration-500 group-hover:scale-105" />
               )}
             </div>
+
             <div className="p-5">
               {p.category && (
                 <span className="text-xs font-semibold uppercase tracking-wider text-primary">{p.category}</span>
