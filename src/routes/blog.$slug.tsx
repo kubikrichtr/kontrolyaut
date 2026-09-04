@@ -79,13 +79,18 @@ function BlogPost() {
       <Link to="/blog" className="inline-flex items-center gap-2 text-sm text-primary mb-6">
         <ArrowLeft className="h-4 w-4" /> Zpět na blog
       </Link>
-      {data.cover_image_url && (
+      {data.cover_image_url ? (
         <img
           src={data.cover_image_url}
           alt={data.title}
           className="w-full rounded-2xl mb-8 aspect-[16/9] object-cover"
         />
+      ) : (
+        <div className="w-full rounded-2xl mb-8 aspect-[16/9] overflow-hidden">
+          <BlogCover title={data.title} category={data.category} />
+        </div>
       )}
+
       {data.category && (
         <span className="text-xs font-semibold uppercase tracking-wider text-primary">{data.category}</span>
       )}
