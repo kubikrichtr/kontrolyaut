@@ -607,18 +607,37 @@ function Realized() {
 
 
 
+const FAQ_URL = "https://ajafqafoonxoubbhcxnk.supabase.co/functions/v1/public-faq?site=kontrolyaut";
+
 function FAQ() {
   const { data } = useQuery({
     queryKey: ["faq"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("faq_items").select("*").eq("published", true).order("sort_order");
-      if (error) throw error;
-      return data;
+      const res = await fetch(FAQ_URL);
+      if (!res.ok) throw new Error("FAQ fetch failed");
+      const json = await res.json();
+      return json.items as { id: string; question: string; answer: string }[];
     },
   });
   const [open, setOpen] = useState<string | null>(null);
   return (
     <section id="faq" className="container-page py-16 md:py-20">
+      {data && data.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: data.map((f) => ({
+                "@type": "Question",
+                name: f.question,
+                acceptedAnswer: { "@type": "Answer", text: f.answer },
+              })),
+            }),
+          }}
+        />
+      )}
       <div className="text-center max-w-2xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold">Časté dotazy</h2>
         <p className="mt-3 text-muted-foreground">Vše, co potřebujete vědět o kontrole ojetého vozu.</p>
