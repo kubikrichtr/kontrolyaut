@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ProvereniVozidlaRouteImport } from './routes/provereni-vozidla'
 import { Route as OMneRouteImport } from './routes/o-mne'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -22,6 +23,11 @@ import { Route as AuthenticatedKlientRouteImport } from './routes/_authenticated
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProvereniVozidlaRoute = ProvereniVozidlaRouteImport.update({
+  id: '/provereni-vozidla',
+  path: '/provereni-vozidla',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OMneRoute = OMneRouteImport.update({
@@ -69,6 +75,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
   '/o-mne': typeof OMneRoute
+  '/provereni-vozidla': typeof ProvereniVozidlaRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/klient': typeof AuthenticatedKlientRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -78,6 +85,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/o-mne': typeof OMneRoute
+  '/provereni-vozidla': typeof ProvereniVozidlaRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/klient': typeof AuthenticatedKlientRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -90,6 +98,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
   '/o-mne': typeof OMneRoute
+  '/provereni-vozidla': typeof ProvereniVozidlaRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/klient': typeof AuthenticatedKlientRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -102,6 +111,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/o-mne'
+    | '/provereni-vozidla'
     | '/sitemap.xml'
     | '/klient'
     | '/blog/$slug'
@@ -111,6 +121,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/o-mne'
+    | '/provereni-vozidla'
     | '/sitemap.xml'
     | '/klient'
     | '/blog/$slug'
@@ -122,6 +133,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/o-mne'
+    | '/provereni-vozidla'
     | '/sitemap.xml'
     | '/_authenticated/klient'
     | '/blog/$slug'
@@ -134,6 +146,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRouteWithChildren
   OMneRoute: typeof OMneRoute
+  ProvereniVozidlaRoute: typeof ProvereniVozidlaRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
@@ -144,6 +157,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/provereni-vozidla': {
+      id: '/provereni-vozidla'
+      path: '/provereni-vozidla'
+      fullPath: '/provereni-vozidla'
+      preLoaderRoute: typeof ProvereniVozidlaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/o-mne': {
@@ -234,6 +254,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BlogRoute: BlogRouteWithChildren,
   OMneRoute: OMneRoute,
+  ProvereniVozidlaRoute: ProvereniVozidlaRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
