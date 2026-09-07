@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, type ReactNode } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { ShieldCheck, Search, FileCheck, CheckCircle2, Wrench, Gauge, Phone, Car, Handshake, Star, Quote, X, ChevronLeft, ChevronRight, Image as ImageIcon } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+
 import { carsEu, type CarsEuReview } from "@/lib/cars-eu-client";
 import { BookingSection } from "@/components/site/BookingSection";
 import heroWorkshop from "@/assets/hero-workshop.png.asset.json";
@@ -46,71 +46,6 @@ export const Route = createFileRoute("/")({
           url: "https://kontrolyaut.cz/",
           logo: "https://kontrolyaut.cz/favicon.svg",
           areaServed: "CZ",
-        }),
-      },
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          mainEntity: [
-            {
-              "@type": "Question",
-              name: "Kolik stojí kontrola ojetého vozu?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text: "Základní kontrola ojetého vozu stojí 2 490 Kč včetně DPH. Součástí je diagnostika elektroniky, kontrola karoserie, podvozku, motoru a testovací jízda.",
-              },
-            },
-            {
-              "@type": "Question",
-              name: "Kontrola ojetého vozu v Praze – kolik stojí a co zahrnuje?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text: "Kontrola ojetého vozu v Praze a okolí stojí od 2 490 Kč včetně DPH. Cena zahrnuje diagnostiku elektroniky, kontrolu motoru, převodovky, podvozku, karoserie, interiéru i zkušební jízdu. Dopravu do Prahy a Středočeského kraje si spočítáte v objednávkovém formuláři.",
-              },
-            },
-            {
-              "@type": "Question",
-              name: "Jak dlouho trvá kontrola auta před koupí v Praze?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text: "Kontrola ojetého vozu v Praze a okolí trvá obvykle 60 až 90 minut. Výsledek a doporučení dostanete okamžitě na místě, písemný protokol s fotografiemi pak e-mailem do 24 hodin.",
-              },
-            },
-            {
-              "@type": "Question",
-              name: "Přijedete s kontrolou za prodejcem do Prahy?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text: "Ano, přijedeme přímo za vámi – k autobazaru, do servisu nebo na adresu soukromého prodejce v Praze a celém Středočeském kraji (např. Kladno, Mladá Boleslav, Příbram, Beroun, Kolín).",
-              },
-            },
-            {
-              "@type": "Question",
-              name: "Kontrolujete auta i mimo Prahu, ve Středočeském kraji?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text: "Ano, kromě Prahy obsluhujeme celý Středočeský kraj a po dohodě i další místa po celé ČR. Cenu dopravy předem spočítá kalkulačka v objednávkovém formuláři.",
-              },
-            },
-            {
-              "@type": "Question",
-              name: "Proč si nechat zkontrolovat ojetý vůz před koupí v Praze?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text: "Nezávislá kontrola v Praze a okolí odhalí skryté vady, stočený tachometr či vůz po havárii dřív, než podepíšete kupní smlouvu. Vyhnete se tak opravám za desítky tisíc korun a protokol využijete i při jednání o slevě.",
-              },
-            },
-            {
-              "@type": "Question",
-              name: "Jak objednat kontrolu ojetého vozu v Praze?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text: "Vyplňte objednávkový formulář na této stránce nebo zavolejte. Kontaktujeme vás do 24 hodin, domluvíme termín kontroly u prodejce v Praze či okolí a připravíme cenovou nabídku včetně dopravy.",
-              },
-            },
-          ],
         }),
       },
     ],
@@ -672,18 +607,37 @@ function Realized() {
 
 
 
+const FAQ_URL = "https://ajafqafoonxoubbhcxnk.supabase.co/functions/v1/public-faq?site=kontrolyaut";
+
 function FAQ() {
   const { data } = useQuery({
     queryKey: ["faq"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("faq_items").select("*").eq("published", true).order("sort_order");
-      if (error) throw error;
-      return data;
+      const res = await fetch(FAQ_URL);
+      if (!res.ok) throw new Error("FAQ fetch failed");
+      const json = await res.json();
+      return json.items as { id: string; question: string; answer: string }[];
     },
   });
   const [open, setOpen] = useState<string | null>(null);
   return (
     <section id="faq" className="container-page py-16 md:py-20">
+      {data && data.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: data.map((f) => ({
+                "@type": "Question",
+                name: f.question,
+                acceptedAnswer: { "@type": "Answer", text: f.answer },
+              })),
+            }),
+          }}
+        />
+      )}
       <div className="text-center max-w-2xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold">Časté dotazy</h2>
         <p className="mt-3 text-muted-foreground">Vše, co potřebujete vědět o kontrole ojetého vozu.</p>
