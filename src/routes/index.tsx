@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState, useEffect, useRef, type ReactNode } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { ShieldCheck, Search, FileCheck, CheckCircle2, Wrench, Gauge, Phone, Car, Handshake, Star, Quote, X, ChevronLeft, ChevronRight, Image as ImageIcon } from "lucide-react";
+import { ShieldCheck, Search, FileCheck, CheckCircle2, Wrench, Gauge, Phone, Car, Handshake, Star, Quote, X, ChevronLeft, ChevronRight, ChevronDown, Image as ImageIcon } from "lucide-react";
 
 import { carsEu, type CarsEuReview } from "@/lib/cars-eu-client";
 import { BookingSection } from "@/components/site/BookingSection";
