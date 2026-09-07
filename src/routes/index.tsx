@@ -621,7 +621,8 @@ function FAQ() {
   });
   const [open, setOpen] = useState<string | null>(null);
   return (
-    <section id="faq" className="container-page py-16 md:py-20">
+    <section id="faq" className="bg-muted/40 border-y border-border py-16 md:py-24">
+      <div className="container-page">
       {data && data.length > 0 && (
         <script
           type="application/ld+json"
@@ -639,30 +640,38 @@ function FAQ() {
         />
       )}
       <div className="text-center max-w-2xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold">Časté dotazy</h2>
-        <p className="mt-3 text-muted-foreground">Vše, co potřebujete vědět o kontrole ojetého vozu.</p>
+        <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight">
+          Často kladené <span className="text-primary">dotazy</span>
+        </h2>
+        <p className="mt-4 text-muted-foreground">Vše, co potřebujete vědět o kontrole ojetého vozu.</p>
       </div>
-      <div className="mt-10 max-w-3xl mx-auto space-y-3">
+      <div className="mt-12 max-w-5xl mx-auto grid gap-4 md:grid-cols-2 md:items-start">
         {(data ?? []).map((f) => {
           const isOpen = open === f.id;
           return (
-            <div key={f.id} className="rounded-2xl border border-border bg-card overflow-hidden">
+            <div
+              key={f.id}
+              className="rounded-xl border border-border bg-card shadow-sm overflow-hidden transition hover:shadow-md"
+            >
               <button
                 onClick={() => setOpen(isOpen ? null : f.id)}
                 aria-expanded={isOpen}
-                className="tap-target w-full text-left p-5 flex items-center justify-between gap-4 hover:bg-muted/40 transition"
+                className="tap-target w-full text-left px-6 py-5 flex items-center justify-between gap-4"
               >
-                <span className="font-semibold">{f.question}</span>
-                <span
-                  className={`h-8 w-8 shrink-0 rounded-full bg-primary/10 text-primary flex items-center justify-center transition-transform ${isOpen ? "rotate-45" : ""}`}
-                >
-                  +
-                </span>
+                <span className="font-semibold text-base">{f.question}</span>
+                <ChevronDown
+                  className={`h-5 w-5 shrink-0 text-muted-foreground transition-transform ${isOpen ? "rotate-180" : ""}`}
+                />
               </button>
-              {isOpen && <div className="px-5 pb-5 text-sm text-muted-foreground whitespace-pre-line">{f.answer}</div>}
+              {isOpen && (
+                <div className="px-6 pb-6 -mt-1 text-sm leading-relaxed text-muted-foreground whitespace-pre-line">
+                  {f.answer}
+                </div>
+              )}
             </div>
           );
         })}
+      </div>
       </div>
     </section>
   );
