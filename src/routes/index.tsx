@@ -645,20 +645,20 @@ function FAQ() {
         </h2>
         <p className="mt-4 text-muted-foreground">Vše, co potřebujete vědět o kontrole ojetého vozu.</p>
       </div>
-      <div className="mt-12 max-w-5xl mx-auto grid gap-4 md:grid-cols-2 md:items-start">
+      <div className="mt-12 max-w-5xl mx-auto grid gap-4 md:grid-cols-2 md:items-stretch">
         {(data ?? []).map((f) => {
           const isOpen = open === f.id;
           return (
             <div
               key={f.id}
-              className="rounded-xl border border-border bg-card shadow-sm overflow-hidden transition hover:shadow-md"
+              className="rounded-xl border border-border bg-card shadow-sm overflow-hidden transition hover:shadow-md h-full flex flex-col"
             >
               <button
                 onClick={() => setOpen(isOpen ? null : f.id)}
                 aria-expanded={isOpen}
-                className="tap-target w-full text-left px-6 py-5 flex items-center justify-between gap-4"
+                className="tap-target w-full text-left px-6 py-5 flex items-center justify-between gap-4 flex-1 min-h-[80px]"
               >
-                <span className="font-semibold text-base">{f.question}</span>
+                <span className="font-semibold text-base line-clamp-2">{f.question}</span>
                 <ChevronDown
                   className={`h-5 w-5 shrink-0 text-muted-foreground transition-transform ${isOpen ? "rotate-180" : ""}`}
                 />
