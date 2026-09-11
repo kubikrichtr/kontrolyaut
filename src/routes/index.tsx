@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState, useEffect, useRef, type ReactNode } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { ShieldCheck, Search, FileCheck, CheckCircle2, Wrench, Gauge, Phone, Car, Handshake, Star, Quote, X, ChevronLeft, ChevronRight, ChevronDown, Image as ImageIcon } from "lucide-react";
+import { ShieldCheck, Search, FileCheck, CheckCircle2, Wrench, Gauge, Phone, Car, Handshake, Star, X, ChevronLeft, ChevronRight, ChevronDown, Image as ImageIcon } from "lucide-react";
 
 import { carsEu, type CarsEuReview } from "@/lib/cars-eu-client";
 import { BookingSection } from "@/components/site/BookingSection";
@@ -249,15 +249,6 @@ function HowItWorks() {
   );
 }
 
-function Stars({ count = 5 }: { count?: number }) {
-  return (
-    <div className="flex gap-0.5 text-primary" aria-hidden>
-      {Array.from({ length: count }).map((_, i) => (
-        <Star key={i} className="h-4 w-4 fill-current" />
-      ))}
-    </div>
-  );
-}
 
 type LightboxItem = { src: string; car: string | null; customer: string | null };
 
@@ -484,7 +475,7 @@ function Realized() {
   if (!data || data.length === 0) return null;
 
   const withPhoto = data.filter((r) => (r.images?.length ?? 0) > 0);
-  const withoutPhoto = data.filter((r) => (r.images?.length ?? 0) === 0);
+  if (withPhoto.length === 0) return null;
 
   const photos: LightboxItem[] = withPhoto.flatMap((r) =>
     (r.images ?? []).map((src) => ({
@@ -565,37 +556,6 @@ function Realized() {
           </div>
         )}
 
-        {withoutPhoto.length > 0 && (
-          <div className="mt-12">
-            <h3 className="text-center text-xl font-bold mb-6">Hodnocení klientů</h3>
-            <Carousel
-              itemCount={withoutPhoto.length}
-              prevLabel="Posunout doleva"
-              nextLabel="Posunout doprava"
-              dotLabel="Přejít na hodnocení"
-            >
-              {withoutPhoto.map((r) => (
-                <figure
-                  key={r.id}
-                  className="snap-start shrink-0 w-[80%] sm:w-[48%] lg:w-[calc((100%-3rem)/3)] xl:w-[calc((100%-4.5rem)/4)] relative rounded-2xl border border-border bg-card p-6 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all"
-                >
-                  <Quote className="absolute right-5 top-5 h-8 w-8 text-primary/15" aria-hidden />
-                  <Stars count={r.rating ?? 5} />
-                  <blockquote className="mt-4 text-sm text-muted-foreground">„{r.text}“</blockquote>
-                  <figcaption className="mt-5 flex items-end justify-between gap-4 border-t border-border pt-4">
-                    <span>
-                      <span className="block font-semibold">{r.customer_name}</span>
-                      {r.customer_location && (
-                        <span className="block text-xs text-muted-foreground">{r.customer_location}</span>
-                      )}
-                    </span>
-                    {r.car_name && <span className="text-xs font-medium text-primary">{r.car_name}</span>}
-                  </figcaption>
-                </figure>
-              ))}
-            </Carousel>
-          </div>
-        )}
       </div>
 
       {lightbox !== null && (
