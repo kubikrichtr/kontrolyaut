@@ -54,9 +54,11 @@ export function SiteFooter() {
         <div className="mt-12 border-t border-border pt-8">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} KontrolyAut.cz. Všechna práva vyhrazena.</p>
-            <div className="flex items-center gap-4">
-              <a href="https://cars-eu.cz/cookies-policy" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground transition-colors hover:text-primary">Zásady cookies</a>
-              <a href="https://cars-eu.cz/ochrana-osobnich-udaju" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground transition-colors hover:text-primary">Ochrana osobních údajů</a>
+            <div className="flex flex-wrap items-center justify-center gap-4 md:justify-end">
+              <Link to="/ochrana-osobnich-udaju" className="text-sm text-muted-foreground transition-colors hover:text-primary">Ochrana osobních údajů</Link>
+              <Link to="/obchodni-podminky" className="text-sm text-muted-foreground transition-colors hover:text-primary">Obchodní podmínky</Link>
+              <Link to="/duvera-a-bezpecnost" className="text-sm text-muted-foreground transition-colors hover:text-primary">Důvěra a bezpečnost</Link>
+              <Link to="/zasady-cookies" className="text-sm text-muted-foreground transition-colors hover:text-primary">Zásady cookies</Link>
             </div>
           </div>
         </div>

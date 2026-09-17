@@ -9,9 +9,13 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ZasadyCookiesRouteImport } from './routes/zasady-cookies'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ProvereniVozidlaRouteImport } from './routes/provereni-vozidla'
+import { Route as OchranaOsobnichUdajuRouteImport } from './routes/ochrana-osobnich-udaju'
+import { Route as ObchodniPodminkyRouteImport } from './routes/obchodni-podminky'
 import { Route as OMneRouteImport } from './routes/o-mne'
+import { Route as DuveraABezpecnostRouteImport } from './routes/duvera-a-bezpecnost'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
@@ -20,6 +24,11 @@ import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthenticatedKlientRouteImport } from './routes/_authenticated/klient'
 
+const ZasadyCookiesRoute = ZasadyCookiesRouteImport.update({
+  id: '/zasady-cookies',
+  path: '/zasady-cookies',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -30,9 +39,24 @@ const ProvereniVozidlaRoute = ProvereniVozidlaRouteImport.update({
   path: '/provereni-vozidla',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OchranaOsobnichUdajuRoute = OchranaOsobnichUdajuRouteImport.update({
+  id: '/ochrana-osobnich-udaju',
+  path: '/ochrana-osobnich-udaju',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ObchodniPodminkyRoute = ObchodniPodminkyRouteImport.update({
+  id: '/obchodni-podminky',
+  path: '/obchodni-podminky',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OMneRoute = OMneRouteImport.update({
   id: '/o-mne',
   path: '/o-mne',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DuveraABezpecnostRoute = DuveraABezpecnostRouteImport.update({
+  id: '/duvera-a-bezpecnost',
+  path: '/duvera-a-bezpecnost',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogRoute = BlogRouteImport.update({
@@ -74,9 +98,13 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
+  '/duvera-a-bezpecnost': typeof DuveraABezpecnostRoute
   '/o-mne': typeof OMneRoute
+  '/obchodni-podminky': typeof ObchodniPodminkyRoute
+  '/ochrana-osobnich-udaju': typeof OchranaOsobnichUdajuRoute
   '/provereni-vozidla': typeof ProvereniVozidlaRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/zasady-cookies': typeof ZasadyCookiesRoute
   '/klient': typeof AuthenticatedKlientRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/': typeof BlogIndexRoute
@@ -84,9 +112,13 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/duvera-a-bezpecnost': typeof DuveraABezpecnostRoute
   '/o-mne': typeof OMneRoute
+  '/obchodni-podminky': typeof ObchodniPodminkyRoute
+  '/ochrana-osobnich-udaju': typeof OchranaOsobnichUdajuRoute
   '/provereni-vozidla': typeof ProvereniVozidlaRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/zasady-cookies': typeof ZasadyCookiesRoute
   '/klient': typeof AuthenticatedKlientRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog': typeof BlogIndexRoute
@@ -97,9 +129,13 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
+  '/duvera-a-bezpecnost': typeof DuveraABezpecnostRoute
   '/o-mne': typeof OMneRoute
+  '/obchodni-podminky': typeof ObchodniPodminkyRoute
+  '/ochrana-osobnich-udaju': typeof OchranaOsobnichUdajuRoute
   '/provereni-vozidla': typeof ProvereniVozidlaRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/zasady-cookies': typeof ZasadyCookiesRoute
   '/_authenticated/klient': typeof AuthenticatedKlientRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/': typeof BlogIndexRoute
@@ -110,9 +146,13 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/blog'
+    | '/duvera-a-bezpecnost'
     | '/o-mne'
+    | '/obchodni-podminky'
+    | '/ochrana-osobnich-udaju'
     | '/provereni-vozidla'
     | '/sitemap.xml'
+    | '/zasady-cookies'
     | '/klient'
     | '/blog/$slug'
     | '/blog/'
@@ -120,9 +160,13 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/duvera-a-bezpecnost'
     | '/o-mne'
+    | '/obchodni-podminky'
+    | '/ochrana-osobnich-udaju'
     | '/provereni-vozidla'
     | '/sitemap.xml'
+    | '/zasady-cookies'
     | '/klient'
     | '/blog/$slug'
     | '/blog'
@@ -132,9 +176,13 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/blog'
+    | '/duvera-a-bezpecnost'
     | '/o-mne'
+    | '/obchodni-podminky'
+    | '/ochrana-osobnich-udaju'
     | '/provereni-vozidla'
     | '/sitemap.xml'
+    | '/zasady-cookies'
     | '/_authenticated/klient'
     | '/blog/$slug'
     | '/blog/'
@@ -145,13 +193,24 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRouteWithChildren
+  DuveraABezpecnostRoute: typeof DuveraABezpecnostRoute
   OMneRoute: typeof OMneRoute
+  ObchodniPodminkyRoute: typeof ObchodniPodminkyRoute
+  OchranaOsobnichUdajuRoute: typeof OchranaOsobnichUdajuRoute
   ProvereniVozidlaRoute: typeof ProvereniVozidlaRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  ZasadyCookiesRoute: typeof ZasadyCookiesRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/zasady-cookies': {
+      id: '/zasady-cookies'
+      path: '/zasady-cookies'
+      fullPath: '/zasady-cookies'
+      preLoaderRoute: typeof ZasadyCookiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -166,11 +225,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProvereniVozidlaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ochrana-osobnich-udaju': {
+      id: '/ochrana-osobnich-udaju'
+      path: '/ochrana-osobnich-udaju'
+      fullPath: '/ochrana-osobnich-udaju'
+      preLoaderRoute: typeof OchranaOsobnichUdajuRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/obchodni-podminky': {
+      id: '/obchodni-podminky'
+      path: '/obchodni-podminky'
+      fullPath: '/obchodni-podminky'
+      preLoaderRoute: typeof ObchodniPodminkyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/o-mne': {
       id: '/o-mne'
       path: '/o-mne'
       fullPath: '/o-mne'
       preLoaderRoute: typeof OMneRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/duvera-a-bezpecnost': {
+      id: '/duvera-a-bezpecnost'
+      path: '/duvera-a-bezpecnost'
+      fullPath: '/duvera-a-bezpecnost'
+      preLoaderRoute: typeof DuveraABezpecnostRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog': {
@@ -253,9 +333,13 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   BlogRoute: BlogRouteWithChildren,
+  DuveraABezpecnostRoute: DuveraABezpecnostRoute,
   OMneRoute: OMneRoute,
+  ObchodniPodminkyRoute: ObchodniPodminkyRoute,
+  OchranaOsobnichUdajuRoute: OchranaOsobnichUdajuRoute,
   ProvereniVozidlaRoute: ProvereniVozidlaRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  ZasadyCookiesRoute: ZasadyCookiesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
