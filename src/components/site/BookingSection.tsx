@@ -3,6 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { Check, AlertCircle, ArrowRight, Loader2, MapPin, BatteryCharging } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -483,6 +484,16 @@ export function BookingSection() {
                 </Button>
                 <p className="mt-4 text-center text-sm text-muted-foreground">
                   Ozveme se do 24 hodin a potvrdíme termín.
+                </p>
+                <p className="mt-2 text-center text-xs leading-relaxed text-muted-foreground">
+                  Odesláním objednávkového formuláře souhlasíte se zpracováním osobních údajů dle{" "}
+                  <Link
+                    to="/ochrana-osobnich-udaju"
+                    className="font-medium text-primary underline-offset-2 hover:underline"
+                  >
+                    zásad ochrany osobních údajů
+                  </Link>
+                  .
                 </p>
               </div>
             </form>
