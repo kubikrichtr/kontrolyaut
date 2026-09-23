@@ -484,6 +484,16 @@ export function BookingSection() {
                 <p className="mt-4 text-center text-sm text-muted-foreground">
                   Ozveme se do 24 hodin a potvrdíme termín.
                 </p>
+                <p className="mt-2 text-center text-xs leading-relaxed text-muted-foreground">
+                  Odesláním objednávkového formuláře souhlasíte se zpracováním osobních údajů dle{" "}
+                  <Link
+                    to="/ochrana-osobnich-udaju"
+                    className="font-medium text-primary underline-offset-2 hover:underline"
+                  >
+                    zásad ochrany osobních údajů
+                  </Link>
+                  .
+                </p>
               </div>
             </form>
           )}
