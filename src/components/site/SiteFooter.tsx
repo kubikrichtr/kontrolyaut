@@ -40,7 +40,7 @@ export function SiteFooter() {
           <p className="mb-3 text-sm font-medium text-foreground">Lukáš Doubek</p>
           <ul className="space-y-3">
             <li><a href="tel:+420737008532" className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"><Phone className="h-4 w-4 shrink-0" />+420 737 008 532</a></li>
-            <li><a href="mailto:info@kontrolyaut.cz" className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"><Mail className="h-4 w-4 shrink-0" />info@kontrolyaut.cz</a></li>
+            <li><a href="mailto:lukas@kontrolyaut.cz" className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"><Mail className="h-4 w-4 shrink-0" />lukas@kontrolyaut.cz</a></li>
             <li><span className="flex items-center gap-2 text-sm text-muted-foreground"><MapPin className="h-4 w-4 shrink-0" />Praha, Česká republika</span></li>
             <li><a href="https://www.facebook.com/profile.php?id=61555695391315" target="_blank" rel="noopener noreferrer" aria-label="Facebook KontrolyAut.cz" className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"><Facebook className="h-4 w-4 shrink-0" />Facebook</a></li>
           </ul>

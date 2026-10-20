@@ -30,7 +30,7 @@ export const Route = createFileRoute("/ochrana-osobnich-udaju")({
         {
           heading: "1. Správce osobních údajů",
           paragraphs: [
-            "Správcem osobních údajů je Lukáš Doubek, provozovatel webu kontrolyaut.cz, IČO 74154231, DIČ CZ8608010433. Kontakt: info@kontrolyaut.cz.",
+            "Správcem osobních údajů je Lukáš Doubek, provozovatel webu kontrolyaut.cz, IČO 74154231, DIČ CZ8608010433. Kontakt: lukas@kontrolyaut.cz.",
           ],
         },
         {
@@ -58,7 +58,7 @@ export const Route = createFileRoute("/ochrana-osobnich-udaju")({
         {
           heading: "5. Práva subjektu údajů",
           paragraphs: [
-            "Máte právo na přístup, opravu, výmaz, omezení zpracování, přenositelnost a vznesení námitky. Tato práva můžete uplatnit na e-mailu info@kontrolyaut.cz.",
+            "Máte právo na přístup, opravu, výmaz, omezení zpracování, přenositelnost a vznesení námitky. Tato práva můžete uplatnit na e-mailu lukas@kontrolyaut.cz.",
           ],
         },
       ]}

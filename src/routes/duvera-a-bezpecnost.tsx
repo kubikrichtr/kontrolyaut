@@ -71,13 +71,13 @@ export const Route = createFileRoute("/duvera-a-bezpecnost")({
         {
           heading: "Práva uživatelů",
           paragraphs: [
-            "Máte právo na přístup, opravu, výmaz, omezení zpracování, přenositelnost údajů a vznesení námitky. Žádost zašlete na info@kontrolyaut.cz.",
+            "Máte právo na přístup, opravu, výmaz, omezení zpracování, přenositelnost údajů a vznesení námitky. Žádost zašlete na lukas@kontrolyaut.cz.",
           ],
         },
         {
           heading: "Kontakt pro hlášení bezpečnostních problémů",
           paragraphs: [
-            "Pokud objevíte zranitelnost nebo bezpečnostní problém týkající se webu kontrolyaut.cz, kontaktujte nás prosím na info@kontrolyaut.cz. Nahlášení posoudíme a budeme vás informovat o dalším postupu.",
+            "Pokud objevíte zranitelnost nebo bezpečnostní problém týkající se webu kontrolyaut.cz, kontaktujte nás prosím na lukas@kontrolyaut.cz. Nahlášení posoudíme a budeme vás informovat o dalším postupu.",
           ],
         },
         {
