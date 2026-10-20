@@ -54,7 +54,7 @@ export const Route = createFileRoute("/obchodni-podminky")({
         {
           heading: "5. Reklamace",
           paragraphs: [
-            "Případné reklamace řešíme individuálně na základě písemné komunikace na info@kontrolyaut.cz.",
+            "Případné reklamace řešíme individuálně na základě písemné komunikace na lukas@kontrolyaut.cz.",
           ],
         },
       ]}
