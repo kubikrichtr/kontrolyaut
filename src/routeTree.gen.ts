@@ -9,59 +9,28 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ZasadyCookiesRouteImport } from './routes/zasady-cookies'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as ProvereniVozidlaRouteImport } from './routes/provereni-vozidla'
-import { Route as OchranaOsobnichUdajuRouteImport } from './routes/ochrana-osobnich-udaju'
-import { Route as ObchodniPodminkyRouteImport } from './routes/obchodni-podminky'
-import { Route as OMneRouteImport } from './routes/o-mne'
-import { Route as DuveraABezpecnostRouteImport } from './routes/duvera-a-bezpecnost'
-import { Route as BlogRouteImport } from './routes/blog'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as DuveraABezpecnostRouteImport } from './routes/duvera-a-bezpecnost'
+import { Route as OMneRouteImport } from './routes/o-mne'
+import { Route as ObchodniPodminkyRouteImport } from './routes/obchodni-podminky'
+import { Route as OchranaOsobnichUdajuRouteImport } from './routes/ochrana-osobnich-udaju'
+import { Route as ProvereniVozidlaRouteImport } from './routes/provereni-vozidla'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ZasadyCookiesRouteImport } from './routes/zasady-cookies'
+import { Route as AuthenticatedKlientRouteImport } from './routes/_authenticated/klient'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
-import { Route as AuthenticatedKlientRouteImport } from './routes/_authenticated/klient'
 
-const ZasadyCookiesRoute = ZasadyCookiesRouteImport.update({
-  id: '/zasady-cookies',
-  path: '/zasady-cookies',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProvereniVozidlaRoute = ProvereniVozidlaRouteImport.update({
-  id: '/provereni-vozidla',
-  path: '/provereni-vozidla',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OchranaOsobnichUdajuRoute = OchranaOsobnichUdajuRouteImport.update({
-  id: '/ochrana-osobnich-udaju',
-  path: '/ochrana-osobnich-udaju',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ObchodniPodminkyRoute = ObchodniPodminkyRouteImport.update({
-  id: '/obchodni-podminky',
-  path: '/obchodni-podminky',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OMneRoute = OMneRouteImport.update({
-  id: '/o-mne',
-  path: '/o-mne',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DuveraABezpecnostRoute = DuveraABezpecnostRouteImport.update({
-  id: '/duvera-a-bezpecnost',
-  path: '/duvera-a-bezpecnost',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BlogRoute = BlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -69,14 +38,50 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const DuveraABezpecnostRoute = DuveraABezpecnostRouteImport.update({
+  id: '/duvera-a-bezpecnost',
+  path: '/duvera-a-bezpecnost',
   getParentRoute: () => rootRouteImport,
+} as any)
+const OMneRoute = OMneRouteImport.update({
+  id: '/o-mne',
+  path: '/o-mne',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ObchodniPodminkyRoute = ObchodniPodminkyRouteImport.update({
+  id: '/obchodni-podminky',
+  path: '/obchodni-podminky',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OchranaOsobnichUdajuRoute = OchranaOsobnichUdajuRouteImport.update({
+  id: '/ochrana-osobnich-udaju',
+  path: '/ochrana-osobnich-udaju',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProvereniVozidlaRoute = ProvereniVozidlaRouteImport.update({
+  id: '/provereni-vozidla',
+  path: '/provereni-vozidla',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ZasadyCookiesRoute = ZasadyCookiesRouteImport.update({
+  id: '/zasady-cookies',
+  path: '/zasady-cookies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedKlientRoute = AuthenticatedKlientRouteImport.update({
+  id: '/klient',
+  path: '/klient',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
   id: '/',
@@ -87,11 +92,6 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => BlogRoute,
-} as any)
-const AuthenticatedKlientRoute = AuthenticatedKlientRouteImport.update({
-  id: '/klient',
-  path: '/klient',
-  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -204,67 +204,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/zasady-cookies': {
-      id: '/zasady-cookies'
-      path: '/zasady-cookies'
-      fullPath: '/zasady-cookies'
-      preLoaderRoute: typeof ZasadyCookiesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/provereni-vozidla': {
-      id: '/provereni-vozidla'
-      path: '/provereni-vozidla'
-      fullPath: '/provereni-vozidla'
-      preLoaderRoute: typeof ProvereniVozidlaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ochrana-osobnich-udaju': {
-      id: '/ochrana-osobnich-udaju'
-      path: '/ochrana-osobnich-udaju'
-      fullPath: '/ochrana-osobnich-udaju'
-      preLoaderRoute: typeof OchranaOsobnichUdajuRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/obchodni-podminky': {
-      id: '/obchodni-podminky'
-      path: '/obchodni-podminky'
-      fullPath: '/obchodni-podminky'
-      preLoaderRoute: typeof ObchodniPodminkyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/o-mne': {
-      id: '/o-mne'
-      path: '/o-mne'
-      fullPath: '/o-mne'
-      preLoaderRoute: typeof OMneRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/duvera-a-bezpecnost': {
-      id: '/duvera-a-bezpecnost'
-      path: '/duvera-a-bezpecnost'
-      fullPath: '/duvera-a-bezpecnost'
-      preLoaderRoute: typeof DuveraABezpecnostRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/blog': {
-      id: '/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof BlogRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -274,12 +218,75 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/duvera-a-bezpecnost': {
+      id: '/duvera-a-bezpecnost'
+      path: '/duvera-a-bezpecnost'
+      fullPath: '/duvera-a-bezpecnost'
+      preLoaderRoute: typeof DuveraABezpecnostRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/o-mne': {
+      id: '/o-mne'
+      path: '/o-mne'
+      fullPath: '/o-mne'
+      preLoaderRoute: typeof OMneRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/obchodni-podminky': {
+      id: '/obchodni-podminky'
+      path: '/obchodni-podminky'
+      fullPath: '/obchodni-podminky'
+      preLoaderRoute: typeof ObchodniPodminkyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ochrana-osobnich-udaju': {
+      id: '/ochrana-osobnich-udaju'
+      path: '/ochrana-osobnich-udaju'
+      fullPath: '/ochrana-osobnich-udaju'
+      preLoaderRoute: typeof OchranaOsobnichUdajuRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/provereni-vozidla': {
+      id: '/provereni-vozidla'
+      path: '/provereni-vozidla'
+      fullPath: '/provereni-vozidla'
+      preLoaderRoute: typeof ProvereniVozidlaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/zasady-cookies': {
+      id: '/zasady-cookies'
+      path: '/zasady-cookies'
+      fullPath: '/zasady-cookies'
+      preLoaderRoute: typeof ZasadyCookiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/klient': {
+      id: '/_authenticated/klient'
+      path: '/klient'
+      fullPath: '/klient'
+      preLoaderRoute: typeof AuthenticatedKlientRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/blog/': {
       id: '/blog/'
@@ -294,13 +301,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof BlogRoute
-    }
-    '/_authenticated/klient': {
-      id: '/_authenticated/klient'
-      path: '/klient'
-      fullPath: '/klient'
-      preLoaderRoute: typeof AuthenticatedKlientRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
