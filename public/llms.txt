@@ -1,0 +1,27 @@
+# KontrolyAut
+
+> Nezávislá kontrola ojetých aut před koupí v Praze a celé ČR — prověření historie, technického stavu a tachometru s reportem do 24 hodin.
+
+KontrolyAut je služba Lukáše Doubka, technického poradce s více než 15 lety zkušeností v automobilovém oboru. Technik přijede přímo k prodávajícímu, prověří vůz před podpisem kupní smlouvy a předá zákazníkovi fotografický protokol s doporučením. Služba pomáhá odhalit stočený tachometr, skryté havárie a drahé závady dřív, než zákazník auto koupí.
+
+Kontakt: +420 737 008 532, lukas@kontrolyaut.cz. Působnost: Praha, Středočeský kraj a po domluvě celá ČR.
+
+## Služby
+
+- [Kontrola ojetého auta před koupí](https://kontrolyaut.cz/): Objednávka kontroly, ceník a popis služby.
+- [Prověření vozidla před koupí Praha](https://kontrolyaut.cz/provereni-vozidla): Co kontrola zahrnuje — historie vozu, stav tachometru, technický stav, testovací jízda a fotografický protokol.
+
+## O nás
+
+- [O mně — Lukáš Doubek](https://kontrolyaut.cz/o-mne): Zkušenosti, nabízené služby a kontakt.
+
+## Blog
+
+- [Blog](https://kontrolyaut.cz/blog): Články o koupi ojetých aut, kontrole vozidel a častých rizicích.
+
+## Optional
+
+- [Obchodní podmínky](https://kontrolyaut.cz/obchodni-podminky): Podmínky poskytování služby.
+- [Ochrana osobních údajů](https://kontrolyaut.cz/ochrana-osobnich-udaju): Zpracování osobních údajů.
+- [Důvěra a bezpečnost](https://kontrolyaut.cz/duvera-a-bezpecnost): Jak chráníme data a provoz webu.
+- [Zásady cookies](https://kontrolyaut.cz/zasady-cookies): Používání cookies na webu.
